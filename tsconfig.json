@@ -39,7 +39,6 @@
       "@types/jest",
       "@nuxtjs/toast",
       "web3-core/types",
-      "@inkline/inkline/types",
       "nuxt-typed-vuex",
       "typed-vuex"
     ]

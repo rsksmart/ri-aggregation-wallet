@@ -185,7 +185,7 @@ const config: NuxtConfig = {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/dotenv", "@nuxt/http", "@nuxtjs/toast", "@nuxtjs/google-gtag", "@inkline/nuxt", "@nuxtjs/sentry"],
+  modules: ["@nuxtjs/dotenv", "@nuxt/http", "@nuxtjs/toast", "@nuxtjs/google-gtag", "@nuxtjs/tailwindcss", "@nuxtjs/sentry"],
   toast: <ToastOptions>{
     singleton: true,
     keepOnHover: true,
@@ -200,11 +200,6 @@ const config: NuxtConfig = {
       onClick: (_e: Event, toastObject: ToastObject): void => {
         toastObject.goAway(100);
       },
-    },
-  },
-  inkline: {
-    config: {
-      autodetectVariant: true,
     },
   },
   styleResources: {

@@ -25,9 +25,9 @@ export default Vue.extend({
   },
   methods: {
     async customWallet() {
-      this.$accessor.wallet.onboard?.config({
+      /* this.$accessor.wallet.onboard?.config({
         darkMode: this.$inkline.config.variant !== "light",
-      });
+      }); */
       const refreshWalletTry = await this.$accessor.wallet.walletRefresh(true);
       if (!refreshWalletTry) {
         this.$accessor.wallet.logout();
