@@ -49,8 +49,8 @@ module.exports = {
     },
     fontFamily: {
       ...tailwindDefault.fontFamily,
+      firaSans: ["Fira Sans", "sans-serif"],
       firaCode: ["Fira Code", "sans-serif"],
-      firaCondensed: ["Fira Sans Condensed", "sans-serif"],
     },
     screens: {
       ...tailwindDefault.screens,

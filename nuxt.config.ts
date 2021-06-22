@@ -202,9 +202,6 @@ const config: NuxtConfig = {
       },
     },
   },
-  styleResources: {
-    scss: ["@/assets/style/vars/*.scss"],
-  },
   sentry: {
     dsn: process.env.SENTRY_DSN,
     disableServerSide: true,
@@ -253,7 +250,6 @@ const config: NuxtConfig = {
     display: "swap",
     families: {
       "Fira+Sans": [400, 600],
-      "Fira+Sans+Extra+Condensed": [400, 600],
       "Fira+Code": [400],
     },
   },

@@ -54,8 +54,8 @@ export default Vue.extend({
   },
   computed: {
     zkWalletLogoSrc(): string {
-      const prefix = utils.defineTheme(this.$inkline, false) === "light" ? "" : "-alt";
-      return require(`@/assets/imgs/logos/logo${prefix}.svg`);
+      // const prefix = utils.defineTheme(this.$inkline, false) === "light" ? "" : "-alt";
+      return require("@/assets/imgs/logos/logo.svg");
     },
     isMainnet(): boolean {
       return ETHER_PRODUCTION;

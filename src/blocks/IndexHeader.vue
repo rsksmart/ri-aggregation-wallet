@@ -1,7 +1,7 @@
 <template>
-  <i-layout-header class="indexHeader" :class="{ opened: opened }">
-    <div class="mobileIndexHeader">
-      <i-container class="mobileOnly">
+  <header class="indexHeader" :class="{ opened: opened }">
+    <!-- <div class="mobileIndexHeader">
+      <container class="mobileOnly">
         <i-row class="_display-flex _justify-content-between _flex-nowrap">
           <i-column>
             <transition name="fade">
@@ -24,10 +24,10 @@
             </div>
           </i-column>
         </i-row>
-      </i-container>
+      </container>
     </div>
     <div class="mainIndexHeader">
-      <i-container>
+      <container>
         <i-row>
           <i-column :xs="12" :md="4" class="_padding-left-0 desktopOnly">
             <block-logo :is-zk-sync-logo="false" />
@@ -58,9 +58,9 @@
             <block-social-block />
           </i-column>
         </i-row>
-      </i-container>
-    </div>
-  </i-layout-header>
+      </container>
+    </div> -->
+  </header>
 </template>
 
 <script lang="ts">

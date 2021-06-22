@@ -54,12 +54,13 @@ export default Vue.extend({
       return VERSION;
     },
     isDarkTheme(): boolean {
-      return utils.defineTheme(this.$inkline) === "dark";
+      // return utils.defineTheme(this.$inkline) === "dark";
+      return false;
     },
   },
   methods: {
     toggleDarkMode(): void {
-      utils.defineTheme(this.$inkline, true);
+      // utils.defineTheme(this.$inkline, true);
     },
   },
 });
