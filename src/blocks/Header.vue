@@ -1,5 +1,6 @@
 <template>
   <i-layout-header class="loggedInHeader">
+    <zk-defbtn to="/transfer">Transfer</zk-defbtn>
     <i-container>
       <i-row>
         <i-column :xs="6" :md="3" class="_padding-left-0 _display-flex _justify-content-start">

@@ -6,6 +6,8 @@ import { ToastAction, ToastIconPack, ToastObject, ToastOptions, ToastPosition } 
 
 import { CURRENT_APP_NAME, ETHER_NETWORK_CAPITALIZED, ETHER_PRODUCTION, GIT_REVISION_SHORT, VERSION } from "./src/plugins/build";
 
+import * as zkTailwindDefault from "./src/modules/tailwind.config.js";
+
 const srcDir = "./src/";
 
 const env = process.env.APP_ENV ?? "dev";
@@ -20,7 +22,7 @@ const pageKeywords = `zkSync, Matter Labs, rollup, ZK rollup, zero confirmation,
 crypto payments, zkWallet, cryptowallet`;
 
 const config: NuxtConfig = {
-  components: ["@/components/", { path: "@/blocks/", prefix: "block" }],
+  components: ["@/components/", { path: "@/blocks/", prefix: "block" }, { path: "@/modules/components/", prefix: "zk" }],
   telemetry: false,
   ssr: false,
   target: "static",
@@ -157,6 +159,7 @@ const config: NuxtConfig = {
    */
   buildModules: [
     "nuxt-build-optimisations",
+    "@nuxtjs/tailwindcss",
     "@nuxtjs/style-resources",
     "@nuxtjs/google-fonts",
     "nuxt-typed-vuex",
@@ -180,12 +183,13 @@ const config: NuxtConfig = {
         },
       },
     ],
+    "@/modules/",
   ],
 
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/dotenv", "@nuxt/http", "@nuxtjs/toast", "@nuxtjs/google-gtag", "@nuxtjs/tailwindcss", "@nuxtjs/sentry"],
+  modules: ["@nuxtjs/dotenv", "@nuxt/http", "@nuxtjs/toast", "@nuxtjs/google-gtag", "@nuxtjs/sentry"],
   toast: <ToastOptions>{
     singleton: true,
     keepOnHover: true,
@@ -251,6 +255,30 @@ const config: NuxtConfig = {
     families: {
       "Fira+Sans": [400, 600],
       "Fira+Code": [400],
+    },
+  },
+  tailwindcss: {
+    config: {
+      ...zkTailwindDefault,
+      purge: {
+        enabled: process.env.NODE_ENV === "production",
+        content: [
+          `${srcDir}/components/**/*.vue`,
+          `${srcDir}/blocks/**/*.vue`,
+          `${srcDir}/blocks/**/*.vue`,
+          `${srcDir}/layouts/**/*.vue`,
+          `${srcDir}/pages/**/*.vue`,
+          `${srcDir}/plugins/**/*.{js,ts}`,
+
+          `${srcDir}/modules/components/**/*.vue`,
+          `${srcDir}/modules/blocks/**/*.vue`,
+          `${srcDir}/modules/blocks/**/*.vue`,
+          `${srcDir}/modules/layouts/**/*.vue`,
+          `${srcDir}/modules/pages/**/*.vue`,
+          `${srcDir}/modules/plugins/**/*.{js,ts}`,
+          `${srcDir}/modules/nuxt.config.{js,ts}`,
+        ],
+      },
     },
   },
   generate: {

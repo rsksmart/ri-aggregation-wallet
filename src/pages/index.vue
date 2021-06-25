@@ -1,13 +1,14 @@
 <template>
   <div class="indexPage">
     <i-container>
-      <h1>Connect your L1 ETH Wallet to start</h1>
+      <h1 class="max-w-md">Connect your L1 ETH Wallet to start</h1>
       <div data-cy="connectWalet-btn" class="tileContainer _margin-top-1" @click="customWallet">
         <div class="tile">
           <img src="@/assets/imgs/wallets/external.png" alt="External" />
         </div>
         <div class="tileName">Connect your wallet</div>
       </div>
+      <zk-button to="/transfer">Transfer</zk-button>
     </i-container>
   </div>
 </template>
