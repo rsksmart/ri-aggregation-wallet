@@ -1,8 +1,0 @@
-.accountModalContainer {
-  position: absolute;
-  pointer-events: none;
-
-  & > * {
-    pointer-events: all;
-  }
-}
