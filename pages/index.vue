@@ -8,7 +8,8 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  layout: 'index',
+  // @ts-ignore
+  layout: "index",
   data() {
     return {
 
