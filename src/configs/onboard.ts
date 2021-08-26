@@ -9,19 +9,24 @@ import {
   ONBOARD_RPC_URL,
 } from "@/plugins/build";
 
-import { Initialization, WalletInitOptions, WalletSelectModuleOptions, WalletModule } from "bnc-onboard/dist/src/interfaces";
+import { AllWalletInitOptions, Initialization, WalletInitOptions, WalletModule, WalletSelectModuleOptions } from "bnc-onboard/dist/src/interfaces";
 
-const wallets: WalletModule[] | WalletInitOptions[] = [
+const wallets: Array<WalletModule | WalletInitOptions | AllWalletInitOptions> = [
   { walletName: "imToken", rpcUrl: ONBOARD_RPC_URL, preferred: true },
   { walletName: "metamask", preferred: true },
   {
-    walletName: "walletConnect",
-    networkId: ETHER_NETWORK_ID,
-    infuraKey: ONBOARD_INFURA_KEY,
+    walletName: "WalletConnect",
+    //    bridge: "",
+    networkId: ETHER_NETWORK_ID as number,
+    infuraKey: ONBOARD_INFURA_KEY as string,
     enableLogging: true,
     preferred: true,
   },
   { walletName: "authereum" },
+  {
+    walletName: "AlphaWallet",
+    rpcUrl: ONBOARD_RPC_URL,
+  },
   { walletName: "coinbase", preferred: true },
   { walletName: "trust", preferred: true, rpcUrl: ONBOARD_RPC_URL },
   {
