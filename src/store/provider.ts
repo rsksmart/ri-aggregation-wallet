@@ -25,6 +25,9 @@ export const state = () => ({
     subscriptions: <Subscriptions>{
       address: async (address: Address | undefined): Promise<void> => {
         console.log("subscription: address", address);
+        if (!process.client) {
+          return;
+        }
         const windowProvider = process.client ? window.$nuxt!.$accessor!.provider : undefined;
         if (windowProvider!.loggedIn) {
           if ((address !== undefined && windowProvider!.address !== address) || (windowProvider!.address === undefined && address === undefined)) {
@@ -47,12 +50,9 @@ export const state = () => ({
         console.log("subscription: wallet", wallet);
         const windowProvider = window.$nuxt!.$accessor!.provider;
         if (wallet.provider) {
-          windowProvider?.storeSelectedWallet(wallet.name || "");
-          const ethersProvider: ethers.providers.Web3Provider = new ethers.providers.Web3Provider(wallet.provider);
-          windowProvider.storeProvider(ethersProvider);
+          windowProvider!.storeSelectedWallet(wallet.name || "");
         } else {
-          windowProvider?.storeSelectedWallet("");
-          windowProvider?.storeProvider(undefined);
+          windowProvider!.storeSelectedWallet("");
         }
       },
       network: async (networkId: number | undefined) => {
@@ -79,7 +79,7 @@ export const state = () => ({
   }) as API,
   accountName: <string>"",
   authStep: (<tProviderState>"ready") as tProviderState,
-  selectedWallet: (<string>localStorage.getItem("onboardSelectedWallet")) as string,
+  selectedWallet: <string>"",
   loadingHint: <string>"",
   ethProvider: <ethers.providers.Web3Provider | undefined>undefined,
 });
@@ -106,10 +106,10 @@ export const mutations = mutationTree(state, {
 });
 
 export const getters = getterTree(state, {
-  loggedIn: (state): boolean => state.authStep === "authorized" && !!state.ethProvider && !!state.onboard.getState().address,
+  loggedIn: (state): boolean => state.authStep === "authorized" && state.onboard.getState().address !== undefined,
   storedOnboardWallet: (state): string => state.selectedWallet,
   name: (state): string | undefined => state.accountName,
-  loader: (state): boolean => ![<tProviderState>"ready", <tProviderState>"authorized", <tProviderState>"selectWallet"].includes(state.authStep),
+  loader: (state): boolean => ["selectWallet", "checkWallet", "connecting"].includes(state.authStep),
   address: (state): Address | undefined => (state.onboard!.getState().address.length ? (state.onboard!.getState().address as Address) : undefined),
   loadingHint: (state): string => state.loadingHint,
   zkScanUrl: (state): string | undefined => (state.onboard.getState().address ? `${APP_ZKSYNC_BLOCK_EXPLORER}/accounts/${state.onboard.getState().address}` : undefined),
@@ -147,10 +147,10 @@ export const actions = actionTree(
 
     async walletCheck({ state, commit, dispatch }): Promise<boolean> {
       commit("setAuthStage", "checkWallet");
-      //      commit("setLoadingHint", "Follow the instructions in your Ethereum wallet");
+      commit("setLoadingHint", "Follow the instructions in your Ethereum wallet");
       const checkStatus: boolean = await state.onboard.walletCheck();
       if (checkStatus) {
-        commit("setAuthStage", "authorized");
+        commit("setAuthStage", "connecting");
       } else {
         dispatch("reset");
       }
