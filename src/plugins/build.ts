@@ -52,8 +52,8 @@ export const ZK_API_BASE: string = process.env.ZK_SPECIAL_API ? process.env.ZK_S
 export const ZK_NETWORK: string = process.env.ZK_NETWORK ? process.env.ZK_NETWORK : ETHER_NETWORK_NAME;
 export const APP_ZK_SCAN: string = process.env.ZK_SPECIAL_SCAN ? process.env.ZK_SPECIAL_SCAN : `https://${ETHER_PREFIX_DOT}zkscan.io`;
 export const APP_ZKSYNC_BLOCK_EXPLORER = `${APP_ZK_SCAN}/explorer`;
-export const APP_ETH_BLOCK_EXPLORER = `https://${ETHER_PREFIX_DOT}etherscan.io`;
-
+export const APP_ETH_BLOCK_EXPLORER = ETHER_NETWORK_ID === 33 ? `http://localhost:7001` : `https://${ETHER_PREFIX_DOT}etherscan.io`;
+export const EXPLORER_TX = ETHER_NETWORK_ID === 33 ? '/transactions/' : '/tx/';
 /**
  * Onboard-only params
  */
