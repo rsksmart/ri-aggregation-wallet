@@ -7,7 +7,8 @@ export const _ETHER_NETWORK_ID_DICTIONARY: networkEthId[] = [
   { name: "rinkeby", id: 4 },
   { name: "ropsten", id: 3 },
   { name: "mainnet", id: 1 },
-  { name: "localhost", id: 33}
+  { name: "testnet", id: 31 },
+  { name: "localhost", id: 33 },
 ];
 
 export const GIT_REVISION: string = process.env.APP_GIT_REVISION ? process.env.APP_GIT_REVISION.toString() : "";
