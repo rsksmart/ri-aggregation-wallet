@@ -3533,7 +3533,7 @@ __metadata:
     web3: ^1.5.1
     web3-core: ^1.5.1
     webpack: ^4.46.0
-    zksync: latest
+    zksync: "file:../ri-aggregation/sdk/zksync.js/"
   peerDependencies:
     "@babel/core": "*"
     "@babel/runtime": "*"
@@ -7215,7 +7215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.21.1, axios@npm:^0.21.1":
+"axios@npm:0.21.1":
   version: 0.21.1
   resolution: "axios@npm:0.21.1"
   dependencies:
@@ -7231,6 +7231,15 @@ __metadata:
     follow-redirects: 1.5.10
     is-buffer: ^2.0.2
   checksum: 6188a1b815733c1b6118eddc70d931caea7f867ca77ade8205e49cd6e457b837460cc4e325e19c66a81190a170fde5b76480878366b3743131977da76d571bec
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.21.2":
+  version: 0.21.4
+  resolution: "axios@npm:0.21.4"
+  dependencies:
+    follow-redirects: ^1.14.0
+  checksum: e6d42b269b599d36eb13be0671c237781f32e6ae72be824297c55a3e1ce63b22ba4f46bad5ab28da7d3bae50a72637d55c792cf803be1cf9de6a8bcd6d0dcc1a
   languageName: node
   linkType: hard
 
@@ -12656,6 +12665,16 @@ __metadata:
     debug:
       optional: true
   checksum: 761a18699688b19d66b3e9199ecaf9cd39ede953f3529299c7fca4190b27b855c17c491170977844d5db5e169ffc35ebae999bb0833e9c9c61988d19c20ae7ab
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.0":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 73c47c2a294638f12b18644d0f6226cbb4594ee87f01a8f38af8462c7211f0c2633f036bf93ada5656db784c4a2b0046e018f95d062578ddb20c82ce684e396c
   languageName: node
   linkType: hard
 
@@ -26024,25 +26043,25 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
-"zksync-crypto@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "zksync-crypto@npm:0.6.0"
-  checksum: 62b11c0dd4214743fd2bd1bdb4c30f0a7511f3d6a4173bbf8f0460c72f9e3365dc9ac28b2a700e8767d5382391d8afafcc3c5ea847cf0d22d3fc8593e17052bc
+"zksync-crypto@npm:^0.6.1":
+  version: 0.6.2
+  resolution: "zksync-crypto@npm:0.6.2"
+  checksum: ca3c8954186988fd5eaed61d01ee01ce6e3f05ed7b2f037e2ecd39f5ed3389ce5b8140e8761f1811d52f8ec55a7b1cf6a30596deec4f0dac5ac891707abe216d
   languageName: node
   linkType: hard
 
-"zksync@npm:latest":
-  version: 0.11.1
-  resolution: "zksync@npm:0.11.1"
+"zksync@file:../ri-aggregation/sdk/zksync.js/::locator=%40matterlabs%2Fzksync-zkwallet-vue%40workspace%3A.":
+  version: 0.11.6
+  resolution: "zksync@file:../ri-aggregation/sdk/zksync.js/#../ri-aggregation/sdk/zksync.js/::hash=d7ae42&locator=%40matterlabs%2Fzksync-zkwallet-vue%40workspace%3A."
   dependencies:
-    axios: ^0.21.1
+    axios: ^0.21.2
     websocket: ^1.0.30
     websocket-as-promised: ^1.1.0
-    zksync-crypto: ^0.6.0
+    zksync-crypto: ^0.6.1
   peerDependencies:
-    "@ethersproject/logger": ^5.0.0
-    ethers: ^5.0.0
-  checksum: 2de532948b83d9a9a9917fca49f47c9c4cbc0fccd6adfc4986a09eeb3127dbb3b71cbbd4b5159b3fde929894c11e593527d0d25803be29a813b85954a5442bf3
+    "@ethersproject/logger": ^5.4.0
+    ethers: ^5.4.4
+  checksum: 566031b61335c6329af05bfecf8aa543ab8f3dd2a88802e10643e8a7a5433f47299df8fc95e6589393ee8526ed6a8f467e9c7ae257e7777739c9bd465d850b99
   languageName: node
   linkType: hard
 
