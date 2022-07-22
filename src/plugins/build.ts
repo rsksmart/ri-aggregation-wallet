@@ -55,7 +55,8 @@ export const ZK_NETWORK: string = process.env.ZK_NETWORK ? process.env.ZK_NETWOR
 export const APP_ZK_SCAN: string = process.env.ZK_SPECIAL_SCAN ? process.env.ZK_SPECIAL_SCAN : `https://explorer.${EXPLORER_PREFIX_DOT}aggregation.rifcomputing.net`;
 export const APP_ZKSYNC_BLOCK_EXPLORER: string = EXPLORER_VERSION === '0.1.0' ?`${APP_ZK_SCAN}` : `${APP_ZK_SCAN}/explorer`;
 export const APP_ETH_BLOCK_EXPLORER: string = IS_LOCALHOST ? `http://localhost:7001` : `https://explorer.${ETHER_PREFIX_DOT}rsk.co`;
-export const EXPLORER_TX: string = EXPLORER_VERSION === '0.1.0' ? '/transactions/' : '/tx/';
+export const EXPLORER_ZK_TX: string = EXPLORER_VERSION === '0.1.0' ? '/transactions/' : '/tx/';
+export const EXPLORER_ETH_TX: string = '/tx/';
 /**
  * Onboard-only params
  */
