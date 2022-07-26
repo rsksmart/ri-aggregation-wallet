@@ -1,5 +1,4 @@
 import { Network } from "rif-aggregation/build/types";
-// import { Network } from "rif/build/types";
 import { version as zkSyncVersion } from "rif-aggregation/package.json";
 import { version } from "../../package.json";
 import { networkEthId } from "~/types/lib";

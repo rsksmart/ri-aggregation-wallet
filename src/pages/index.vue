@@ -27,8 +27,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { walletData } from "@/plugins/walletData";
-import { iWalletData } from "@/types/lib";
 
 export default Vue.extend({
   layout: "guest",
@@ -42,13 +40,7 @@ export default Vue.extend({
     /**
      * @todo: fix stored in localStorage WalletConnect session somehow more elegant
      */
-    if (localStorage.getItem("walletconnect")) {
-      console.log('wallet connect found');
-      let wallet: iWalletData = JSON.parse(localStorage.getItem("walletconnect") || "");
-      // @ts-ignore
-      walletData.set({wallet});
-    }
-    // localStorage.removeItem("walletconnect");
+    localStorage.removeItem("walletconnect");
   },
 });
 </script>
