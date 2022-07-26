@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Address } from "zksync/build/types";
+import { Address } from "rif-aggregation/build/types";
 export default Vue.extend({
   data() {
     return {

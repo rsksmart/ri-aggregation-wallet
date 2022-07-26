@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { Address } from "zksync/build/types";
+import { Address } from "rif-aggregation/build/types";
 import * as blockies from "blockies-ts";
 import Vue, { PropOptions } from "vue";
 

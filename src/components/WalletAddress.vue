@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { Address } from "zksync/build/types";
+import { Address } from "rif-aggregation/build/types";
 import utils from "@/plugins/utils";
 
 export default Vue.extend({

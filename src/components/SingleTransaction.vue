@@ -58,11 +58,11 @@ import { APP_ETH_BLOCK_EXPLORER, APP_ZKSYNC_BLOCK_EXPLORER, EXPLORER_TX } from "
 import zkUtils from "@/plugins/utils";
 import { walletData } from "@/plugins/walletData";
 import { ZkInTx } from "@/types/lib";
-import { utils } from "zksync";
+import { utils } from "rif-aggregation";
 
 import moment from "moment-timezone";
 import Vue, { PropOptions } from "vue";
-import { Address, TokenSymbol } from "zksync/build/types";
+import { Address, TokenSymbol } from "rif-aggregation/build/types";
 
 let getTimeAgoInterval: ReturnType<typeof setInterval>;
 export default Vue.extend({

@@ -3,7 +3,7 @@
  */
 import { providers } from "ethers";
 import { WalletLinkProvider } from "walletlink";
-import { Provider } from "zksync";
+import { Provider } from "rif-aggregation";
 import { accessorType } from "~/store";
 
 // All interfaces, mappings and specific types

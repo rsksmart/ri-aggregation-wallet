@@ -3,8 +3,8 @@ import { DecimalBalance, GweiBalance, ZkInBalance, ZkInNFT, ZKTypeDisplayToken }
 import { IPrototype } from "@inkline/inkline/src/plugin.d";
 
 import { BigNumber, BigNumberish, utils } from "ethers";
-import { utils as zkUtils } from "zksync";
-import { Address, TokenSymbol } from "zksync/build/types";
+import { utils as zkUtils } from "rif-aggregation";
+import { Address, TokenSymbol } from "rif-aggregation/build/types";
 
 /**
  *

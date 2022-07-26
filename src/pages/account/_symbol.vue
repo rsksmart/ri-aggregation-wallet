@@ -42,7 +42,7 @@
 <script lang="ts">
 import { ZkInBalance } from "@/types/lib";
 import Vue from "vue";
-import { TokenSymbol } from "zksync/build/types";
+import { TokenSymbol } from "rif-aggregation/build/types";
 
 export default Vue.extend({
   asyncData({ from }) {

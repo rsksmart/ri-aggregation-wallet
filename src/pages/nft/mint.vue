@@ -97,8 +97,8 @@
 </template>
 
 <script lang="ts">
-import { Address } from "zksync/build/types";
-import { Transaction } from "zksync/build/wallet";
+import { Address } from "rif-aggregation/build/types";
+import { Transaction } from "rif-aggregation/build/wallet";
 import { APP_ZKSYNC_BLOCK_EXPLORER, EXPLORER_TX } from "@/plugins/build";
 import utils from "@/plugins/utils";
 import { walletData } from "@/plugins/walletData";

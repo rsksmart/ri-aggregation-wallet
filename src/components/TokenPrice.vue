@@ -7,7 +7,7 @@ import Vue, { PropOptions } from "vue";
 
 import { GweiBalance } from "@/types/lib";
 import utils from "@/plugins/utils";
-import { TokenSymbol } from "zksync/build/types";
+import { TokenSymbol } from "rif-aggregation/build/types";
 
 export default Vue.extend({
   props: {

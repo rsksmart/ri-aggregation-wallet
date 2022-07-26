@@ -10,8 +10,8 @@ import { providers } from "ethers";
 
 import { actionTree, getterTree, mutationTree } from "typed-vuex";
 import Web3 from "web3";
-import { AccountState, Address } from "zksync/build/types";
-import { Wallet } from "zksync/build/wallet";
+import { AccountState, Address } from "rif-aggregation/build/types";
+import { Wallet } from "rif-aggregation/build/wallet";
 
 export declare type tProviderState = "ready" | "isSelecting" | "walletSelected" | "isChecking" | "walletChecked" | "isSelectingAccount" | "accountSelected" | "authorized";
 

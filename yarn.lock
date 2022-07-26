@@ -3517,6 +3517,7 @@ __metadata:
     oh-vue-icons: ^0.4.7
     prettier: ^2.2.1
     qrcode: ^1.0.0
+    rif-aggregation: ^0.11.8
     sass-loader: ^10.1.1
     stylelint: latest
     stylelint-config-standard: ^22.0.0
@@ -3532,8 +3533,7 @@ __metadata:
     vuex: ^3.6.2
     web3: ^1.5.1
     web3-core: ^1.5.1
-    webpack: ^4.46.0
-    zksync: latest
+    webpack: ^5.74.0
   peerDependencies:
     "@babel/core": "*"
     "@babel/runtime": "*"
@@ -4756,6 +4756,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint-scope@npm:^3.7.3":
+  version: 3.7.4
+  resolution: "@types/eslint-scope@npm:3.7.4"
+  dependencies:
+    "@types/eslint": "*"
+    "@types/estree": "*"
+  checksum: a853e8b0af94da522add3887d8c23587ece30156965e261f6f88273e91cc1e2ed253d3c869ed8d411c434cea5b892783110b0616fa571ea052ba4a1f9fd7ee92
+  languageName: node
+  linkType: hard
+
 "@types/eslint@npm:*":
   version: 7.28.0
   resolution: "@types/eslint@npm:7.28.0"
@@ -4770,6 +4780,13 @@ __metadata:
   version: 0.0.50
   resolution: "@types/estree@npm:0.0.50"
   checksum: dd52d035077d4ea92ff7a1191b1b02ccd0dba76ad51d1d95e4cd81dd3cc234042b859ae9160c3059dcc5c384cd895cd860d4f18913f1033736f867543f5d4743
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:^0.0.51":
+  version: 0.0.51
+  resolution: "@types/estree@npm:0.0.51"
+  checksum: b67a490e5b0b5e7f532912eb4ba3231df6c3eb73b71d8fea2d445f71da6058c204bf0c4ba05c1d7877e4c77428f929bc51cf683ae19eeaf33dc12b79168208ab
   languageName: node
   linkType: hard
 
@@ -6654,6 +6671,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn@npm:^8.7.1":
+  version: 8.8.0
+  resolution: "acorn@npm:8.8.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 4b6db12178fa19ed7984b1544a136015e109e29b649f8b6a528ab627a99d6d11e03ff4d01324012fdefceddbf97a749c8dbf590d6658a9f2ed709f577e3ccdec
+  languageName: node
+  linkType: hard
+
 "aes-js@npm:3.0.0":
   version: 3.0.0
   resolution: "aes-js@npm:3.0.0"
@@ -7215,7 +7241,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.21.1, axios@npm:^0.21.1":
+"axios@npm:0.21.1":
   version: 0.21.1
   resolution: "axios@npm:0.21.1"
   dependencies:
@@ -7231,6 +7257,15 @@ __metadata:
     follow-redirects: 1.5.10
     is-buffer: ^2.0.2
   checksum: 6188a1b815733c1b6118eddc70d931caea7f867ca77ade8205e49cd6e457b837460cc4e325e19c66a81190a170fde5b76480878366b3743131977da76d571bec
+  languageName: node
+  linkType: hard
+
+"axios@npm:^0.21.2":
+  version: 0.21.4
+  resolution: "axios@npm:0.21.4"
+  dependencies:
+    follow-redirects: ^1.14.0
+  checksum: e6d42b269b599d36eb13be0671c237781f32e6ae72be824297c55a3e1ce63b22ba4f46bad5ab28da7d3bae50a72637d55c792cf803be1cf9de6a8bcd6d0dcc1a
   languageName: node
   linkType: hard
 
@@ -10638,6 +10673,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.10.0
+  resolution: "enhanced-resolve@npm:5.10.0"
+  dependencies:
+    graceful-fs: ^4.2.4
+    tapable: ^2.2.0
+  checksum: 4a7d376104f5c2ecacea9f71ad10a7ab3ae0f344e4c0f8c92a25915a1127b29b31c177396a120f75f530a1530ed153526c0f8baa07417d24d8b076369d306973
+  languageName: node
+  linkType: hard
+
 "enhanced-resolve@npm:^5.8.0":
   version: 5.8.2
   resolution: "enhanced-resolve@npm:5.8.2"
@@ -10767,6 +10812,13 @@ __metadata:
   version: 0.7.1
   resolution: "es-module-lexer@npm:0.7.1"
   checksum: 3bc1416512f44343c88bbfb7d1685c11a3cb9aca6090a552b04e9bd802d778ae66aa076f2d4cd5f707061d3264ac3ff2b6a45a55f0f139a966190e57ab497571
+  languageName: node
+  linkType: hard
+
+"es-module-lexer@npm:^0.9.0":
+  version: 0.9.3
+  resolution: "es-module-lexer@npm:0.9.3"
+  checksum: e55280100e7bdd4652b14c70b6e4472cf60a841987e04af7df6bd1ce4ed4be58adca7b786096627b4b31a04c0cd0d9a0299ea4bd0100f62282ac7b06a2074af6
   languageName: node
   linkType: hard
 
@@ -12659,6 +12711,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.14.0":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 73c47c2a294638f12b18644d0f6226cbb4594ee87f01a8f38af8462c7211f0c2633f036bf93ada5656db784c4a2b0046e018f95d062578ddb20c82ce684e396c
+  languageName: node
+  linkType: hard
+
 "for-in@npm:^1.0.2":
   version: 1.0.2
   resolution: "for-in@npm:1.0.2"
@@ -13410,6 +13472,13 @@ fsevents@^1.2.7:
   version: 4.2.8
   resolution: "graceful-fs@npm:4.2.8"
   checksum: b07e032c0a17e928d3e8ab0f0fea1492efd4568b55a3d2675aaaccf1619eca91156edfa0cb05e99b923e24edf5e26fdce22ffa58ec14d5b13a3b1392460f37f0
+  languageName: node
+  linkType: hard
+
+"graceful-fs@npm:^4.2.9":
+  version: 4.2.10
+  resolution: "graceful-fs@npm:4.2.10"
+  checksum: f86679a8a53da3d8f10fd9c81a4e22f8064adf56e10a6fdb6a6aa5e6d05fea0067a99e9959c4b939b4a9c39dad02775d977bff4da9fff07d557aea840f72f0e8
   languageName: node
   linkType: hard
 
@@ -15671,7 +15740,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"json-parse-even-better-errors@npm:^2.3.0":
+"json-parse-even-better-errors@npm:^2.3.0, json-parse-even-better-errors@npm:^2.3.1":
   version: 2.3.1
   resolution: "json-parse-even-better-errors@npm:2.3.1"
   checksum: d89fa7fe57957f3004cf0e786465a64183c0de861f6fda800d352956397c01b22f9feb141d0dce5b23f5dbe0aae74dd5b45fc0c3c1679b0942688efa5544e726
@@ -21047,6 +21116,21 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"rif-aggregation@npm:^0.11.8":
+  version: 0.11.8
+  resolution: "rif-aggregation@npm:0.11.8"
+  dependencies:
+    axios: ^0.21.2
+    websocket: ^1.0.30
+    websocket-as-promised: ^1.1.0
+    zksync-crypto: ^0.6.1
+  peerDependencies:
+    "@ethersproject/logger": ^5.4.0
+    ethers: ^5.4.4
+  checksum: 6f89eb341438526daf5280e2d05106340f1c5c4656495ff937044df73191601047e821a55401962838db6f93a9d2b1a8d38114c85bdac930456fa796ef0b7355
+  languageName: node
+  linkType: hard
+
 "right-align@npm:^0.1.1":
   version: 0.1.3
   resolution: "right-align@npm:0.1.3"
@@ -24500,6 +24584,16 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
+"watchpack@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "watchpack@npm:2.4.0"
+  dependencies:
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.1.2
+  checksum: 089870a1f111157784283764b92a9660e73b9707c767dc8a3c992a1bd9994208fd2ca7bf051a3070f4d91a0f20ffab21e7f318284efac1b8b072b6f234e61766
+  languageName: node
+  linkType: hard
+
 "web-streams-polyfill@npm:^3.0.1":
   version: 3.0.3
   resolution: "web-streams-polyfill@npm:3.0.3"
@@ -25131,6 +25225,13 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
+"webpack-sources@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "webpack-sources@npm:3.2.3"
+  checksum: aac02eb6759647fe681f47cf81056e03cde27440da5c3cef6d67e76eed29c372a02831af6333e9f3ca2fd08914f6e1c123dc2154063f2ac08ee89021ff503f05
+  languageName: node
+  linkType: hard
+
 "webpack@npm:3.12.0, webpack@npm:^3.0.0":
   version: 3.12.0
   resolution: "webpack@npm:3.12.0"
@@ -25235,6 +25336,43 @@ typescript@^3.5.1:
   bin:
     webpack: bin/webpack.js
   checksum: a134d4087b000b2815c0f6ce9bd5d08b5b1d4831f0b43694bcbfc56cf8ee8bdf1d55b52b0941162ddba7d112352b39eaeff5afa040fb828522d92937bf8fd3b4
+  languageName: node
+  linkType: hard
+
+"webpack@npm:^5.74.0":
+  version: 5.74.0
+  resolution: "webpack@npm:5.74.0"
+  dependencies:
+    "@types/eslint-scope": ^3.7.3
+    "@types/estree": ^0.0.51
+    "@webassemblyjs/ast": 1.11.1
+    "@webassemblyjs/wasm-edit": 1.11.1
+    "@webassemblyjs/wasm-parser": 1.11.1
+    acorn: ^8.7.1
+    acorn-import-assertions: ^1.7.6
+    browserslist: ^4.14.5
+    chrome-trace-event: ^1.0.2
+    enhanced-resolve: ^5.10.0
+    es-module-lexer: ^0.9.0
+    eslint-scope: 5.1.1
+    events: ^3.2.0
+    glob-to-regexp: ^0.4.1
+    graceful-fs: ^4.2.9
+    json-parse-even-better-errors: ^2.3.1
+    loader-runner: ^4.2.0
+    mime-types: ^2.1.27
+    neo-async: ^2.6.2
+    schema-utils: ^3.1.0
+    tapable: ^2.1.1
+    terser-webpack-plugin: ^5.1.3
+    watchpack: ^2.4.0
+    webpack-sources: ^3.2.3
+  peerDependenciesMeta:
+    webpack-cli:
+      optional: true
+  bin:
+    webpack: bin/webpack.js
+  checksum: 20be14d0213441e354ef0662f6b74b29ec7b90f955819f42aa72f846ee9d9d06a898aea72cf22d64d4a5889f14213f0623f42d543fcf7eb6420a5f3b1770399c
   languageName: node
   linkType: hard
 
@@ -26024,25 +26162,10 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
-"zksync-crypto@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "zksync-crypto@npm:0.6.0"
-  checksum: 62b11c0dd4214743fd2bd1bdb4c30f0a7511f3d6a4173bbf8f0460c72f9e3365dc9ac28b2a700e8767d5382391d8afafcc3c5ea847cf0d22d3fc8593e17052bc
-  languageName: node
-  linkType: hard
-
-"zksync@npm:latest":
-  version: 0.11.1
-  resolution: "zksync@npm:0.11.1"
-  dependencies:
-    axios: ^0.21.1
-    websocket: ^1.0.30
-    websocket-as-promised: ^1.1.0
-    zksync-crypto: ^0.6.0
-  peerDependencies:
-    "@ethersproject/logger": ^5.0.0
-    ethers: ^5.0.0
-  checksum: 2de532948b83d9a9a9917fca49f47c9c4cbc0fccd6adfc4986a09eeb3127dbb3b71cbbd4b5159b3fde929894c11e593527d0d25803be29a813b85954a5442bf3
+"zksync-crypto@npm:^0.6.1":
+  version: 0.6.2
+  resolution: "zksync-crypto@npm:0.6.2"
+  checksum: ca3c8954186988fd5eaed61d01ee01ce6e3f05ed7b2f037e2ecd39f5ed3389ce5b8140e8761f1811d52f8ec55a7b1cf6a30596deec4f0dac5ac891707abe216d
   languageName: node
   linkType: hard
 
