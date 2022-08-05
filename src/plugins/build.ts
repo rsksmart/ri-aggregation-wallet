@@ -1,5 +1,5 @@
-import { Network } from "rif-aggregation/build/types";
-import { version as zkSyncVersion } from "rif-aggregation/package.json";
+import { Network } from "@rsksmart/rif-aggregation-sdk-js/build/types";
+import { version as zkSyncVersion } from "@rsksmart/rif-aggregation-sdk-js/package.json";
 import { version } from "../../package.json";
 import { networkEthId } from "~/types/lib";
 

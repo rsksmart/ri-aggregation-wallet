@@ -1,7 +1,7 @@
 import { API } from "bnc-onboard/dist/src/interfaces";
 import { BigNumber, BigNumberish, ContractTransaction } from "ethers";
 import { Route } from "vue-router/types";
-import { Provider } from "rif-aggregation";
+import { Provider } from "@rsksmart/rif-aggregation-sdk-js";
 import {
   AccountState,
   Address,
@@ -16,8 +16,8 @@ import {
   SignedTransaction,
   TokenSymbol,
   TransactionReceipt,
-} from "rif-aggregation/build/types";
-import { ETHOperation, Transaction, Wallet, ZKSyncTxError } from "rif-aggregation/build/wallet";
+} from "@rsksmart/rif-aggregation-sdk-js/build/types";
+import { ETHOperation, Transaction, Wallet, ZKSyncTxError } from "@rsksmart/rif-aggregation-sdk-js/build/wallet";
 
 export interface ZkInFeesInterface {
   [symbol: string]: {

@@ -3486,6 +3486,7 @@ __metadata:
     "@nuxtjs/sentry": latest
     "@nuxtjs/style-resources": latest
     "@nuxtjs/toast": latest
+    "@rsksmart/rif-aggregation-sdk-js": "https://github.com/rsksmart/ri-aggregation"
     "@sentry/webpack-plugin": ^1.14.0
     "@types/jest": ^26.0.23
     "@typescript-eslint/eslint-plugin": ^4.21.0
@@ -3517,7 +3518,6 @@ __metadata:
     oh-vue-icons: ^0.4.7
     prettier: ^2.2.1
     qrcode: ^1.0.0
-    rif-aggregation: ^0.11.8
     sass-loader: ^10.1.1
     stylelint: latest
     stylelint-config-standard: ^22.0.0
@@ -4239,6 +4239,13 @@ __metadata:
     pocket-js-core: 0.0.3
     web3-provider-engine: 16.0.1
   checksum: e62a9ddbcfeafa15c801f202553c1ed80627e446e6b579f9702151a3776652140c5315f73fa8d3c57f9937b73a94a84ab93a3696bbbd312a862ea260dde67787
+  languageName: node
+  linkType: hard
+
+"@rsksmart/rif-aggregation-sdk-js@https://github.com/rsksmart/ri-aggregation":
+  version: 1.0.0
+  resolution: "@rsksmart/rif-aggregation-sdk-js@https://github.com/rsksmart/ri-aggregation.git#commit=f59e154865374bdc0f5ded2e2604dac599cb75ee"
+  checksum: 16cbfcf3bd36682d538a0d7bbbc37c5c8d7ba734ad1ce87b06e23ac7250eb2b9b57fc5e916165772f0ad0ed1311e1bf99d11c92889a75a4ea0e59cdf31d2f11b
   languageName: node
   linkType: hard
 
@@ -7260,15 +7267,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.2":
-  version: 0.21.4
-  resolution: "axios@npm:0.21.4"
-  dependencies:
-    follow-redirects: ^1.14.0
-  checksum: e6d42b269b599d36eb13be0671c237781f32e6ae72be824297c55a3e1ce63b22ba4f46bad5ab28da7d3bae50a72637d55c792cf803be1cf9de6a8bcd6d0dcc1a
-  languageName: node
-  linkType: hard
-
 "babel-code-frame@npm:^6.22.0":
   version: 6.26.0
   resolution: "babel-code-frame@npm:6.26.0"
@@ -8594,13 +8592,6 @@ __metadata:
   dependencies:
     functional-red-black-tree: ^1.0.1
   checksum: 23fa40b16d2cd0f5e23d87fb3173253ddd40e46c3b59839e25d5dda64a090981bd9b819b39b139bb50a4d6061a0b50ee83b81dadeb044bca609646f49ba8e30d
-  languageName: node
-  linkType: hard
-
-"chnl@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "chnl@npm:1.2.0"
-  checksum: febad1c0418e65448d41e54f8692e601a2eb0ce0f87eea317704be55757b9c01dede0ef2c59d9e4af9ed36d330069b6f551ad89af473008b9d472b0e4e9e310a
   languageName: node
   linkType: hard
 
@@ -10759,31 +10750,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-abstract@npm:^1.17.0-next.0, es-abstract@npm:^1.18.5":
-  version: 1.18.5
-  resolution: "es-abstract@npm:1.18.5"
-  dependencies:
-    call-bind: ^1.0.2
-    es-to-primitive: ^1.2.1
-    function-bind: ^1.1.1
-    get-intrinsic: ^1.1.1
-    has: ^1.0.3
-    has-symbols: ^1.0.2
-    internal-slot: ^1.0.3
-    is-callable: ^1.2.3
-    is-negative-zero: ^2.0.1
-    is-regex: ^1.1.3
-    is-string: ^1.0.6
-    object-inspect: ^1.11.0
-    object-keys: ^1.1.1
-    object.assign: ^4.1.2
-    string.prototype.trimend: ^1.0.4
-    string.prototype.trimstart: ^1.0.4
-    unbox-primitive: ^1.0.1
-  checksum: 653852de37204d4609642c037281316b2edc8417b15d1f6c71e906cd7f3caa50d14a8ae6876cac544af8a2078dd2246a73cfb46f089db56ebceab107ed2ef9fd
-  languageName: node
-  linkType: hard
-
 "es-abstract@npm:^1.17.2, es-abstract@npm:^1.18.0-next.1, es-abstract@npm:^1.18.0-next.2":
   version: 1.18.0
   resolution: "es-abstract@npm:1.18.0"
@@ -10805,6 +10771,31 @@ __metadata:
     string.prototype.trimstart: ^1.0.4
     unbox-primitive: ^1.0.0
   checksum: 019fa7c51e10532cd07ca3aa9b76e4c6ad6f421e15064205d144da08da54f8fc057edc262f6f95775e0b249ecbb753b497050dd75ab69a3c1c89cb9b734e42ca
+  languageName: node
+  linkType: hard
+
+"es-abstract@npm:^1.18.5":
+  version: 1.18.5
+  resolution: "es-abstract@npm:1.18.5"
+  dependencies:
+    call-bind: ^1.0.2
+    es-to-primitive: ^1.2.1
+    function-bind: ^1.1.1
+    get-intrinsic: ^1.1.1
+    has: ^1.0.3
+    has-symbols: ^1.0.2
+    internal-slot: ^1.0.3
+    is-callable: ^1.2.3
+    is-negative-zero: ^2.0.1
+    is-regex: ^1.1.3
+    is-string: ^1.0.6
+    object-inspect: ^1.11.0
+    object-keys: ^1.1.1
+    object.assign: ^4.1.2
+    string.prototype.trimend: ^1.0.4
+    string.prototype.trimstart: ^1.0.4
+    unbox-primitive: ^1.0.1
+  checksum: 653852de37204d4609642c037281316b2edc8417b15d1f6c71e906cd7f3caa50d14a8ae6876cac544af8a2078dd2246a73cfb46f089db56ebceab107ed2ef9fd
   languageName: node
   linkType: hard
 
@@ -12708,16 +12699,6 @@ __metadata:
     debug:
       optional: true
   checksum: 761a18699688b19d66b3e9199ecaf9cd39ede953f3529299c7fca4190b27b855c17c491170977844d5db5e169ffc35ebae999bb0833e9c9c61988d19c20ae7ab
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.14.0":
-  version: 1.15.1
-  resolution: "follow-redirects@npm:1.15.1"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 73c47c2a294638f12b18644d0f6226cbb4594ee87f01a8f38af8462c7211f0c2633f036bf93ada5656db784c4a2b0046e018f95d062578ddb20c82ce684e396c
   languageName: node
   linkType: hard
 
@@ -19954,13 +19935,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"promise-controller@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "promise-controller@npm:1.0.0"
-  checksum: 3170e82c1a7affa3814ab820817d38dd742d80999fabdb6a3e76c78b83bb98dc82e4f8ac526e8a5d7707a866421997a68b9aa98459e2b430fe471e8b0f6f57be
-  languageName: node
-  linkType: hard
-
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1
   resolution: "promise-inflight@npm:1.0.1"
@@ -19985,17 +19959,6 @@ fsevents@^1.2.7:
     is-fn: ^1.0.0
     set-immediate-shim: ^1.0.1
   checksum: 09977a13043ae329abd73a5cbfbcb17f0cf9ba5a6dc8640e91c009e7639dd4a14ffb2a5b06c268ef96269e2ffd99ce166465a02726777341bf9ac17ce33e3868
-  languageName: node
-  linkType: hard
-
-"promise.prototype.finally@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "promise.prototype.finally@npm:3.1.2"
-  dependencies:
-    define-properties: ^1.1.3
-    es-abstract: ^1.17.0-next.0
-    function-bind: ^1.1.1
-  checksum: bad87121f91056f363df22cc7abb03901c073d0b6d593931a75be96a591bbcdd15b651122ef65221b36cc6dbb0c6cd2f37d8120d917464c642b858dfa5ea18e5
   languageName: node
   linkType: hard
 
@@ -21113,21 +21076,6 @@ fsevents@^1.2.7:
   version: 1.0.0
   resolution: "rgba-regex@npm:1.0.0"
   checksum: 4ffb946276ee7d7259a518eae89a3c6cce99736449ebed2c88ab26a076543766c62194c7dd06b8e4f5375e91c6e9bd21ebfc3ddf4b143f3688f260cafd9d466b
-  languageName: node
-  linkType: hard
-
-"rif-aggregation@npm:^0.11.8":
-  version: 0.11.8
-  resolution: "rif-aggregation@npm:0.11.8"
-  dependencies:
-    axios: ^0.21.2
-    websocket: ^1.0.30
-    websocket-as-promised: ^1.1.0
-    zksync-crypto: ^0.6.1
-  peerDependencies:
-    "@ethersproject/logger": ^5.4.0
-    ethers: ^5.4.4
-  checksum: 6f89eb341438526daf5280e2d05106340f1c5c4656495ff937044df73191601047e821a55401962838db6f93a9d2b1a8d38114c85bdac930456fa796ef0b7355
   languageName: node
   linkType: hard
 
@@ -25404,17 +25352,6 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
-"websocket-as-promised@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "websocket-as-promised@npm:1.1.0"
-  dependencies:
-    chnl: ^1.2.0
-    promise-controller: ^1.0.0
-    promise.prototype.finally: ^3.1.2
-  checksum: d17a13006cd07f759539160ecc7906d4990d60ecae36b1397352dc830ab01e7943636584f605d1e5481a126638f4957d74603d87f7c34738986fcdad3b1ab97d
-  languageName: node
-  linkType: hard
-
 "websocket-stream@npm:^5.5.0":
   version: 5.5.2
   resolution: "websocket-stream@npm:5.5.2"
@@ -25429,7 +25366,7 @@ typescript@^3.5.1:
   languageName: node
   linkType: hard
 
-"websocket@npm:^1.0.30, websocket@npm:^1.0.32":
+"websocket@npm:^1.0.32":
   version: 1.0.34
   resolution: "websocket@npm:1.0.34"
   dependencies:
@@ -26159,13 +26096,6 @@ typescript@^3.5.1:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 096c3b40beb2804659539be1605a35c58eb0c85285f94b77b3e924f42ee265c1a40bf9f4153770039517146b469a964d51742395f35ca8135fc9f7e4982b785d
-  languageName: node
-  linkType: hard
-
-"zksync-crypto@npm:^0.6.1":
-  version: 0.6.2
-  resolution: "zksync-crypto@npm:0.6.2"
-  checksum: ca3c8954186988fd5eaed61d01ee01ce6e3f05ed7b2f037e2ecd39f5ed3389ce5b8140e8761f1811d52f8ec55a7b1cf6a30596deec4f0dac5ac891707abe216d
   languageName: node
   linkType: hard
 

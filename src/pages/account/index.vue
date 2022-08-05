@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Address } from "rif-aggregation/build/types";
+import { Address } from "@rsksmart/rif-aggregation-sdk-js/build/types";
 export default Vue.extend({
   data() {
     return {
