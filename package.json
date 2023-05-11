@@ -118,7 +118,7 @@
     "vue-property-decorator": "latest",
     "vuex": "^3.6.2",
     "web3-core": "^1.5.1",
-    "webpack": "^5.74.0"
+    "webpack": "^4.46.0"
   },
   "peerDependencies": {
     "@babel/core": "*",
@@ -153,6 +153,7 @@
     "local": "sh ./cli-process-env.sh 'localhost' 'dev' 1 1",
     "testnet": "sh ./cli-process-env.sh 'testnet' 'prod' 1 1",
     "dev": "yarn ci:build:rinkeby && nuxt",
+    "dev-regtest": "yarn local && nuxt",
     "generate": "nuxt generate ",
     "start": "yarn local && nuxt start",
     "start:testnet": "yarn testnet && nuxt start",
