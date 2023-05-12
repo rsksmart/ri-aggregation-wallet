@@ -61,7 +61,7 @@
     "@nuxtjs/google-gtag": "latest",
     "@nuxtjs/sentry": "latest",
     "@nuxtjs/toast": "latest",
-    "@rsksmart/rif-aggregation-sdk-js": "0.0.2",
+    "@rsksmart/rif-aggregation-sdk-js": "https://github.com/rsksmart/rif-rollup-js-sdk.git#main",
     "@walletconnect/utils": "1.4.0",
     "@walletconnect/web3-provider": "1.4.0",
     "blockies-ts": "1.0.0",

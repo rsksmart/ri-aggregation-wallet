@@ -3486,7 +3486,7 @@ __metadata:
     "@nuxtjs/sentry": latest
     "@nuxtjs/style-resources": latest
     "@nuxtjs/toast": latest
-    "@rsksmart/rif-aggregation-sdk-js": 0.0.2
+    "@rsksmart/rif-aggregation-sdk-js": "https://github.com/rsksmart/rif-rollup-js-sdk.git#main"
     "@sentry/webpack-plugin": ^1.14.0
     "@types/jest": ^26.0.23
     "@typescript-eslint/eslint-plugin": ^4.21.0
@@ -4242,18 +4242,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-aggregation-sdk-js@npm:0.0.2":
+"@rsksmart/rif-aggregation-sdk-js@https://github.com/rsksmart/rif-rollup-js-sdk.git#main":
   version: 0.0.2
-  resolution: "@rsksmart/rif-aggregation-sdk-js@npm:0.0.2"
+  resolution: "@rsksmart/rif-aggregation-sdk-js@https://github.com/rsksmart/rif-rollup-js-sdk.git#commit=c5b1ab1bfd382bcafee1c918e808dbaba714f74e"
   dependencies:
     axios: ^0.21.2
+    reading-tool: ^1.0.0
     websocket: ^1.0.30
     websocket-as-promised: ^1.1.0
     zksync-crypto: ^0.6.1
   peerDependencies:
     "@ethersproject/logger": ^5.4.0
     ethers: ^5.4.4
-  checksum: 69ccd886e0f01f83af4d35397b4e9b84ff2c15357299db80c6d8a7b90b535911f7cc5067cdf04ffde3b37765fc6968f638229784fe4264d2404b52b8a00a30d5
+  checksum: 6fee97f0da9df7d1d19509cbb96d201c192ffb11d877a2f0f869f911b53dac5e2cb719486f4ad7a698afceeb2c22c224768e36692fb9eaca4b35b8a8f4aa335a
   languageName: node
   linkType: hard
 
@@ -20774,6 +20775,13 @@ fsevents@^1.2.7:
   dependencies:
     picomatch: ^2.2.1
   checksum: 7da2fe8d5abf17ae0bf97a052718e16d29fa185f3e461153035728d93642326ae8e44c17b9a9b3a5fa616dff160e96be3184e0323efaac7211f80c0aab5f622b
+  languageName: node
+  linkType: hard
+
+"reading-tool@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "reading-tool@npm:1.0.0"
+  checksum: b91d8694dc112bd5f890af2c32dc06459f9c85179a4437b85bc18b8bcb08e209334eb9d5971dca3fcedefcd3eef284fe038d80991c6ae9ba8144f061e067d0d9
   languageName: node
   linkType: hard
 
