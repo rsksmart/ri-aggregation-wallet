@@ -35,13 +35,13 @@
 
       <div v-if="isDeposit">
         <h4 class="tileSmallHeadline">
-          Deposit tokens from Ethereum Wallet
+          Deposit tokens from RSK Wallet
           <div class="secondaryText estimatedFee _text-nowrap _displayFlex">
-            <v-icon name="la-charging-station-solid" />
-            <deposit-usd-fee />
+            <!-- <v-icon name="la-charging-station-solid" /> -->
+            <!-- <deposit-usd-fee /> -->
           </div>
         </h4>
-        <div class="secondaryText small">You can deposit tokens from your Ethereum wallet to zkSync</div>
+        <div class="secondaryText small">You can deposit tokens from your RSK wallet to RIF Rollup</div>
 
         <template v-if="isDeposit">
           <div v-if="!isMainnet" class="_padding-0 _display-flex _justify-content-end">
@@ -62,7 +62,7 @@
             to="/transaction/withdraw"
             variant=""
           >
-            Send to Ethereum (L1)
+            Send to RSK (L1)
             <v-icon class="" name="ri-arrow-right-up-line" scale="0.75" />
           </i-button>
         </div>
@@ -76,12 +76,12 @@
           :token="chosenToken ? chosenToken : undefined"
           @enter="commitTransaction()"
         />
-        <block-choose-contact
+        <!-- <block-choose-contact
           :address="inputtedAddressWithDomain"
           :display-own-address="displayOwnAddress"
           class="_margin-top-05"
           @chosen="chooseAddress($event)"
-        />
+        /> -->
       </template>
 
       <template v-if="displayAmountInput">
@@ -327,7 +327,7 @@ export default Vue.extend({
       if (this.mainToken === "L2-NFT" || this.type === "MintNFT") {
         return "/account/nft";
       } else if (this.type === "Deposit") {
-        return "/account/top-up";
+        return "/transaction/deposit";
       }
       return "/account";
     },
