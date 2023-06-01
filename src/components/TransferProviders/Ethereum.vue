@@ -39,6 +39,6 @@ export default Vue.extend({
 
 <style lang="scss">
 .inkline.-dark .ethereumTransferProvider .ethereumLogo {
-  fill: lighten($color: $lightViolet, $amount: 5) !important;
+  fill: lighten($color: $black, $amount: 5) !important;
 }
 </style>
