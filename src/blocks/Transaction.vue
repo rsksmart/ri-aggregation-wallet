@@ -35,13 +35,13 @@
 
       <div v-if="isDeposit">
         <h4 class="tileSmallHeadline">
-          Deposit tokens from RSK Wallet
+          Deposit tokens from Rootstock Wallet
           <div class="secondaryText estimatedFee _text-nowrap _displayFlex">
             <!-- <v-icon name="la-charging-station-solid" /> -->
             <!-- <deposit-usd-fee /> -->
           </div>
         </h4>
-        <div class="secondaryText small">You can deposit tokens from your RSK wallet to RIF Rollup</div>
+        <div class="secondaryText small">You can deposit tokens from your Rootstock wallet to RIF Rollup</div>
 
         <template v-if="isDeposit">
           <div v-if="!isMainnet" class="_padding-0 _display-flex _justify-content-end">
@@ -62,7 +62,7 @@
             to="/transaction/withdraw"
             variant=""
           >
-            Send to RSK (L1)
+            Send to Rootstock (L1)
             <v-icon class="" name="ri-arrow-right-up-line" scale="0.75" />
           </i-button>
         </div>
@@ -207,7 +207,7 @@
 
       <!-- Requesting signer -->
       <div v-if="requestingSigner" class="_text-center _margin-top-1" data-cy="requesting_signer_text">
-        Follow the instructions in your RSK wallet
+        Follow the instructions in your Rootstock wallet
       </div>
 
       <!-- Fees -->

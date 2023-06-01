@@ -9,8 +9,8 @@
         target="_blank"
         >{{ rskDomain }}</a
       >
-      or in your RSK wallet, only in RIF Rollup wallet and block explorer. Nevertheless, balances in RIF Rollup are as
-      secure as if though they were in L1 (the RSK mainnet).
+      or in your Rootstock wallet, only in RIF Rollup wallet and block explorer. Nevertheless, balances in RIF Rollup
+      are as secure as if though they were in L1 (the Rootstock mainnet).
       <a href="https://docs.zksync.io/userdocs/security.html" rel="noopener noreferrer" target="_blank">Learn more.</a>
     </p>
     <p>
