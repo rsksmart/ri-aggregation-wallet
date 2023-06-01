@@ -41,4 +41,7 @@ export default Vue.extend({
 .inkline.-dark .ethereumTransferProvider .ethereumLogo {
   fill: lighten($color: $black, $amount: 5) !important;
 }
+.tileContainer .tile {
+  background-color: #000 !important;
+}
 </style>
