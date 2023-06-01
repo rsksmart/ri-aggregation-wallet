@@ -7,7 +7,7 @@
           <div class="tile">
             <img src="/images/wallets/external.png" alt="External" />
           </div>
-          <div class="tileName">Ethereum Wallet</div>
+          <div class="tileName">Rootstock Wallet</div>
         </button>
       </div>
     </i-container>
@@ -35,7 +35,7 @@ export default Vue.extend({
         return this.$store.dispatch("zk-account/logout");
       } else {
         this.$analytics.track("login", {
-          connectionType: "Ethereum Wallet",
+          connectionType: "Rootstock Wallet",
           wallet: this.$store.getters["zk-onboard/selectedWallet"],
         });
         return this.$router.push("/account");

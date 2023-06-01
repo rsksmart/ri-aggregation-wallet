@@ -32,7 +32,7 @@
           to="/transaction/deposit"
           variant="secondary"
         >
-          <v-icon class="planeIcon" name="ri-add-fill" />&nbsp;Top&nbsp;up
+          <v-icon class="planeIcon" name="ri-add-fill" />&nbsp;Deposit&nbsp;
         </i-button>
       </div>
       <div v-else class="balances">
