@@ -4455,9 +4455,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "@rsksmart/rif-rollup-nuxt-core@npm:^1.0.1":
   version: 1.0.1
   resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.0.1"
+=======
+"@rsksmart/rif-rollup-nuxt-core@file:/Users/annipi/IovLabs/Rollup/rif-rollup-nuxt-core::locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A.":
+  version: 1.10.2
+  resolution: "@rsksmart/rif-rollup-nuxt-core@file:/Users/annipi/IovLabs/Rollup/rif-rollup-nuxt-core#/Users/annipi/IovLabs/Rollup/rif-rollup-nuxt-core::hash=ae2648&locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A."
+>>>>>>> 073c83df (refactor: adding script for testnet)
   dependencies:
     "@nuxtjs/axios": ^5.13.1
     "@rsksmart/rif-rollup-js-sdk": ^0.13.1-alpha
@@ -4484,7 +4490,11 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
+<<<<<<< HEAD
   checksum: 24a08bcc11da78ff7443698b71fd746daf87e7b5e84f5ba5872f00ec4f797be711214bcc4a1fc4fdbbe27d84c3e664e942c425edfed6adfe7ded96f2c862e2d3
+=======
+  checksum: 76859e6cdaa1487ab31350a2dac0b639d625e36428a7d1ef708e14d885c16d7dc38d2d3edaa805279abe26c02b6985f181eb9db3c3cc6065d6a806023d0db678
+>>>>>>> 073c83df (refactor: adding script for testnet)
   languageName: node
   linkType: hard
 
