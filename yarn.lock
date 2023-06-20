@@ -4440,9 +4440,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-js-sdk@npm:^0.13.1-alpha":
-  version: 0.13.1-alpha
-  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.1-alpha"
+"@rsksmart/rif-rollup-js-sdk@portal:/Users/Onyeka/Documents/GitHub/IOV/rif-rollup-js-sdk::locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@rsksmart/rif-rollup-js-sdk@portal:/Users/Onyeka/Documents/GitHub/IOV/rif-rollup-js-sdk::locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A."
   dependencies:
     axios: ^0.21.2
     websocket: ^1.0.30
@@ -4451,9 +4451,8 @@ __metadata:
   peerDependencies:
     "@ethersproject/logger": ^5.4.0
     ethers: ^5.4.4
-  checksum: a253124e0a91a50c29c9401047091f68c1bdbe2a07cb4f12159b409152f021fe49ca3f0179a39e39ae94d06488fb78735c813b98f29a609dda46d6df4a8f1883
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@rsksmart/rif-rollup-nuxt-core@npm:^1.0.2":
   version: 1.0.2
@@ -4486,7 +4485,7 @@ __metadata:
     web3: ^1.5.3
   checksum: 4ec3a4399188af1f63f98f77bd0651be2bc64b52a0f0c5777f5aeac6b37827546169d8cf7033c2760885249b3091c0784160474110f53d70204ded77b85995fa
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@rsksmart/rif-rollup-wallet@workspace:.":
   version: 0.0.0-use.local

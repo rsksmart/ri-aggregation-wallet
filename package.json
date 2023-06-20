@@ -104,7 +104,9 @@
   },
   "resolutions": {
     "chalk": "4.1.2",
-    "webpack": "^4.46.0"
+    "webpack": "^4.46.0",
+    "@rsksmart/rif-rollup-nuxt-core": "portal:/Users/Onyeka/Documents/GitHub/IOV/rif-rollup-nuxt-core",
+    "@rsksmart/rif-rollup-js-sdk": "portal:/Users/Onyeka/Documents/GitHub/IOV/rif-rollup-js-sdk"
   },
   "optionalDependencies": {
     "@sentry/webpack-plugin": "^1.18.3",
