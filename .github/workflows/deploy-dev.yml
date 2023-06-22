@@ -2,7 +2,7 @@ name: CICD for Testnet
 
 on:
   push:
-    branches: [develop]
+    branches: [develop, DEVOPS-1703/add-deploy-workflow]
 
 jobs:
   deploy:
