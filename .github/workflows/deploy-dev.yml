@@ -32,7 +32,6 @@ jobs:
     - name: Build site
       run: |
         yarn testnet
-        yarn build
         yarn generate
 
     - name: Deploy site to S3
