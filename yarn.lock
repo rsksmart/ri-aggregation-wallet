@@ -4470,7 +4470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-nuxt-core@npm:^1.0.1":
+"@rsksmart/rif-rollup-nuxt-core@npm:^1.0.2":
   version: 1.0.2
   resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.0.2"
   dependencies:
@@ -4525,7 +4525,7 @@ __metadata:
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
     "@rsksmart/rif-rollup-js-sdk": ^0.13.3-alpha
-    "@rsksmart/rif-rollup-nuxt-core": ^1.0.1
+    "@rsksmart/rif-rollup-nuxt-core": ^1.0.2
     "@semantic-release/changelog": ^6.0.1
     "@semantic-release/commit-analyzer": ^9.0.2
     "@semantic-release/exec": ^6.0.3
