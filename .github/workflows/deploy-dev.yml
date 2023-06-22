@@ -20,10 +20,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.DEV_AWS_REGION }}
 
-    - name: Setup Node 14
+    - name: Setup Node 16
       uses: actions/setup-node@v1
       with:
-        node-version: '14.21.3'
+        node-version: '16.20.0'
 
     - name: Set yarn version
       run: yarn set version 3.1.1
