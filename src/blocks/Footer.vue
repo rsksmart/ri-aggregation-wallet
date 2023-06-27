@@ -15,7 +15,7 @@
           id="btn-switch-network"
           size="md"
           circle
-          class="_margin-right-1 _hidden-sm-and-down"
+          class="_margin-right-1 _hidden-sm-and-down rootstock-icon"
           data-cy="network_switch_icon"
           outline
           variant="dark"
@@ -84,4 +84,34 @@ export default Vue.extend({
   },
 });
 </script>
-<style lang="scss"></style>
+
+<style lang="scss">
+.rootstock-icon {
+  &:hover {
+    svg {
+      fill: #fff !important;
+    }
+
+    path {
+      fill: #fff !important;
+    }
+
+    rect {
+      fill: #fff !important;
+    }
+  }
+  &:focus {
+    svg {
+      fill: #fff !important;
+    }
+
+    path {
+      fill: #fff !important;
+    }
+
+    rect {
+      fill: #fff !important;
+    }
+  }
+}
+</style>
