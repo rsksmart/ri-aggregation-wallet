@@ -2,7 +2,7 @@
   <div class="walletPage dappPageWrapper">
     <div class="balancesBlock tileBlock">
       <h3 class="tileHeadline h3">
-        Balances in L2
+        Balances in RIF Rollup
         <v-icon
           id="questionMark"
           class="icon-container _display-flex iconInfo"
