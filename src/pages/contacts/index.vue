@@ -184,8 +184,6 @@ export default Vue.extend({
         return;
       }
       if (!this.contactModal.address) {
-        console.log(JSON.stringify(this.$data, null, 2));
-
         this.contactModal.error = "Invalid address";
         return;
       }
