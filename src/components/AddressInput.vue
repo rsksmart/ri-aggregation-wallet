@@ -96,8 +96,8 @@ export default Vue.extend({
       }
       this.$emit("input", this.isValid ? val : "");
     },
-    getDomain() {
-      this.$emit("input", this.isValid ? this.inputtedWallet : "");
+    getDomain(val) {
+      val && this.$emit("input", val);
     },
     value(val) {
       if (this.isValid || (!this.isValid && !!val)) {
@@ -128,7 +128,7 @@ export default Vue.extend({
             this.domainFetchingInProgress = false;
           }
         }
-      }, 1000); // Adjust the debounce delay as needed
+      }, 500); // Adjust the debounce delay as needed
     },
   },
 });
