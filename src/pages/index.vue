@@ -14,6 +14,12 @@
           </div>
           <div class="tileName">Rootstock Wallet</div>
         </button>
+        <button data-cy="core_connect_wallet_wc_button" class="tileContainer _text-center" @click="walletConnect()">
+          <div class="tile">
+            <img src="/images/wallets/wc.png" alt="Wallet Connect" />
+          </div>
+          <div class="tileName">Wallet Connect</div>
+        </button>
       </div>
     </i-container>
     <block-modals-alternative-withdraw />
