@@ -1,22 +1,23 @@
 <template>
   <div class="indexPage">
-    <i-container>
-      <h1>Connect your L1 Rootstock Wallet to start</h1>
-      <div class="container-fluid _flex-direction-row _display-flex connections">
+    <div>
+      <i-container>
+        <h1>RIF Rollup</h1>
+        <p>Connect your L1 Rootstock Wallet to start</p>
         <button
           id="btn-core-connect-wallet"
           data-cy="core_connect_wallet_button"
-          class="tileContainer _text-center"
+          class="_text-center"
           @click="customWallet()"
         >
-          <div class="tile">
-            <img src="/images/wallets/external.png" alt="External" />
-          </div>
-          <div class="tileName">Rootstock Wallet</div>
+          connect your wallet
         </button>
-      </div>
-    </i-container>
-    <block-modals-alternative-withdraw />
+      </i-container>
+      <block-modals-alternative-withdraw />
+    </div>
+    <div id="secondary-container">
+      <!-- This element is for aesthetics, meant to render a background image -->
+    </div>
   </div>
 </template>
 
@@ -65,13 +66,13 @@ export default Vue.extend({
 </script>
 <style lang="scss" scoped>
 .indexPage {
-  width: 100%;
   height: 100%;
-  padding-top: 93px;
-  padding-bottom: 56px;
+  // padding-top: 93px;
+  // padding-bottom: 56px;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
 
   .container {
     gap: 1rem;
@@ -83,101 +84,31 @@ export default Vue.extend({
     width: 100%;
     height: 100%;
     max-width: 100vw;
-    //min-height: $minRouteHeightWithExtra;
-
-    .tileContainer {
-      flex-basis: 30%;
-      cursor: pointer;
-      max-width: 10rem;
-      width: fit-content;
-      height: fit-content;
-      padding-bottom: 0;
-      border: none;
-      color: unset;
-      background: unset;
-
-      &:hover .tile {
-        box-shadow: $hoverShadow;
-      }
-
-      &:focus {
-        outline-color: $lightViolet;
-        border: none !important;
-        outline-offset: 0.25rem;
-        outline-width: thin;
-        border-radius: 0.5rem;
-      }
-
-      .tile {
-        margin: 0 auto 0.25rem;
-        padding: 1rem;
-        height: fit-content;
-        width: fit-content;
-        background-color: $white;
-        border-radius: 20%;
-        box-shadow: $tileShadow;
-        transition: $transition1;
-
-        img {
-          height: 76px;
-          object-fit: contain;
-          transition: $transition1;
-
-          @media screen and (max-width: $mobile) {
-            height: 40px;
-            width: 40px;
-          }
-        }
-
-        .tileIcon {
-          position: absolute;
-          top: -24px;
-          right: -24px;
-          width: 48px;
-          height: 48px;
-          color: $violet;
-          font-size: 20px;
-          line-height: 48px;
-          background-color: $white;
-          border-radius: 50%;
-          opacity: 0;
-          transition: $transition2;
-        }
-      }
-
-      .tileName {
-        padding-top: 0.5rem;
-        font-size: 18px;
-
-        @media screen and (max-width: $mobile) {
-          font-size: 16px !important;
-        }
-      }
-    }
-
-    a.tileContainer {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .connections {
-      justify-content: space-between;
-      row-gap: 1rem;
-      align-items: stretch;
-      flex-wrap: nowrap;
-      width: fit-content;
-      max-width: calc(100vw - 24px);
-      height: fit-content;
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
 
     h1 {
       font-weight: 800;
-      font-size: 24px;
+      font-size: 84px;
       text-align: center;
-      margin: 0 auto 1.75rem !important;
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    #btn-core-connect-wallet {
+      margin: 5.75rem auto 0 !important;
+      width: 450px;
+      height: 70px;
+      background-color: #6170f2;
+      color: #ffffff;
+      border-radius: 12px;
+      padding: 5px;
+      border: none;
+      font-weight: bold;
+      font-size: 24px;
     }
 
     .alternativeWithdrawContainer {
@@ -273,6 +204,17 @@ export default Vue.extend({
       }
     }
   }
+}
+.indexPage > div {
+  flex: 1;
+}
+
+#secondary-container {
+  height: 100%;
+  background-image: url("../static/images/RIF_Rollup_Homescreen_image.svg");
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: cover;
 }
 
 .-dark {

@@ -345,7 +345,7 @@ header {
 }
 
 body.inkline.-light header {
-  background: $white;
+  background: transparent !important;
 
   .linksContainer .mainLink {
     color: $black;
