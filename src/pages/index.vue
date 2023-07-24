@@ -159,20 +159,30 @@ export default Vue.extend({
       height: auto;
 
       h1 {
-        max-width: 350px;
+        max-width: 500px;
         line-height: 35px;
-        font-size: 22px;
+        font-size: 52px;
         margin: 1rem auto !important;
       }
 
-      .alternativeWithdrawContainer {
-        margin-top: 1.5rem !important;
+      p {
+        font-weight: 500;
+        font-size: 12.5px;
+        line-height: 30px;
+        text-align: center;
+      }
 
-        h3 {
-          margin: 0.3rem auto 0.5rem !important;
-          font-size: 14px;
-          line-height: 125% !important;
-        }
+      #btn-core-connect-wallet {
+        margin: 2.75rem auto 0 !important;
+        width: 280px;
+        height: 60px;
+        background-color: #6170f2;
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 5px;
+        border: none;
+        font-weight: bold;
+        font-size: 18px;
       }
     }
   }
@@ -215,6 +225,12 @@ export default Vue.extend({
   background-repeat: no-repeat;
   background-position: right;
   background-size: cover;
+}
+
+@media (max-width: $mobile), (max-height: 30rem) {
+  #secondary-container {
+    display: none !important;
+  }
 }
 
 .-dark {
