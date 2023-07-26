@@ -5,6 +5,7 @@
       <div v-else class="userImgPlaceholder userImg"></div>
       <!--suppress HtmlFormInputWithoutLabel -->
       <input
+        id="addressInput"
         ref="input"
         v-model="inputtedWallet"
         autocomplete="none"
@@ -133,3 +134,11 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+#addressInput,
+#addressInput::placeholder {
+  font-family: Sora;
+  font-size: 13px;
+}
+</style>

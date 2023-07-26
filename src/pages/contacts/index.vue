@@ -1,31 +1,51 @@
 <template>
   <div class="contactsPage dappPageWrapper">
-    <i-modal v-model="contactModal.enabled" class="prevent-close" size="md">
-      <template #header>
-        <span v-if="contactModal.type === 'add'">Add contact</span>
+    <i-modal id="create-edit-contact" v-model="contactModal.enabled" class="prevent-close" size="lg">
+      <button id="contactBackBtn" @click="contactModal.enabled = false">
+        <img src="../../static/images/back_icon.svg" /> Back
+      </button>
+      <h2>
+        <span v-if="contactModal.type === 'add'"
+          >Create Contact on Rollup <img src="../../static/images/rollup_icon.svg"
+        /></span>
         <span v-else-if="contactModal.type === 'edit'">Edit contact</span>
-      </template>
-      <div>
-        <div class="_padding-bottom-1">Contact name</div>
-        <i-input
+      </h2>
+
+      <div id="contactAddressField">
+        <p id="contactAddressLabel">Address</p>
+        <address-input
+          id="contactAddressInput"
+          ref="addressInput"
+          v-model="contactModal.address"
+          @enter="saveContact()"
+        />
+      </div>
+
+      <div id="contactNameField">
+        <p id="contactNameLabel">Name your contact</p>
+        <input
+          id="contactNameInput"
           ref="nameInput"
           v-model="contactModal.name"
           autofocus
           maxlength="20"
-          placeholder="Name"
+          placeholder="e.g: John Doe"
           size="lg"
+          type="text"
           @keyup.enter="saveContact()"
         />
-        <br />
-        <div class="_padding-bottom-1">Address</div>
-        <address-input ref="addressInput" v-model="contactModal.address" @enter="saveContact()" />
-        <br />
-        <div v-if="contactModal.error" class="modalError _padding-bottom-2">{{ contactModal.error }}</div>
-        <i-button v-if="contactModal.type === 'edit'" block link size="md" variant="secondary" @click="deleteContact()">
-          <v-icon name="ri-delete-bin-line" />&nbsp;&nbsp;Delete contact
-        </i-button>
-        <i-button block variant="secondary" size="lg" @click="saveContact()">Save</i-button>
       </div>
+      <div v-if="contactModal.error" class="modalError _padding-bottom-2">{{ contactModal.error }}</div>
+      <i-button v-if="contactModal.type === 'edit'" block link size="md" variant="secondary" @click="deleteContact()">
+        <v-icon name="ri-delete-bin-line" />&nbsp;&nbsp;Delete contact
+      </i-button>
+      <button v-show="contactModal.type === 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">
+        Save contact
+      </button>
+      <button v-show="contactModal.type !== 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">
+        Create contact
+      </button>
+      <!-- </div> -->
     </i-modal>
     <div class="tileBlock contactTile">
       <div class="tileHeadline h3">
@@ -225,3 +245,70 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+#contactBackBtn {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 80px;
+  font-weight: 400;
+  cursor: pointer;
+}
+h2 {
+  margin-top: 10%;
+  text-align: center;
+  font-weight: 900;
+  font-size: 32px;
+  color: black;
+}
+#contactAddressField {
+  margin-top: 8%;
+  margin-bottom: 4%;
+}
+#contactNameField,
+#contactAddressField {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  line-height: normal;
+  justify-content: start;
+  padding: 8px 0 8px 20px;
+  background-color: #ffffff !important;
+  border: 1px solid #d8d7d7;
+  border-radius: 5px;
+  margin-left: 7.5%;
+}
+#contactNameLabel,
+#contactAddressLabel {
+  font-size: 12.5px;
+  color: #b8b8b8;
+  margin: 0;
+}
+#contactNameInput,
+#contactAddressInput {
+  background-color: transparent !important;
+  font-size: 13px !important;
+  border: none !important;
+  margin: 0;
+  color: #544864;
+}
+#contactNameInput:focus {
+  outline: none;
+}
+#contactCreateBtn {
+  width: 85%;
+  height: 65px;
+  background-color: #6170f2;
+  border-radius: 10px;
+  border: none;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 16px;
+  margin-left: 7.5%;
+  margin-top: 5%;
+}
+</style>

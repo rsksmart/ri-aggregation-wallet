@@ -3,15 +3,19 @@
   grid-gap: 10px;
   grid-template-rows: 100%;
   grid-template-columns: 27px 1fr 27px;
-  align-items: center;
+  align-items: start;
   width: 100%;
-  height: max-content;
-  padding: 0.5rem;
+  // height: max-content;
+  // padding: 0.5rem;
   border-radius: $borderRadiusMd;
   box-shadow: $shadowInset;
   transition: background-color $transition1, box-shadow $transition1;
+  background: transparent !important;
+
   &.inputWallet {
     position: relative;
+    color: #544864;
+    font-size: 12.5px;
 
     .errorText {
       position: absolute;
@@ -53,7 +57,7 @@
     height: 100%;
     font-size: 12px;
     height: 27px;
-    text-align: center;
+    text-align: start;
     background-color: $tempTransparent;
     border: none;
     outline: none;
@@ -66,6 +70,7 @@
 
   .userImgPlaceholder {
     transition: $transition1 background-color;
+    border: 1px solid $gray;
   }
 
   .copy {
