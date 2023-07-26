@@ -258,18 +258,16 @@ export default Vue.extend({
   font-weight: 400;
   cursor: pointer;
 }
-#create-edit-contact {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  background: red !important;
-  padding: 0 !important;
-  border-radius: 10px !important;
-  height: 300px !important;
-}
 h2 {
+  margin-top: 10%;
   text-align: center;
   font-weight: 900;
+  font-size: 32px;
+  color: black;
+}
+#contactAddressField {
+  margin-top: 8%;
+  margin-bottom: 4%;
 }
 #contactNameField,
 #contactAddressField {
@@ -280,10 +278,9 @@ h2 {
   justify-content: start;
   padding: 8px 0 8px 20px;
   background-color: #ffffff !important;
-  border: 1px solid darkgray;
+  border: 1px solid #d8d7d7;
   border-radius: 5px;
   margin-left: 7.5%;
-  margin-top: 4%;
 }
 #contactNameLabel,
 #contactAddressLabel {
@@ -294,7 +291,7 @@ h2 {
 #contactNameInput,
 #contactAddressInput {
   background-color: transparent !important;
-  font-size: 13.5px !important;
+  font-size: 13px !important;
   border: none !important;
   margin: 0;
   color: #544864;
