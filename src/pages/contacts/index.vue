@@ -8,7 +8,9 @@
         <span v-if="contactModal.type === 'add'"
           >Create Contact on Rollup <img src="../../static/images/rollup_icon.svg"
         /></span>
-        <span v-else-if="contactModal.type === 'edit'">Edit contact</span>
+        <span v-else-if="contactModal.type === 'edit'"
+          >Edit contact on Rollup <img src="../../static/images/rollup_icon.svg"
+        /></span>
       </h2>
 
       <div id="contactAddressField">
@@ -36,9 +38,9 @@
         />
       </div>
       <div v-if="contactModal.error" class="modalError _padding-bottom-2">{{ contactModal.error }}</div>
-      <i-button v-if="contactModal.type === 'edit'" block link size="md" variant="secondary" @click="deleteContact()">
+      <!-- <i-button v-if="contactModal.type === 'edit'" block link size="md" variant="secondary" @click="deleteContact()">
         <v-icon name="ri-delete-bin-line" />&nbsp;&nbsp;Delete contact
-      </i-button>
+      </i-button> -->
       <button v-show="contactModal.type === 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">
         Save contact
       </button>
