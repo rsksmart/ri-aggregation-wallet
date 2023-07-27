@@ -9,7 +9,7 @@
           >Create Contact on Rollup <img src="../../static/images/rollup_icon.svg"
         /></span>
         <span v-else-if="contactModal.type === 'edit'"
-          >Edit contact on Rollup <img src="../../static/images/rollup_icon.svg"
+          >Edit Contact on Rollup <img src="../../static/images/rollup_icon.svg"
         /></span>
       </h2>
 
