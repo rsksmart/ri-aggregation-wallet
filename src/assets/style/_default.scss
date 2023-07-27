@@ -329,6 +329,18 @@ button.-lg.-circle {
     .footer,
     .body {
       border-color: $modal-border-color-dark !important;
+      border: none !important;
+      height: 600px;
+      border-radius: 5px;
+      h2 {
+        color: $light;
+      }
+      #contactBackBtn {
+        color: $light;
+      }
+      img {
+        color: $light;
+      }
     }
 
     .footer,
