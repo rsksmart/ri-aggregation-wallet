@@ -31,9 +31,7 @@
       .balancesList {
         width: 100%;
         overflow-x: hidden;
-        height: 100%;
         overflow-y: auto !important;
-        background-color: $violet;
         border-radius: $borderRadius;
         box-shadow: $shadowInset;
 
@@ -62,9 +60,8 @@
           justify-content: space-between;
           width: 100%;
           height: 60px;
-          padding: 0 20px;
+          padding: 12px 16px;
           text-decoration: none;
-          border-bottom: 1px solid;
           cursor: pointer;
           transition: $transition1;
           transition-property: background-color, color;
@@ -74,7 +71,7 @@
           }
 
           &:hover {
-            background-color: transparentize($color: $gray, $amount: 0.9);
+            background-color: transparentize($color: $black, $amount: 0.9);
           }
 
           .tokenSymbol {
@@ -126,17 +123,20 @@
             }
 
             .total {
-              padding-right: 10px;
+              display: flex;
+              align-items: flex-end;
+              flex-direction: column;
+              flex-wrap: wrap;
               font-size: 18px;
               line-height: 25px;
 
               .balancePrice {
-                color: $gray;
+                color: #3a3a3a;
                 font-size: 16px;
               }
 
               &.small {
-                color: $gray;
+                color: #3a3a3a;
                 font-size: 13px;
 
                 .balancePrice {
@@ -183,9 +183,12 @@
           justify-content: stretch;
 
           .tokenSymbol {
-            text-align: center;
             font-size: 16px;
             letter-spacing: -0.03rem;
+          }
+
+          .tokenName {
+            font-size: 10px;
           }
 
           .rightSide {
@@ -213,9 +216,7 @@
             .total {
               flex-direction: column;
               display: flex;
-              justify-content: center;
-              align-items: flex-end;
-              text-align: right;
+              flex-wrap: wrap;
               margin-bottom: 0;
               gap: 0.2rem;
               font-size: 12px;
@@ -243,13 +244,22 @@ body.inkline {
   &.-light {
     .walletPage .balancesList {
       &::-webkit-scrollbar-thumb {
-        background-color: $warmGrey;
+        background-color: $lightGrey;
       }
 
       .balanceItem {
-        color: $warmGrey;
-        border-color: $warmGrey;
+        margin-top: 10px;
+        height: 80px;
+        color: #252525;
+        background-color: $white;
+        border-radius: $borderRadius;
+        &:first-child {
+          margin-top: 0;
+        }
       }
+    }
+    .form-input-group .form-input input {
+      padding: 1.5rem 0.5rem 1.5rem 3rem !important;
     }
   }
 
@@ -260,9 +270,22 @@ body.inkline {
       }
 
       .balanceItem {
+        margin-top: 10px;
+        height: 80px;
         color: $white;
-        border-color: $input-border-color-dark;
+        background-color: #ffffff14;
+        border-radius: $borderRadius;
+        &:first-child {
+          margin-top: 0;
+        }
+
+        .tokenPrice {
+          color: $white !important;
+        }
       }
+    }
+    .form-input-group .form-input input {
+      padding: 1.5rem 0.5rem 1.5rem 3rem !important;
     }
   }
 }

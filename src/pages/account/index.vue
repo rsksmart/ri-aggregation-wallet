@@ -70,7 +70,7 @@
             v-model="search"
             autofocus
             maxlength="6"
-            placeholder="Filter tokens"
+            placeholder="Search the token"
           >
             <template #prefix>
               <v-icon name="ri-search-line" />
@@ -89,32 +89,21 @@
         <div v-else class="balancesList">
           <nuxt-link v-for="(item, symbol) in displayedList" :key="symbol" :to="`/token/${symbol}`" class="balanceItem">
             <div class="leftSide _display-flex _align-items-center">
-              <div class="tokenSymbol">
-                {{ symbol }}
-              </div>
-              <div class="status _margin-left-05 _hidden-md-and-up">
-                <v-icon
-                  :class="{ committed: !item.verified, verified: item.verified }"
-                  :name="item.verified ? 'ri-check-double-line' : 'ri-check-line'"
-                />
+              <token-logo :symbol="symbol" />
+              <div>
+                <div class="tokenSymbol">
+                  {{ symbol }}
+                </div>
+                <token-name :symbol="symbol" />
               </div>
             </div>
             <div class="rightSide">
               <div class="rowItem">
                 <div class="total">
+                  {{ item.balance | parseBigNumberish(symbol) }}
                   <span class="balancePrice">
                     <token-price :amount="item.balance" :symbol="symbol" />
                   </span>
-                  &nbsp;&nbsp;{{ item.balance | parseBigNumberish(symbol) }}
-                </div>
-                <div class="status _hidden-sm-and-down">
-                  <i-tooltip placement="left">
-                    <v-icon
-                      :class="{ committed: !item.verified, verified: item.verified }"
-                      :name="item.verified ? 'ri-check-double-line' : 'ri-check-line'"
-                    />
-                    <template #body>{{ item.verified ? "Verified" : "Committed" }}</template>
-                  </i-tooltip>
                 </div>
               </div>
               <div v-if="activeDeposits[symbol]" class="rowItem">

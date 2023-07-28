@@ -454,18 +454,10 @@ button.-lg.-circle {
 .form-group {
   &.-radio {
     margin: 15px 0;
-
-    /* display: flex;
-    flex-direction: column;
-
-    label {
-        width: 100%;
-    } */
   }
 }
 
 .form-check.-radio {
-  //white-space: pre-line !important;
   &:not(:last-child) {
     margin-bottom: 15px;
   }
@@ -518,7 +510,7 @@ button.-lg.-circle {
 
 .tokenSymbol,
 .walletAddress {
-  font-weight: 400;
+  font-weight: bold;
   font-family: $firaCode;
 }
 

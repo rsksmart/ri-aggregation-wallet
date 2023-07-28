@@ -16,7 +16,7 @@
 
 body.inkline.-light .defaultLayout {
   .tileBlock {
-    background: $white;
+    background: $lightGrey;
 
     .tileHeadline {
       i,
@@ -59,7 +59,7 @@ body.inkline.-dark {
 
 .form-input-group.-light .form-input input,
 input.form-input.-prefixed {
-  background-color: $input-border-color-light !important;
+  background-color: $white !important;
   border-radius: $borderRadiusSm;
   box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.035) !important;
 }
