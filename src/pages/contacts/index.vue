@@ -3,14 +3,14 @@
     <i-modal id="create-edit-contact" v-model="contactModal.enabled" class="prevent-close" size="lg">
       <button id="contactBackBtn" @click="contactModal.enabled = false">
         <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/back_icon_white.svg" />
-        <img v-if="$inkline.config.variant !== 'dark'" src="../../static/images/back_icon.svg" />
+        <img v-else src="../../static/images/back_icon.svg" />
         Back
       </button>
       <h2>
         <span v-if="contactModal.type === 'add'"
           >Create Contact on Rollup
           <img v-if="$inkline.config.variant !== 'dark'" src="../../static/images/rollup_icon.svg" />
-          <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/rollup_icon_white.svg"
+          <img v-else src="../../static/images/rollup_icon_white.svg"
         /></span>
         <span v-else-if="contactModal.type === 'edit'"
           >Edit Contact on Rollup <img src="../../static/images/rollup_icon.svg"
