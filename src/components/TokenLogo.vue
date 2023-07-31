@@ -14,13 +14,18 @@ import Vue, { PropOptions } from "vue";
 
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 
+declare interface SupportedTokenIcons {
+  RBTC: string;
+  RIF: string;
+}
+
 export default Vue.extend({
   data() {
     return {
       supportedTokens: {
         RBTC: "https://s2.coinmarketcap.com/static/img/coins/64x64/3626.png",
         RIF: "https://s2.coinmarketcap.com/static/img/coins/64x64/3701.png",
-      },
+      } as SupportedTokenIcons,
     };
   },
   props: {
@@ -31,11 +36,11 @@ export default Vue.extend({
     } as PropOptions<TokenSymbol>,
   },
   computed: {
-    tokenIcon() {
+    tokenIcon(): string | undefined {
       return this.supportedTokens[this.symbol as string];
     },
-    isSupportedToken() {
-      return this.supportedTokens[this.symbol as string] !== undefined;
+    isSupportedToken(): boolean {
+      return this.tokenIcon !== undefined;
     },
   },
 });
