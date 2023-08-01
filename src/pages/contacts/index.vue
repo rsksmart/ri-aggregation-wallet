@@ -320,7 +320,7 @@ h2 {
 
 .contactsListContainer {
   max-height: 300px !important;
-  overflow: scroll !important;
+  overflow-y: scroll !important;
   margin-top: 0;
 }
 
