@@ -258,6 +258,16 @@ body.inkline {
         }
       }
     }
+
+    .contactItem {
+      color: #252525;
+      background-color: $white;
+    }
+
+    .contactItem:hover {
+      background: transparentize($color: $gray, $amount: 0.9);
+    }
+
     .form-input-group .form-input input {
       padding: 1.5rem 0.5rem 1.5rem 3rem !important;
     }
@@ -286,6 +296,15 @@ body.inkline {
     }
     .form-input-group .form-input input {
       padding: 1.5rem 0.5rem 1.5rem 3rem !important;
+    }
+
+    .contactItem {
+      color: $white;
+      background-color: #ffffff30;
+    }
+
+    .contactItem:hover {
+      background: transparentize($color: $gray, $amount: 0.9);
     }
   }
 }

@@ -55,19 +55,14 @@
     </i-modal>
     <div class="tileBlock contactTile">
       <div class="tileHeadline h3">
-        <span>Contacts</span>
-        <i-tooltip>
-          <span class="icon-container _display-flex" @click="addNewContact()">
-            <v-icon name="ri-add-fill" class="iconInfo" />
-          </span>
-          <template #body>Add contact</template>
-        </i-tooltip>
+        <span id="contacts-head-span">Contacts</span>
       </div>
+      <i-button id="add-contact-button" class="addButton" @click="addNewContact()"> Create new </i-button>
       <i-input
         v-if="isSearching || hasDisplayedContacts"
         ref="searchInput"
         v-model="search"
-        placeholder="Filter contacts"
+        placeholder="Search contact"
         autofocus
         maxlength="20"
       >
@@ -98,25 +93,19 @@
           <user-img :wallet="contact.address" />
           <div class="contactInfo">
             <div class="contactName">{{ contact.name }}</div>
-            <div class="contactAddress walletAddress">{{ contact.address }}</div>
+            <div class="contactAddress walletAddress">
+              {{ contact.address.slice(0, 6) }}...{{ contact.address.slice(-4) }}
+            </div>
           </div>
           <div class="iconsBlock">
             <template v-if="!contact.deleted">
-              <i-tooltip placement="left" trigger="click">
-                <i-button
-                  class="copyAddress"
-                  block
-                  link
-                  size="md"
-                  variant="secondary"
-                  @click="copyAddress(contact.address)"
-                >
-                  <v-icon name="ri-clipboard-line" />
-                </i-button>
-                <template #body>Copied!</template>
-              </i-tooltip>
+              <i-button block link size="md" :to="`/transaction/transfer?address=${contact.address}`">
+                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
+                <img v-else src="../../static/images/arrow-forward.svg" />
+              </i-button>
               <i-button block link size="md" cla variant="secondary" @click="editContact(contact)">
-                <v-icon name="ri-pencil-fill" />
+                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
+                <img v-else src="../../static/images/three-dots.svg" />
               </i-button>
             </template>
             <i-button
@@ -316,5 +305,59 @@ h2 {
   font-size: 16px;
   margin-left: 7.5%;
   margin-top: 5%;
+}
+
+#contacts-head-span {
+  font-weight: bold;
+}
+
+.contactTile {
+  padding-left: 37px;
+  padding-right: 37px;
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+
+.contactsListContainer {
+  max-height: 300px !important;
+  overflow: scroll !important;
+  margin-top: 0;
+}
+
+.contactItem {
+  margin-top: 12px;
+  font-family: inherit !important;
+  height: 78px;
+
+  .contactName {
+    font-size: 16px !important;
+    font-family: inherit !important;
+    font-weight: bold;
+  }
+
+  .contactAddress {
+    font-size: 12px !important;
+    font-family: inherit !important;
+  }
+
+  &:hover {
+    background-color: transparentize($color: $light, $amount: 0.2);
+  }
+
+  &.-ligth {
+    background-color: #ffffff;
+  }
+}
+
+#add-contact-button {
+  height: 65px;
+  background-color: #6170f2;
+  border-radius: 10px;
+  border: none;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 16px;
+  margin-top: 35px;
+  margin-bottom: 12px;
 }
 </style>
