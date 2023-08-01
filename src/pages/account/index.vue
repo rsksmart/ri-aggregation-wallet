@@ -2,14 +2,7 @@
   <div class="walletPage dappPageWrapper">
     <div class="balancesBlock tileBlock">
       <h3 class="tileHeadline h3">
-        Balances in RIF Rollup
-        <v-icon
-          id="questionMark"
-          class="icon-container _display-flex iconInfo"
-          name="ri-question-mark"
-          scale="0.9"
-          @click.native="openBalanceInfoModal"
-        />
+        <total-usd-balance />
       </h3>
 
       <wallet-address
@@ -133,9 +126,10 @@ import { AccountState as WalletAccountState, TokenInfo } from "@rsksmart/rif-rol
 import { ZkTokenBalances } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { searchByKey } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import BlockModalsBalanceInfo from "@/blocks/modals/BalanceInfo.vue";
+import TotalUsdBalance from "@/components/TotalUsdBalance.vue";
 
 export default Vue.extend({
-  components: { BlockModalsBalanceInfo },
+  components: { TotalUsdBalance, BlockModalsBalanceInfo },
   data() {
     return {
       search: "",
