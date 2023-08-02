@@ -20,7 +20,7 @@
     .errorText {
       position: absolute;
       left: 0;
-      top: calc(100% + 3px);
+      top: calc(100% + 12px);
       width: 100%;
       color: $red;
       font-size: 12px;
@@ -42,7 +42,7 @@
   }
 
   &.error {
-    box-shadow: 0 0 0 1px $red;
+    box-shadow: 0 0 0 1px transparent;
   }
 
   .walletValue {
@@ -66,6 +66,10 @@
     &::placeholder {
       font-size: 18px;
     }
+  }
+
+  input:focus {
+    outline: none;
   }
 
   .userImgPlaceholder {
@@ -130,7 +134,7 @@ body.inkline.-dark .defaultLayout {
     background-color: #ffffff14;
 
     input {
-      color: $white;
+      color: #161b48;
     }
 
     .userImgPlaceholder {
