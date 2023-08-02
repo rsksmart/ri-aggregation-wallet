@@ -90,7 +90,6 @@ export default Vue.extend({
     margin: 0 10px;
   }
   h3 {
-    color: #000;
     font-size: 42px;
     font-weight: 600;
     line-height: 140%;
