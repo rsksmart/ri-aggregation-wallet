@@ -106,7 +106,8 @@
 
 body.inkline.-light .defaultLayout {
   .walletContainer {
-    background-color: $white;
+    background-color: $white !important;
+    align-items: center;
 
     input {
       color: $black;
@@ -131,7 +132,8 @@ body.inkline.-light .defaultLayout {
 
 body.inkline.-dark .defaultLayout {
   .walletContainer {
-    background-color: #ffffff14;
+    background-color: #ffffff14 !important;
+    align-items: center;
 
     input {
       color: #161b48;
