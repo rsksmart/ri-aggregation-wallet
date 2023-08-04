@@ -84,7 +84,6 @@
         </div>
         <div
           v-for="(contact, address) in displayedContactsList"
-          v-else
           :key="address"
           class="contactItem"
           :class="{ deleted: contact.deleted === true }"
@@ -103,10 +102,26 @@
                 <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
                 <img v-else src="../../static/images/arrow-forward.svg" />
               </i-button>
-              <i-button block link size="md" cla variant="secondary" @click="editContact(contact)">
-                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
-                <img v-else src="../../static/images/three-dots.svg" />
-              </i-button>
+              <i-popover placement="top-end">
+                <i-button link size="md" variant="secondary">
+                  <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
+                  <img v-else src="../../static/images/three-dots.svg" />
+                </i-button>
+                <template #body>
+                  <div id="edit-delete-nav">
+                    <i-button @click="editContact(contact)"> Edit </i-button>
+                    <i-button @click="deleteContact()"> Delete </i-button>
+                  </div>
+                </template>
+              </i-popover>
+              <!-- <span id="edit-delete-nav">
+                <i-button block link size="md" variant="secondary" @click="deleteContact(contact)">
+                  <v-icon name="ri-delete-bin-line" />
+                </i-button>
+                <i-button block link size="md" variant="secondary" @click="copyAddress(contact.address)">
+                  <v-icon name="ri-file-copy-line" />
+                </i-button>
+              </span> -->
             </template>
             <i-button
               v-else
@@ -359,5 +374,21 @@ h2 {
   font-size: 16px;
   margin-top: 35px;
   margin-bottom: 12px;
+}
+#popover {
+  width: 50px !important;
+  border: 1px solid #d8d7d7 !important;
+  padding: 0 !important;
+  z-index: 1000 !important;
+}
+#edit-delete-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+  border: 1px solid #d8d7d7;
+  z-index: 1000 !important;
 }
 </style>

@@ -58,7 +58,7 @@ export default Vue.extend({
   }
 
   @media (max-width: $mobile) {
-    //min-height: $minRouteHeightWithExtra;
+    // min-height: $minRouteHeightWithExtra;
 
     .routerContainer {
       min-height: auto;
