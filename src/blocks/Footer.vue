@@ -64,7 +64,7 @@ export default Vue.extend({
   },
   computed: {
     blockExplorerLink(): string {
-      return this.$store.getters["zk-onboard/config"].zkSyncNetwork.explorer;
+      return this.$store.getters["zk-onboard/config"].zkSyncNetwork.rollupExplorer;
     },
     isDarkTheme(): boolean {
       return this.theme === "dark";

@@ -56,8 +56,8 @@
         {{ getAddressName(displayedAddress) }}
       </nuxt-link>
       <a
-        v-if="ethTxHash"
-        :href="config.ethereumNetwork.explorer + 'tx/' + ethTxHash"
+        v-if="isL1Transaction()"
+        :href="getL1ExplorerTransactionLink"
         target="_blank"
         class="linkText"
         @click.passive="$analytics.track('view_transaction_in_blockexplorer')"
@@ -67,10 +67,9 @@
       </a>
     </div>
     <a
-      v-if="transactionExplorerLink"
       class="button -md -secondary -link externalLink"
       target="_blank"
-      :href="transactionExplorerLink"
+      :href="getL2ExplorerTransactionLink"
       @click.passive="$analytics.track('view_transaction_in_zkscan')"
     >
       <v-icon name="ri-external-link-line" scale="0.8" />
@@ -101,7 +100,7 @@ export default Vue.extend({
   data() {
     return {
       timeAgo: "",
-      ethTxHash: "",
+      l1TransactionHash: "",
       config: this.$store.getters["zk-onboard/config"] as ZkConfig,
     };
   },
@@ -325,15 +324,6 @@ export default Vue.extend({
       }
       return undefined;
     },
-    transactionExplorerLink(): string {
-      if (this.transaction.op.type === "Deposit") {
-        if (this.ethTxHash) {
-          return `${this.config.zkSyncNetwork.explorer}explorer/transactions/${this.ethTxHash}`;
-        }
-        return "";
-      }
-      return `${this.config.zkSyncNetwork.explorer}explorer/transactions/${this.transaction.txHash}`;
-    },
     smallAmountText(): boolean {
       if (this.isNFT || !this.amount || !this.tokenSymbol) {
         return false;
@@ -344,6 +334,16 @@ export default Vue.extend({
       }
       return `${amount} ${this.tokenSymbol}`.length > 15;
     },
+    getL1ExplorerTransactionLink(): string {
+      return `${this.config.ethereumNetwork.rskExplorer}tx/${this.l1TransactionHash}`;
+    },
+    getL2ExplorerTransactionLink(): string {
+      if (this.transaction.op.type === "Deposit") {
+        return `${this.config.zkSyncNetwork.rollupExplorer}transactions/${this.l1TransactionHash}`;
+      }
+
+      return `${this.config.zkSyncNetwork.rollupExplorer}transactions/${this.transaction.txHash}`;
+    },
   },
   mounted() {
     this.timeAgo = this.getTimeAgo(this.transaction.createdAt);
@@ -353,7 +353,7 @@ export default Vue.extend({
       }
       this.timeAgo = this.getTimeAgo(this.transaction.createdAt);
     }, 30000);
-    this.getWithdrawalTx();
+    this.getL1TransactionHash();
   },
   beforeDestroy() {
     clearInterval(getTimeAgoInterval);
@@ -374,19 +374,22 @@ export default Vue.extend({
         ? contactFromStore.name
         : address.replace(address.slice(6, address.length - 3), "...");
     },
-    async getWithdrawalTx() {
+    async getL1TransactionHash() {
       const tx = this.transaction;
       if (tx.op.type === "Withdraw" || tx.op.type === "WithdrawNFT" || tx.op.type === "ForcedExit") {
         const withdrawalEthTxHash = await this.$store.dispatch("zk-history/getWithdrawalEthTxHash", tx.txHash);
         if (withdrawalEthTxHash) {
-          this.ethTxHash = withdrawalEthTxHash;
+          this.l1TransactionHash = withdrawalEthTxHash;
         }
       } else if (tx.op.type === "Deposit" || tx.op.type === "FullExit") {
-        this.ethTxHash = tx.op.ethHash;
+        this.l1TransactionHash = tx.op.ethHash;
       }
     },
     copy(value: string) {
       copyToClipboard(value);
+    },
+    isL1Transaction() {
+      return ["Deposit", "Withdraw"].includes(this.transaction.op.type);
     },
   },
 });

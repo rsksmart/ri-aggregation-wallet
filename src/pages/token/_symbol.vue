@@ -123,7 +123,7 @@ export default Vue.extend({
       return !this.zkTokensLoading && this.token && this.symbol !== "RBTC";
     },
     blockExplorerLink(): string {
-      return this.$store.getters["zk-onboard/config"].ethereumNetwork.explorer;
+      return this.$store.getters["zk-onboard/config"].ethereumNetwork.rskExplorer;
     },
   },
   mounted() {

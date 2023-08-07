@@ -64,7 +64,7 @@ export default Vue.extend({
         },
         {
           name: "Block Explorer",
-          link: this.config.zkSyncNetwork.explorer,
+          link: this.config.zkSyncNetwork.rollupExplorer,
         },
         {
           name: "zkCheckout",

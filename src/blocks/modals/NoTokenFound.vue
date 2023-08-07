@@ -22,7 +22,7 @@ export default Vue.extend({
   name: "NoTokenFound",
   computed: {
     blockExplorerLink(): string {
-      return this.$store.getters["zk-onboard/config"].zkSyncNetwork.explorer;
+      return this.$store.getters["zk-onboard/config"].zkSyncNetwork.rollupExplorer;
     },
     network() {
       return this.$store.getters["zk-provider/network"];
