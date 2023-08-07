@@ -109,9 +109,9 @@
                 </i-button>
                 <template #body>
                   <div id="edit-delete-nav">
-                    <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit </i-button>
+                    <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit Contact </i-button>
                     <hr class="customHr" />
-                    <i-button class="edit-delete-btn" @click="deleteContact()"> Delete </i-button>
+                    <i-button class="edit-delete-btn" @click="deleteContact()"> Delete Contact </i-button>
                   </div>
                 </template>
               </i-popover>
