@@ -102,26 +102,19 @@
                 <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
                 <img v-else src="../../static/images/arrow-forward.svg" />
               </i-button>
-              <i-popover placement="top-end">
-                <i-button link size="md" variant="secondary">
+              <i-popover id="popover" placement="left-end" size="sm">
+                <i-button link size="sm" variant="secondary">
                   <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
                   <img v-else src="../../static/images/three-dots.svg" />
                 </i-button>
                 <template #body>
                   <div id="edit-delete-nav">
-                    <i-button @click="editContact(contact)"> Edit </i-button>
-                    <i-button @click="deleteContact()"> Delete </i-button>
+                    <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit </i-button>
+                    <hr />
+                    <i-button class="edit-delete-btn" @click="deleteContact()"> Delete </i-button>
                   </div>
                 </template>
               </i-popover>
-              <!-- <span id="edit-delete-nav">
-                <i-button block link size="md" variant="secondary" @click="deleteContact(contact)">
-                  <v-icon name="ri-delete-bin-line" />
-                </i-button>
-                <i-button block link size="md" variant="secondary" @click="copyAddress(contact.address)">
-                  <v-icon name="ri-file-copy-line" />
-                </i-button>
-              </span> -->
             </template>
             <i-button
               v-else
@@ -334,8 +327,10 @@ h2 {
 }
 
 .contactsListContainer {
-  max-height: 300px !important;
-  overflow-y: scroll !important;
+  position: relative;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
   margin-top: 0;
 }
 
@@ -375,20 +370,15 @@ h2 {
   margin-top: 35px;
   margin-bottom: 12px;
 }
-#popover {
-  width: 50px !important;
-  border: 1px solid #d8d7d7 !important;
-  padding: 0 !important;
-  z-index: 1000 !important;
-}
 #edit-delete-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   justify-content: center;
   text-align: center;
   margin-top: 10px;
-  border: 1px solid #d8d7d7;
-  z-index: 1000 !important;
+}
+.edit-delete-btn {
+  background: none !important;
+  border: none !important;
 }
 </style>
