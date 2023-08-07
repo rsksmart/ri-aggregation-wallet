@@ -49,10 +49,10 @@ export default Vue.extend({
         case "Mint":
         case "Allowance":
         case "Deposit":
-          return this.config.ethereumNetwork.explorer + "tx/" + this.activeTransaction.txHash;
+          return this.config.ethereumNetwork.rskExplorer + "tx/" + this.activeTransaction.txHash;
 
         default:
-          return this.config.zkSyncNetwork.explorer + "explorer/transactions/" + this.activeTransaction.txHash;
+          return this.config.zkSyncNetwork.rollupExplorer + "transactions/" + this.activeTransaction.txHash;
       }
     },
     tip(): string {

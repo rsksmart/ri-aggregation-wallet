@@ -20,12 +20,21 @@
       </template>
     </p>
     <a
-      v-if="txLink"
+      v-if="isL1Transaction()"
       id="btn-link-to-transaction"
-      :href="txLink"
+      :href="getL1ExplorerTransactionLink()"
       class="_display-block _text-center _margin-top-1"
       target="_blank"
-      >Link to the transaction
+      >Rootstock transacion
+      <v-icon name="ri-external-link-line"></v-icon>
+    </a>
+    <a
+      v-if="isL2Transaction()"
+      id="btn-link-to-transaction"
+      :href="getL2ExplorerTransactionLink()"
+      class="_display-block _text-center _margin-top-1"
+      target="_blank"
+      >Rollup transacion
       <v-icon name="ri-external-link-line"></v-icon>
     </a>
     <div v-if="activeTransaction.address" class="infoBlockItem smaller _margin-top-2">
@@ -127,6 +136,7 @@ export default Vue.extend({
   data() {
     return {
       displayAllowanceDeposit: false,
+      l1TransactionHash: "", // Used only for withdraw transactions
     };
   },
   computed: {
@@ -135,20 +145,6 @@ export default Vue.extend({
     },
     activeTransaction(): ZkActiveTransaction {
       return this.$store.getters["zk-transaction/activeTransaction"];
-    },
-    txLink(): string | undefined {
-      if (!this.activeTransaction.txHash) {
-        return undefined;
-      }
-      switch (this.activeTransaction.type) {
-        case "Mint":
-        case "Allowance":
-        case "Deposit":
-          return this.config.ethereumNetwork.explorer + "tx/" + this.activeTransaction.txHash;
-
-        default:
-          return this.config.zkSyncNetwork.explorer + "explorer/transactions/" + this.activeTransaction.txHash;
-      }
     },
     isOwnAddress(): boolean {
       return getAddress(this.$store.getters["zk-account/address"]) === getAddress(this.activeTransaction.address || "");
@@ -192,6 +188,18 @@ export default Vue.extend({
     },
     async clearActiveTransaction() {
       await this.$store.commit("zk-transaction/clearActiveTransaction");
+    },
+    getL1ExplorerTransactionLink(): string {
+      return this.config.ethereumNetwork.rskExplorer + "tx/" + this.activeTransaction.txHash;
+    },
+    getL2ExplorerTransactionLink(): string {
+      return this.config.zkSyncNetwork.rollupExplorer + "transactions/" + this.activeTransaction.txHash;
+    },
+    isL1Transaction(): boolean {
+      return ["Deposit", "Allowance", "Mint"].includes(this.activeTransaction.type);
+    },
+    isL2Transaction(): boolean {
+      return ["Deposit", "Transfer", "Withdraw"].includes(this.activeTransaction.type);
     },
   },
 });
