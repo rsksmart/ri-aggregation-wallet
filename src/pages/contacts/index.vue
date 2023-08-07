@@ -110,7 +110,7 @@
                 <template #body>
                   <div id="edit-delete-nav">
                     <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit </i-button>
-                    <hr />
+                    <hr class="customHr" />
                     <i-button class="edit-delete-btn" @click="deleteContact()"> Delete </i-button>
                   </div>
                 </template>
@@ -380,5 +380,8 @@ h2 {
 .edit-delete-btn {
   background: none !important;
   border: none !important;
+}
+hr {
+  border-top: 1px solid #ddd !important;
 }
 </style>
