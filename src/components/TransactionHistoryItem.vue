@@ -5,7 +5,7 @@
       <div class="actionType">
         <span>{{ transactionTypeData.type }}</span>
         <div v-if="transactionTypeData.showAddress && isSameAddress(displayedAddress)" class="actionValue">
-          Your own account
+          Your account
         </div>
         <nuxt-link
           v-else-if="transactionTypeData.showAddress && displayedAddress"
@@ -43,11 +43,26 @@
           </i-tooltip>
         </div>
       </template>
+    </div>
+    <div>
+      <a
+        class="button -md -secondary -link"
+        target="_blank"
+        :href="getL2ExplorerTransactionLink"
+        @click.passive="$analytics.track('view_transaction_in_zkscan')"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M15.1793 8.53331L14.3734 8.00086L15.18 7.46776C15.6932 7.12875 16 6.55368 16 5.93009C16 5.3065 15.6932 4.73209 15.18 4.39243L8.97729 0.294829C8.38365 -0.098604 7.61635 -0.0979483 7.02207 0.294829L0.820678 4.39243C0.307433 4.73144 0.000643148 5.3065 0.000643148 5.93009C0.000643148 6.49205 0.249548 7.01269 0.674036 7.35891L1.63042 7.99758L0.820035 8.53265C0.306789 8.87166 0 9.44673 0 10.0703C0 10.6323 0.248905 11.1529 0.673393 11.4991L3.06725 13.0971L3.06982 13.0952L7.02078 15.7062C7.31792 15.9023 7.65816 16 7.99839 16C8.33863 16 8.67886 15.9016 8.976 15.7062L11.813 13.8315L11.8394 13.8145L12.927 13.0958L15.178 11.6086C15.6913 11.2696 15.9981 10.6946 15.9981 10.071C15.9981 9.44738 15.6913 8.87297 15.178 8.53331H15.1793ZM1.54552 6.32812C1.35386 6.20156 1.33328 6.00747 1.33328 5.93009C1.33328 5.85272 1.35386 5.65797 1.54552 5.53207L7.74756 1.43382C7.90192 1.33218 8.10001 1.33218 8.25373 1.43382L14.4551 5.53207C14.6468 5.65863 14.6674 5.85272 14.6674 5.93009C14.6674 6.00747 14.6468 6.20156 14.4551 6.32812L13.1489 7.1917L8.97793 4.43571C8.38429 4.04227 7.617 4.04293 7.02271 4.43571L2.85179 7.1917L1.54552 6.32812ZM11.9249 8.00021L8.25309 10.4264C8.09937 10.5287 7.90063 10.528 7.74691 10.4264L4.07573 8.00021L7.74756 5.57338C7.90192 5.47174 8.10001 5.47174 8.25373 5.57338L11.9249 8.00021ZM14.4551 10.4683L8.25373 14.5672C8.10001 14.6695 7.90127 14.6689 7.74756 14.5672L1.54617 10.469C1.3545 10.3424 1.33392 10.1483 1.33392 10.071C1.33392 9.9936 1.3545 9.79885 1.54617 9.67295L2.84986 8.81133L3.06854 8.95756L3.07111 8.95559L7.02207 11.5667C7.31921 11.7627 7.65944 11.8604 7.99968 11.8604C8.33991 11.8604 8.68015 11.7621 8.97729 11.5667L11.8143 9.69197L11.8407 9.67492L12.9282 8.95625L13.1489 8.81068L14.4551 9.6736C14.6468 9.80016 14.6674 9.99425 14.6674 10.0716C14.6674 10.149 14.6468 10.3431 14.4551 10.4697V10.4683Z"
+            :fill="linkColor"
+          />
+        </svg>
+      </a>
       <a
         v-if="isL1Transaction()"
         :href="getL1ExplorerTransactionLink"
         target="_blank"
-        class="linkText"
+        class="button -md -secondary -link"
         @click.passive="$analytics.track('view_transaction_in_blockexplorer')"
       >
         <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,14 +84,6 @@
         </svg>
       </a>
     </div>
-    <a
-      class="button -md -secondary -link externalLink"
-      target="_blank"
-      :href="getL2ExplorerTransactionLink"
-      @click.passive="$analytics.track('view_transaction_in_zkscan')"
-    >
-      <v-icon name="ri-external-link-line" scale="0.8" />
-    </a>
   </div>
 </template>
 
@@ -351,13 +358,13 @@ export default Vue.extend({
     },
     itReducesMyBalance(): string {
       if (
-          this.transaction.op.type === "Transfer" ||
-          this.transaction.op.type === "Deposit" ||
-          this.transaction.op.type === "FullExit"
+        (this.transaction.op.type === "Transfer" && this.isSameAddress(this.transaction.op.from)) ||
+        (this.transaction.op.type === "Deposit" && this.isSameAddress(this.transaction.op.to)) ||
+        this.transaction.op.type === "FullExit"
       ) {
         return "-";
       }
-      return this.transaction.op.type;
+      return "";
     },
     linkColor(): string {
       return this.$inkline.config.variant === "dark" ? "#FFF" : "#A5ADF7";
