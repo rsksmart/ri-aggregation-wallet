@@ -84,7 +84,6 @@
         </div>
         <div
           v-for="(contact, address) in displayedContactsList"
-          v-else
           :key="address"
           class="contactItem"
           :class="{ deleted: contact.deleted === true }"
@@ -103,10 +102,19 @@
                 <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
                 <img v-else src="../../static/images/arrow-forward.svg" />
               </i-button>
-              <i-button block link size="md" cla variant="secondary" @click="editContact(contact)">
-                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
-                <img v-else src="../../static/images/three-dots.svg" />
-              </i-button>
+              <i-popover id="popover" placement="left-end" size="sm">
+                <i-button link size="sm" variant="secondary">
+                  <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
+                  <img v-else src="../../static/images/three-dots.svg" />
+                </i-button>
+                <template #body>
+                  <div id="edit-delete-nav">
+                    <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit Contact </i-button>
+                    <hr class="customHr" />
+                    <i-button class="edit-delete-btn" @click="deleteContact()"> Delete Contact </i-button>
+                  </div>
+                </template>
+              </i-popover>
             </template>
             <i-button
               v-else
@@ -319,8 +327,10 @@ h2 {
 }
 
 .contactsListContainer {
-  max-height: 300px !important;
-  overflow-y: scroll !important;
+  position: relative;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
   margin-top: 0;
 }
 
@@ -359,5 +369,19 @@ h2 {
   font-size: 16px;
   margin-top: 35px;
   margin-bottom: 12px;
+}
+#edit-delete-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+}
+.edit-delete-btn {
+  background: none !important;
+  border: none !important;
+}
+hr {
+  border-top: 1px solid #ddd !important;
 }
 </style>

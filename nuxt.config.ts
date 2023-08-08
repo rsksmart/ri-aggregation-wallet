@@ -46,6 +46,7 @@ const config = <NuxtConfig>{
   },
   env: {
     ...process.env,
+    TEST_WORD: "cheta rocks",
   } as NuxtOptionsEnv,
 
   publicRuntimeConfig: {

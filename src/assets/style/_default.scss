@@ -158,6 +158,7 @@ button.-lg.-circle {
   border-radius: $borderRadius !important;
   box-shadow: $popoverShadow;
   opacity: 0.975;
+  padding: none !important;
 
   &.-dark {
     background-color: $darkViolet !important;
@@ -309,6 +310,7 @@ button.-lg.-circle {
       background: #f1f1f1 !important;
       border: none !important;
       border-radius: 5px;
+      height: 600px;
     }
 
     .modalFooterBtn {
@@ -329,6 +331,7 @@ button.-lg.-circle {
       border-color: $modal-border-color-dark !important;
       border: none !important;
       border-radius: 5px;
+      height: 600px;
       h2 {
         color: $light;
       }
