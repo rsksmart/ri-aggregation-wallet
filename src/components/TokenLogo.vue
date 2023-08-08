@@ -3,7 +3,7 @@
     <div v-if="isSupportedToken" class="logo">
       <img :src="tokenIcon" width="32" height="32" class="image" alt="Token logo" />
     </div>
-    <div v-else class="tokenLogo">
+    <div v-else class="roundAvatar">
       {{ symbol.charAt(0) }}
     </div>
   </div>
@@ -20,6 +20,7 @@ declare interface SupportedTokenIcons {
 }
 
 export default Vue.extend({
+  name: "TokenLogo",
   data() {
     return {
       supportedTokens: {
@@ -47,17 +48,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.tokenLogo {
-  background: $violet;
-  color: $white;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 12px;
-}
 .logo {
   margin-right: 12px;
 }

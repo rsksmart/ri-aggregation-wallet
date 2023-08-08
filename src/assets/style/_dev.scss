@@ -28,3 +28,15 @@
     }
   }
 }
+
+.roundAvatar {
+  background: $violet;
+  color: $white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}

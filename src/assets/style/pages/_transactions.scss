@@ -1,6 +1,5 @@
 .transactionsPage {
   .transactionsTile {
-    //height: $minRouteHeightWithExtra !important;
     min-height: 350px;
     width: 100%;
     padding-top: 20px;
@@ -27,20 +26,39 @@
       height: 90px;
       padding: 0 15px;
       border-bottom: 1px solid;
-      transition: $transition1;
-      transition-property: background-color, border-color;
+      background-color: $white;
+      border-radius: 6px;
 
       &:last-child {
         border-bottom: none;
       }
 
-      .amount,
+      .amount {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: #121212;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 120%;
+      }
       .tokenSymbol {
         display: inline-flex;
+        color: #121212;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 120%;
+      }
+      .tokenPrice {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
       }
 
       &:hover {
-        background-color: transparentize($color: $gray, $amount: 0.9);
+        background-color: transparentize($color: $white, $amount: 0.5);
       }
 
       .status {
@@ -88,7 +106,7 @@
         }
 
         .createdAt {
-          color: $gray;
+          color: #898989;
           font-size: 12px;
           line-height: 14px;
           cursor: default;
@@ -150,9 +168,21 @@
 
       .actionInfo {
         width: 100%;
+        display: grid;
+        grid-template-rows: 50% 50%;
+        grid-template-columns: 100%;
+
+        .tokenPrice {
+          color: var(--bw-500, #898989);
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 140%; /* 16.8px */
+        }
 
         .actionType {
           display: flex;
+          flex-direction: row;
           align-items: center;
           color: $gray;
           font-size: 16px;
@@ -310,7 +340,7 @@
         .actionInfo {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: flex-end;
 
           & > * {
             text-align: left !important;
@@ -378,6 +408,10 @@ body.inkline {
 
       .transactionItem {
         border-color: $input-border-color-light;
+        margin-top: 10px;
+        &:first-child {
+          margin-top: 0;
+        }
 
         .copyContentHash:hover {
           color: $black;
