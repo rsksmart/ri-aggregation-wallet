@@ -4447,9 +4447,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-js-sdk@npm:^0.13.4-alpha":
-  version: 0.13.4-alpha
-  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.4-alpha"
+"@rsksmart/rif-rollup-js-sdk@npm:^0.13.6-alpha":
+  version: 0.13.6-alpha
+  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.6-alpha"
   dependencies:
     axios: ^0.21.2
     websocket: ^1.0.30
@@ -4458,16 +4458,16 @@ __metadata:
   peerDependencies:
     "@ethersproject/logger": ^5.4.0
     ethers: ^5.4.4
-  checksum: 633d00f1546cd5a2aa1d7932e2b062fd24fb7e6cf4f2016456160340d1c5ace8e555d9218794cdbbfe1bb9a571fe851bc00ca3c6fbdc683717bdd37c8dd13334
+  checksum: c6d8bd992549640f9d3cb6bc388699c83c7dbfcffc3bec8c29d4803062e1f125116a8ef2ea69d3ea54d52ca5138d65aa7944306c346105cf6eecd54cc7a1cadd
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-nuxt-core@npm:^1.0.3":
-  version: 1.1.0
-  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.1.0"
+"@rsksmart/rif-rollup-nuxt-core@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.2.0"
   dependencies:
     "@nuxtjs/axios": ^5.13.1
-    "@rsksmart/rif-rollup-js-sdk": ^0.13.4-alpha
+    "@rsksmart/rif-rollup-js-sdk": ^0.13.6-alpha
     "@walletconnect/web3-provider": ^1.8.0
     "@web3-onboard/coinbase": ^2.2.0
     "@web3-onboard/core": ^2.16.2
@@ -4491,7 +4491,7 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
-  checksum: 102483830b68859e77c434d01480b812fa29c99eb0f881eaf8f25a4ac824ac4c27c1d2833f52ab912f79d014dae7745f0d207faa38c5b2831e68e3fd3b4846ae
+  checksum: f0c4b6a972987a4919b4e7020b15a6e21b014c5954e3d7a638d85f53a2e211c02fba7df820a07501c6aedcd173f75e8cb5a787693c39baa6e661a1ff4b223a86
   languageName: node
   linkType: hard
 
@@ -4516,8 +4516,8 @@ __metadata:
     "@nuxtjs/sentry": ^5.1.7
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
-    "@rsksmart/rif-rollup-js-sdk": ^0.13.4-alpha
-    "@rsksmart/rif-rollup-nuxt-core": ^1.0.3
+    "@rsksmart/rif-rollup-js-sdk": ^0.13.6-alpha
+    "@rsksmart/rif-rollup-nuxt-core": ^1.2.0
     "@rsksmart/rns-sdk": ^1.0.0-beta.8
     "@semantic-release/changelog": ^6.0.1
     "@semantic-release/commit-analyzer": ^9.0.2

@@ -215,6 +215,11 @@ const config = <NuxtConfig>{
           PORTIS_KEY: process.env.APP_PORTIS,
           INFURA_KEY: "560464419d33486ab1713d61ac9f1d82",
         },
+        rollupServerURLs: {
+          mainnet: process.env.ROLLUP_SERVER_MAINNET,
+          testnet: process.env.ROLLUP_SERVER_TESTNET,
+          localhost: process.env.ROLLUP_SERVER_LOCALHOST,
+        },
         onboardConfig: {
           APP_NAME: meta.title,
           APP_ID: "764666de-bcb7-48a6-91fc-75e9dc086ea0",
