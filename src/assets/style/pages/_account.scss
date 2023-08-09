@@ -283,7 +283,7 @@ body.inkline {
         margin-top: 10px;
         height: 80px;
         color: $white;
-        background-color: #ffffff14;
+        background-color: $input-border-color-dark;
         border-radius: $borderRadius;
         &:first-child {
           margin-top: 0;

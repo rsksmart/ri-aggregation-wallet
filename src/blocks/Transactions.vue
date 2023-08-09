@@ -2,7 +2,7 @@
   <div class="transactionsPage dappPageWrapper">
     <block-modals-account-activation />
     <div class="tileBlock transactionsTile">
-      <div class="tileHeadline h3">Transactions</div>
+      <div class="tileHeadline h3">History</div>
       <div class="transactionsListContainer genericListContainer">
         <div v-if="loadingStatus === 'main'" class="nothingFound">
           <loader class="_display-block" />
