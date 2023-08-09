@@ -206,6 +206,10 @@
         </div>
       </i-button>
 
+      <div v-if="amountOrAddressEmpty" class="errorText _text-center _margin-top-1">
+        Address or amount not specified
+      </div>
+
       <!-- Requesting signer -->
       <div v-if="requestingSigner" class="_text-center _margin-top-1" data-cy="requesting_signer_text">
         Follow the instructions in your Rootstock wallet
@@ -300,6 +304,7 @@ export default Vue.extend({
       contentHash: this.$store.getters["zk-transaction/contentHash"],
       loading: true,
       requestingSigner: false,
+      amountOrAddressEmpty: false,
     };
   },
   computed: {
@@ -573,6 +578,11 @@ export default Vue.extend({
       return true;
     },
     async commitTransaction() {
+      if (!this.inputtedAddress || !this.inputtedAmount) {
+        this.amountOrAddressEmpty = true;
+        return;
+      }
+      this.amountOrAddressEmpty = false;
       if (!this.hasSigner && this.requireSigner) {
         try {
           this.requestingSigner = true;
