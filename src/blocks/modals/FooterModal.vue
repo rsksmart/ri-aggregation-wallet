@@ -5,34 +5,22 @@
         <b>Information</b>
       </template>
       <template #default>
-        <a class="modalFooterBtn big" href="https://docs.zksync.io/userdocs/intro.html" target="_blank">
-          <v-icon name="ri-book-2-line" />
-          <span>Docs</span>
-        </a>
-        <a class="modalFooterBtn big" href="https://docs.zksync.io/legal/terms.html" target="_blank">
-          <v-icon name="ri-profile-line" />
-          <span>Terms</span>
-        </a>
-        <a class="modalFooterBtn big" href="https://docs.zksync.io/contact.html" target="_blank">
+        <!--        TODO: Replace Docs url when publish by DevEx -->
+        <!--        <a class="modalFooterBtn big" href="https://docs.zksync.io/userdocs/intro.html" target="_blank">-->
+        <!--          <v-icon name="ri-book-2-line" />-->
+        <!--          <span>Docs</span>-->
+        <!--        </a>-->
+        <a class="modalFooterBtn big" href="https://rootstock.io/contact/" target="_blank">
           <v-icon name="ri-contacts-book-line" />
           <span>Contact</span>
         </a>
         <a class="modalFooterBtn big" :href="blockExplorerLink" target="_blank">
           <v-icon name="ri-external-link-line" />
-          <span>zkScan</span>
+          <span>RIF Rollup explorer</span>
         </a>
-        <a class="modalFooterBtn big" href="https://uptime.com/s/zkSync" target="_blank">
-          <v-icon name="ri-wifi-line" />
-          <span>Uptime</span>
-        </a>
-        <div class="modalFooterBtn big" @click="$accessor.openModal('environment')">
-          <v-icon name="ri-reserved-line" />
-          <span>Environment</span>
-        </div>
       </template>
       <template #footer>
         <div class="_display-flex _justify-content-space-between">
-          <block-system-info />
           <block-modals-network-switch />
           <div class="_display-flex">
             <i-button size="md" circle class="_margin-right-1 _margin-0" block @click="openNetworkSwitchModal">
