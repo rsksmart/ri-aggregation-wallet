@@ -41,7 +41,6 @@ jobs:
 
     - name: Build site
       run: |
-        echo $ROLLUP_SERVER_TESTNET
         yarn ci:build:qa
 
     - name: Deploy site to S3
