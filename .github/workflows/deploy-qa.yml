@@ -1,4 +1,4 @@
-name: CICD for QA
+name: CICD for Testnet
 
 on:
   push:
