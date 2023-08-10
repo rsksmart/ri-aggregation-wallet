@@ -10,7 +10,7 @@
           class="_text-center"
           @click="customWallet()"
         >
-          connect your wallet
+          Connect your wallet
         </button>
       </i-container>
       <block-modals-alternative-withdraw />
