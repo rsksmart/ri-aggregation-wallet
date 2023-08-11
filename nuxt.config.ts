@@ -240,7 +240,7 @@ const config = <NuxtConfig>{
   modules: ["@inkline/nuxt", "@nuxtjs/sentry", "@nuxtjs/proxy", "@nuxtjs/google-gtag"],
   inkline: {
     config: {
-      autodetectVariant: true,
+      autodetectVariant: false,
     },
   },
   sentry: {
