@@ -1,5 +1,5 @@
 .desktopOnly {
-  @media screen and (max-width: $mobile+1) {
+  @media screen and (max-width: $mobile) {
     display: none !important;
   }
 }
@@ -12,6 +12,10 @@
 
 .errorText {
   color: $red;
+}
+
+.modal-position {
+  margin-bottom: 250px !important;
 }
 
 .goBackContinueBtns {
@@ -310,7 +314,6 @@ button.-lg.-circle {
       background: #f1f1f1 !important;
       border: none !important;
       border-radius: 5px;
-      height: 600px;
     }
 
     .modalFooterBtn {
@@ -331,7 +334,6 @@ button.-lg.-circle {
       border-color: $modal-border-color-dark !important;
       border: none !important;
       border-radius: 5px;
-      height: 600px;
       h2 {
         color: $light;
       }
