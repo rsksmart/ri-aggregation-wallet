@@ -43,8 +43,8 @@ export default Vue.extend({
   watch: {
     "$inkline.config.variant": {
       immediate: true,
-      handler(newTheme) {
-        this.$store.commit("zk-onboard/setOnboardTheme", newTheme);
+      handler() {
+        this.$store.commit("zk-onboard/setOnboardTheme", "light");
       },
     },
   },
