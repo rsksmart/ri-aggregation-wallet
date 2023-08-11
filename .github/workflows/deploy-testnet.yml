@@ -1,0 +1,50 @@
+name: CICD for TESTNET 
+
+on:
+  push:
+    branches: [develop, DEVOPS-1762/dapps-wallet-testnet-cd]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: TESTNET
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.TESTNET_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.TESTNET_AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'us-east-1'
+
+    - name: Set up Environment
+      run: |
+        cp ./environments/.env.testnet ./envfile.env
+        source ./envfile.env
+
+    - name: Setup Node 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.20.0'
+
+    - name: Set yarn version
+      run: yarn set version 3.1.1
+    
+    - name: Install dependencies
+      run: |
+        yarn install
+
+    - name: Build site
+      run: |
+        yarn ci:build:TESTNET
+
+    - name: Deploy site to S3
+      run: |
+        aws s3 sync --delete --only-show-errors public/ ${{ secrets.TESTNET_S3_BUCKET }}
+
+    - name: Invalidate CloudFront cache
+      run: |
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.TESTNET_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
