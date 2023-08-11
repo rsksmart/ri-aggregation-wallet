@@ -39,7 +39,7 @@ jobs:
 
     - name: Build site
       run: |
-        yarn ci:build:TESTNET
+        yarn ci:build:testnet
 
     - name: Deploy site to S3
       run: |
