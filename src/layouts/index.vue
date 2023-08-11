@@ -16,22 +16,13 @@
 
 <script lang="ts">
 import Vue from "vue";
-import theme from "@rsksmart/rif-rollup-nuxt-core/utils/theme";
 import SentryMixin from "@/mixins/sentry.mixin";
 import AnalyticsMixin from "@/mixins/analytics.mixin";
 
 export default Vue.extend({
   mixins: [SentryMixin, AnalyticsMixin],
-  watch: {
-    "$inkline.config.variant": {
-      immediate: true,
-      handler(newTheme) {
-        this.$store.commit("zk-onboard/setOnboardTheme", newTheme);
-      },
-    },
-  },
   mounted() {
-    this.$inkline.config.variant = theme.getUserTheme();
+    this.$inkline.config.variant = "light";
   },
 });
 </script>
