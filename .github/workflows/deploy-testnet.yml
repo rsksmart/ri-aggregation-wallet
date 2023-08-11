@@ -2,7 +2,7 @@ name: CICD for TESTNET
 
 on:
   push:
-    branches: [develop, DEVOPS-1762/dapps-wallet-testnet-cd]
+    branches: [develop]
 
 jobs:
   deploy:
