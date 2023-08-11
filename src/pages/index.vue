@@ -4,14 +4,14 @@
       <i-container>
         <h1>RIF Rollup</h1>
         <p>Connect your L1 Rootstock Wallet to start</p>
-        <button
+        <i-button
           id="btn-core-connect-wallet"
           data-cy="core_connect_wallet_button"
           class="_text-center"
           @click="customWallet()"
         >
-          connect your wallet
-        </button>
+          Connect your wallet
+        </i-button>
       </i-container>
       <block-modals-alternative-withdraw />
     </div>
