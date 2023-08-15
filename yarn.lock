@@ -4447,21 +4447,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-js-sdk@npm:^0.13.6-alpha":
-  version: 0.13.6-alpha
-  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.6-alpha"
-  dependencies:
-    axios: ^0.21.2
-    websocket: ^1.0.30
-    websocket-as-promised: ^1.1.0
-    zksync-crypto: ^0.6.1
-  peerDependencies:
-    "@ethersproject/logger": ^5.4.0
-    ethers: ^5.4.4
-  checksum: c6d8bd992549640f9d3cb6bc388699c83c7dbfcffc3bec8c29d4803062e1f125116a8ef2ea69d3ea54d52ca5138d65aa7944306c346105cf6eecd54cc7a1cadd
-  languageName: node
-  linkType: hard
-
 "@rsksmart/rif-rollup-js-sdk@npm:^0.13.7-alpha":
   version: 0.13.7-alpha
   resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.7-alpha"
@@ -4477,12 +4462,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-nuxt-core@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.2.1"
+"@rsksmart/rif-rollup-nuxt-core@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.2.3"
   dependencies:
     "@nuxtjs/axios": ^5.13.1
-    "@rsksmart/rif-rollup-js-sdk": ^0.13.6-alpha
+    "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
     "@walletconnect/web3-provider": ^1.8.0
     "@web3-onboard/coinbase": ^2.2.0
     "@web3-onboard/core": ^2.16.2
@@ -4506,7 +4491,7 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
-  checksum: 5460ff77531d4707ac8d561bf14c64e47fd6f694997fef271c660295aaea2feb79f9fa31671e9b85a13886c976fdc562609eeb4f02d1a967edd27fdae827f85c
+  checksum: 999600aa7e1f9a24dbf5aa74e26eb8d3e7ec1507b3cd396187ca1c6cb504478ee67289e111ce2002cb3e86e3ecde76b271052cef7cb9ede050318573b45ac223
   languageName: node
   linkType: hard
 
@@ -4532,7 +4517,7 @@ __metadata:
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
-    "@rsksmart/rif-rollup-nuxt-core": ^1.2.1
+    "@rsksmart/rif-rollup-nuxt-core": ^1.2.3
     "@rsksmart/rns-sdk": ^1.0.0-beta.8
     "@semantic-release/changelog": ^6.0.1
     "@semantic-release/commit-analyzer": ^9.0.2

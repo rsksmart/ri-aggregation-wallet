@@ -62,7 +62,7 @@
     "@nuxtjs/sentry": "^5.1.7",
     "@ramp-network/ramp-instant-sdk": "^2.5.0",
     "@rsksmart/rif-rollup-js-sdk": "^0.13.7-alpha",
-    "@rsksmart/rif-rollup-nuxt-core": "^1.2.1",
+    "@rsksmart/rif-rollup-nuxt-core": "^1.2.3",
     "@rsksmart/rns-sdk": "^1.0.0-beta.8",
     "@web3-onboard/core": "^2.16.2",
     "blockies-ts": "1.0.0",
