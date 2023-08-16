@@ -99,8 +99,8 @@
           <div class="iconsBlock">
             <template v-if="!contact.deleted">
               <i-button block link size="md" :to="`/transaction/transfer?address=${contact.address}`">
-                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
-                <img v-else src="../../static/images/arrow-forward.svg" />
+                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/transfer_arrow_white.svg" />
+                <img v-else src="../../static/images/transfer_arrow.svg" />
               </i-button>
               <i-popover id="popover" placement="left-end" size="sm">
                 <i-button link size="sm" variant="secondary">

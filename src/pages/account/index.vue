@@ -5,12 +5,6 @@
         <total-usd-balance />
       </h3>
 
-      <wallet-address
-        :wallet="$store.getters['zk-account/address']"
-        class="clickablePicture _margin-bottom-1"
-        @clickPicture="openAccountModal"
-      />
-
       <div v-if="emptyBalances" class="centerBlock">
         <p class="tileText">
           No balances yet, please
@@ -32,7 +26,13 @@
       </div>
       <div v-else class="balances">
         <template v-if="!showLoader">
-          <div class="_display-flex _justify-content-space-between balancesButtonGroup _margin-y-1">
+          <div class="someClass">
+            <label class="switch">
+              <input v-model="isRollupMode" type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div v-if="isRollupMode" class="_display-flex _justify-content-space-between balancesButtonGroup _margin-y-1">
             <i-button
               id="btn-account-deposit"
               block
@@ -42,7 +42,7 @@
               to="/transaction/deposit"
               variant="secondary"
             >
-              <v-icon class="planeIcon" name="ri-add-fill" />&nbsp;Deposit
+              <img src="../../static/images/rollup_icon_white.svg" />&nbsp;Send with Rollup
             </i-button>
             <i-button
               id="btn-account-transfer"
@@ -53,7 +53,35 @@
               to="/account/transfer"
               variant="secondary"
             >
-              <v-icon class="planeIcon" name="ri-send-plane-fill" />&nbsp;Transfer
+              <img src="../../static/images/rollup_icon_white.svg" />&nbsp;Receive with Rollup
+            </i-button>
+          </div>
+          <div v-else class="_display-flex _justify-content-space-between balancesButtonGroup _margin-y-1">
+            <i-button
+              id="btn-account-deposit"
+              block
+              class="_margin-y-0 _margin-right-1 _padding-right-2"
+              data-cy="account_deposit_button"
+              size="md"
+              to="/transaction/deposit"
+              variant="secondary"
+            >
+              <img src="../../static/images/l1_icon_white.svg" />&nbsp;<b>Rootstock</b>
+              <img src="../../static/images/arrow_forward_white.svg" />
+              <img src="../../static/images/rollup_icon_white.svg" />&nbsp;Rollup
+            </i-button>
+            <i-button
+              id="btn-account-transfer"
+              block
+              class="_margin-y-0"
+              data-cy="account_send_zksync_button"
+              size="md"
+              to="/account/transfer"
+              variant="secondary"
+            >
+              <img src="../../static/images/rollup_icon_white.svg" />&nbsp;<b>Rollup</b>
+              <img src="../../static/images/arrow_forward_white.svg" />
+              <img src="../../static/images/l1_icon_white.svg" />&nbsp;Rootstock
             </i-button>
           </div>
 
@@ -133,6 +161,10 @@ export default Vue.extend({
   data() {
     return {
       search: "",
+      isRollupMode: false,
+      // emptyBalances: true
+      // showLoader: false
+      // showSearching: true
     };
   },
   computed: {
@@ -207,3 +239,71 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.dappPageWrapper .tileBlock {
+  max-width: 550px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  border: red 2px solid;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: red;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+// input:checked + .slider {
+//   background-color: #2196f3;
+// }
+
+// input:focus + .slider {
+//   box-shadow: 0 0 1px #2196f3;
+// }
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+</style>
