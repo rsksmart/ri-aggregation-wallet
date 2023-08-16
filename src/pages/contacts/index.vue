@@ -73,9 +73,6 @@
       <div class="contactsListContainer genericListContainer">
         <div v-if="!isSearching && !hasDisplayedContacts" class="nothingFound _margin-bottom-0 _margin-top-1">
           <div>The contact list is empty</div>
-          <i-button block link size="lg" variant="secondary" class="_margin-top-1" @click="addNewContact()"
-            >Add contact
-          </i-button>
         </div>
         <div v-else-if="!hasDisplayedContacts" class="nothingFound">
           <span>
@@ -111,7 +108,7 @@
                   <div id="edit-delete-nav">
                     <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit Contact </i-button>
                     <hr class="customHr" />
-                    <i-button class="edit-delete-btn" @click="deleteContact()"> Delete Contact </i-button>
+                    <i-button class="edit-delete-btn" @click="deleteContact(contact)"> Delete Contact </i-button>
                   </div>
                 </template>
               </i-popover>
@@ -229,10 +226,10 @@ export default Vue.extend({
       });
       this.contactModal.enabled = false;
     },
-    deleteContact() {
+    deleteContact(contact: ZkContact) {
       this.$analytics.track("delete_contact");
 
-      this.$store.dispatch("zk-contacts/removeContact", this.contactModal.openedAddress);
+      this.$store.dispatch("zk-contacts/removeContact", contact.address);
       this.contactModal.enabled = false;
     },
     restoreDeleted(contact: ZkContact) {
