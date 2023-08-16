@@ -73,9 +73,6 @@
       <div class="contactsListContainer genericListContainer">
         <div v-if="!isSearching && !hasDisplayedContacts" class="nothingFound _margin-bottom-0 _margin-top-1">
           <div>The contact list is empty</div>
-          <i-button block link size="lg" variant="secondary" class="_margin-top-1" @click="addNewContact()"
-            >Add contact
-          </i-button>
         </div>
         <div v-else-if="!hasDisplayedContacts" class="nothingFound">
           <span>
