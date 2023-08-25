@@ -86,7 +86,7 @@
       </template>
 
       <template v-if="displayAmountInput">
-        <div class="_padding-top-1 inputLabel">Amount</div>
+        <div class="_padding-top-3 inputLabel">Amount</div>
         <amount-input
           ref="amountInput"
           v-model="inputtedAmount"
