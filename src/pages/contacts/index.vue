@@ -232,6 +232,23 @@ export default Vue.extend({
         return;
       }
 
+      const contactAddressExists = searchInObject(
+        this.contactsList,
+        this.contactModal.address,
+        ([_, contact]: [string, ZkContact]) => contact.address
+      );
+
+      if (
+        Object.keys(contactAddressExists).length > 0 &&
+        Object.values(contactAddressExists)[0].address === this.contactModal.address
+      ) {
+        const alert = confirm(
+          "A contact with address already exists, proceeding will update the contact name. Do you want to proceed?"
+        );
+
+        if (!alert) return;
+      }
+
       this.$analytics.track(this.contactModal.type === "add" ? "add_contact" : "edit_contact");
 
       await this.$store.dispatch("zk-contacts/setContact", {
