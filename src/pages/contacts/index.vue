@@ -218,6 +218,20 @@ export default Vue.extend({
         await this.$store.dispatch("zk-contacts/removeContact", this.contactModal.openedAddress);
       }
 
+      const contactNameExists = searchInObject(
+        this.contactsList,
+        this.contactModal.name.trim(),
+        ([_, contact]: [string, ZkContact]) => contact.name
+      );
+
+      if (
+        Object.keys(contactNameExists).length > 0 &&
+        Object.values(contactNameExists)[0].name.trim() === this.contactModal.name.trim()
+      ) {
+        this.contactModal.error = "Contact name already exists";
+        return;
+      }
+
       this.$analytics.track(this.contactModal.type === "add" ? "add_contact" : "edit_contact");
 
       await this.$store.dispatch("zk-contacts/setContact", {
