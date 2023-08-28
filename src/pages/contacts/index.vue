@@ -242,11 +242,8 @@ export default Vue.extend({
         Object.keys(contactAddressExists).length > 0 &&
         Object.values(contactAddressExists)[0].address === this.contactModal.address
       ) {
-        const alert = confirm(
-          "A contact with address already exists, proceeding will update the contact name. Do you want to proceed?"
-        );
-
-        if (!alert) return;
+        this.contactModal.error = "Contact address already exists";
+        return;
       }
 
       this.$analytics.track(this.contactModal.type === "add" ? "add_contact" : "edit_contact");
