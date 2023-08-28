@@ -4462,9 +4462,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-nuxt-core@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.2.3"
+"@rsksmart/rif-rollup-nuxt-core@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.2.4"
   dependencies:
     "@nuxtjs/axios": ^5.13.1
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
@@ -4491,7 +4491,7 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
-  checksum: 999600aa7e1f9a24dbf5aa74e26eb8d3e7ec1507b3cd396187ca1c6cb504478ee67289e111ce2002cb3e86e3ecde76b271052cef7cb9ede050318573b45ac223
+  checksum: 7f74f76cb055cf4511cb5672a8ec4bab0f462d406d768365626a1a62c0d02f7cb66780137134c13a31ccab9fe7784b78473ec7a0f1ba372d83c5e20f07a65809
   languageName: node
   linkType: hard
 
@@ -4517,7 +4517,7 @@ __metadata:
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
-    "@rsksmart/rif-rollup-nuxt-core": ^1.2.3
+    "@rsksmart/rif-rollup-nuxt-core": ^1.2.4
     "@rsksmart/rns-sdk": ^1.0.0-beta.8
     "@semantic-release/changelog": ^6.0.1
     "@semantic-release/commit-analyzer": ^9.0.2
