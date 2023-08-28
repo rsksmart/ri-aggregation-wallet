@@ -45,9 +45,7 @@
       <!-- <i-button v-if="contactModal.type === 'edit'" block link size="md" variant="secondary" @click="deleteContact()">
         <v-icon name="ri-delete-bin-line" />&nbsp;&nbsp;Delete contact
       </i-button> -->
-      <button v-show="contactModal.type === 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">
-        Save contact
-      </button>
+      <button v-show="contactModal.type === 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">Save</button>
       <button v-show="contactModal.type !== 'edit'" id="contactCreateBtn" size="md" @click="saveContact()">
         Create contact
       </button>
