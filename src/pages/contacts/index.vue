@@ -242,7 +242,9 @@ export default Vue.extend({
         Object.keys(contactAddressExists).length > 0 &&
         Object.values(contactAddressExists)[0].address === this.contactModal.address
       ) {
-        this.contactModal.error = "Contact address already exists";
+        this.contactModal.error = `Contact: ${
+          Object.values(contactAddressExists)[0].name
+        } already has this same address`;
         return;
       }
 
