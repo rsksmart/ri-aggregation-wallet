@@ -587,8 +587,7 @@ export default Vue.extend({
         this.amountOrAddressEmpty = true;
         return;
       }
-      console.log("Autorize on Rif Rollup");
-      if (this.inputtedAddress === this.$store.getters["zk-account/address"]) {
+      if (this.inputtedAddress === this.$store.getters["zk-account/address"] && this.type === "Transfer") {
         this.addressIsMyOwn = true;
         return;
       }
