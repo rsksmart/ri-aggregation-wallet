@@ -66,34 +66,6 @@
           <span v-else>No balances yet. Please make a deposit or request money from someone!</span>
         </div>
       </div>
-      <template v-if="tokensType !== 'L2-NFT'">
-        <i-button
-          id="btn-cant-find-token"
-          block
-          class="_margin-top-1"
-          link
-          size="lg"
-          variant="secondary"
-          @click="$accessor.openModal('NoTokenFound')"
-        >
-          Can't find a token?
-        </i-button>
-        <block-modals-no-token-found />
-      </template>
-      <template v-else>
-        <i-button
-          id="btn-cant-find-token"
-          block
-          class="_margin-top-1"
-          link
-          size="lg"
-          variant="secondary"
-          @click="$accessor.openModal('NoNftTokenFound')"
-        >
-          Can't find a token?
-        </i-button>
-        <block-modals-no-nft-token-found />
-      </template>
     </template>
   </div>
 </template>
