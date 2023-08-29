@@ -42,6 +42,13 @@
         font-weight: 500;
         line-height: 120%;
       }
+      .symbol {
+        display: inline-flex;
+        justify-content: flex-end;
+        color: #121212;
+        font-size: 16px;
+        height: 15px;
+      }
       .tokenSymbol {
         display: inline-flex;
         color: #121212;
@@ -163,7 +170,7 @@
       .actionInfo {
         width: 100%;
         display: grid;
-        grid-template-rows: 50% 50%;
+        grid-template-rows: 33% 33% 33%;
         grid-template-columns: 100%;
 
         .tokenPrice {
