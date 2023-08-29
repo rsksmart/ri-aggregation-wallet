@@ -19,7 +19,7 @@
         <div class="createdAt">{{ timeAgo }}</div>
         <template #body>{{ transaction.createdAt | formatDateTime }}</template>
       </i-tooltip>
-      <i-tooltip placement="right" class="status">
+      <i-tooltip placement="bottom-start" class="status">
         <v-icon :name="transactionStatus.icon" :class="transactionStatus.class" />
         <template #body>{{ transactionStatus.text }}</template>
       </i-tooltip>
