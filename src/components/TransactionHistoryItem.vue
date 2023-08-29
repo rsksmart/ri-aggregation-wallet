@@ -26,7 +26,10 @@
     </div>
     <div class="actionInfo">
       <div v-if="!isNFT && !isSwap" :class="{ small: smallAmountText }" class="amount">
-        {{ itReducesMyBalance }} {{ amount | parseBigNumberish(tokenSymbol) }} {{ tokenSymbol }}
+        {{ itReducesMyBalance }} {{ amount | parseBigNumberish(tokenSymbol) }}
+      </div>
+      <div v-if="!isNFT && !isSwap" :class="{ small: smallAmountText }" class="symbol">
+        {{ tokenSymbol }}
       </div>
       <token-price :symbol="tokenSymbol" :amount="amount" />
       <template v-if="!isMintNFT && !isSwap">
@@ -419,6 +422,12 @@ export default Vue.extend({
     },
     isL1Transaction() {
       return ["Deposit", "Withdraw"].includes(this.transaction.op.type);
+    },
+    cropLongAmount(amount: BigNumberish): BigNumberish {
+      console.log("amount", amount);
+      console.log("Number(amount)", Number(amount));
+      console.log("toFixed", Number(amount).toFixed(5));
+      return amount;
     },
   },
 });
