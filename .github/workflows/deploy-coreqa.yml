@@ -1,0 +1,52 @@
+name: CICD for CORE-QA 
+
+on:
+  push:
+    branches: [core-qa]
+  pull_request:
+    branches: [core-qa]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: QA
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.CORE_QA_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.CORE_QA_AWS_SECRET_ACCESS_KEY }}
+        aws-region: 'us-east-1'
+
+    - name: Set up Environment
+      run: |
+        cp ./environments/.env.qa ./envfile.env
+        source ./envfile.env
+
+    - name: Setup Node 16
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.20.0'
+
+    - name: Set yarn version
+      run: yarn set version 3.1.1
+    
+    - name: Install dependencies
+      run: |
+        yarn install
+
+    - name: Build site
+      run: |
+        yarn ci:build:qa
+
+    - name: Deploy site to S3
+      run: |
+        aws s3 sync --delete --only-show-errors public/ ${{ secrets.CORE_QA_S3_BUCKET }}
+
+    - name: Invalidate CloudFront cache
+      run: |
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.CORE_QA_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
