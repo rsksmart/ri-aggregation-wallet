@@ -113,6 +113,9 @@ body.inkline.-light .defaultLayout {
     input {
       color: $black;
     }
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    }
 
     .userImgPlaceholder {
       background-color: $white;
@@ -138,6 +141,9 @@ body.inkline.-dark .defaultLayout {
 
     input {
       color: $white;
+    }
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px transparentize($color: #252e78, $amount: 0.1) inset !important;
     }
 
     .userImgPlaceholder {
