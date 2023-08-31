@@ -41,7 +41,7 @@ jobs:
 
     - name: Build site
       run: |
-        yarn ci:build:qa
+        yarn ci:build:coreqa
 
     - name: Deploy site to S3
       run: |
