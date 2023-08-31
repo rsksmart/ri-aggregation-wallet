@@ -139,12 +139,12 @@ body.inkline.-dark .defaultLayout {
     background-color: $input-border-color-dark !important;
     align-items: center;
 
-    input {
-      color: $white;
+    #addressInput {
+      color: $white !important;
     }
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 1000px transparentize($color: #252e78, $amount: 0.1) inset !important;
-      -webkit-text-fill-color: $white;
+      -webkit-text-fill-color: $white !important;
     }
 
     .userImgPlaceholder {

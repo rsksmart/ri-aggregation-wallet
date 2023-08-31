@@ -141,6 +141,10 @@
 
 body.inkline {
   &.-light {
+    input#contactNameInput:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    }
+
     .contactsListContainer {
       &::-webkit-scrollbar-thumb {
         background-color: $input-border-color-focus-light;
@@ -153,6 +157,20 @@ body.inkline {
   }
 
   &.-dark {
+    .contactsPage {
+      input#contactNameInput:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px white inset !important;
+      }
+
+      .defaultLayout .walletContainer input {
+        color: $black !important;
+      }
+      input#addressInput:-webkit-autofill {
+        -webkit-text-fill-color: $black !important;
+        -webkit-box-shadow: 0 0 0 1000px white inset !important;
+      }
+    }
+
     .contactsListContainer {
       &::-webkit-scrollbar-thumb {
         background-color: $input-border-color-focus-dark;
