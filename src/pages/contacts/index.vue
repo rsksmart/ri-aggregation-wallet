@@ -353,6 +353,7 @@ h2 {
 
 .contactsListContainer {
   position: relative;
+  min-height: 140px;
   max-height: 400px !important;
   overflow-y: auto !important;
   overflow-x: visible !important;
