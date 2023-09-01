@@ -86,6 +86,8 @@ export default Vue.extend({
   },
   methods: {
     close() {
+      const previousRoute = this.$nuxt.context.from.path;
+
       this.$accessor.closeActiveModal();
       this.$store.commit("zk-wallet/setCPKSignError", undefined);
       this.$store.commit("zk-wallet/setCPKSignState", false);
@@ -94,6 +96,7 @@ export default Vue.extend({
       if (this.$store.getters["zk-wallet/cpk"] !== false) {
         return;
       }
+
       const isForbiddenRoute = () => {
         const forbiddenRoutes = [
           "/transaction/transfer",
@@ -101,21 +104,19 @@ export default Vue.extend({
           "/transaction/nft/transfer",
           "/transaction/nft/withdraw",
         ];
+
         for (const route of forbiddenRoutes) {
-          if (
-            this.$accessor.getPreviousRoute?.path === route ||
-            this.$accessor.getPreviousRoute?.path === route + "/"
-          ) {
+          if (previousRoute === route || previousRoute === route + "/") {
             return true;
           }
         }
         return false;
       };
-      if (!this.$accessor.getPreviousRoute || isForbiddenRoute()) {
+
+      if (!previousRoute || isForbiddenRoute()) {
         this.$router.push("/");
       } else {
-        // @ts-ignore
-        this.$router.push(this.$accessor.getPreviousRoute);
+        this.$router.push(previousRoute);
       }
     },
     async signActivation() {
