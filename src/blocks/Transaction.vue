@@ -335,11 +335,7 @@ export default Vue.extend({
       ) {
         return { path: this.fromRoute.path, query: this.fromRoute.query, params: this.fromRoute.params };
       }
-      if (this.mainToken === "L2-NFT" || this.type === "MintNFT") {
-        return "/account/nft";
-      } else if (this.type === "Deposit") {
-        return "/transaction/deposit";
-      }
+
       return "/account";
     },
     type(): ZkTransactionType {
