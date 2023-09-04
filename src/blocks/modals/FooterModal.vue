@@ -16,7 +16,7 @@
         </a>
         <a class="modalFooterBtn big" :href="blockExplorerLink" target="_blank">
           <v-icon name="ri-external-link-line" />
-          <span>RIF Rollup explorer</span>
+          <span>RIF Rollup Explorer</span>
         </a>
       </template>
       <template #footer>
