@@ -26,6 +26,9 @@
           {{ domainSubText }}
         </div>
         <div v-if="error" class="errorText" data-cy="address_block_error_message">{{ error }}</div>
+        <div v-if="domainFetchingInProgress">
+          <img src="../static/rif-loading.gif" alt="domain fetching in progress icon" />
+        </div>
       </transition>
     </div>
   </div>
