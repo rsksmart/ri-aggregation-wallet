@@ -26,29 +26,6 @@ import Vue from "vue";
 
 export default Vue.extend({
   layout: "index",
-  // async asyncData({ redirect, store }) {
-  //   const tracklogin = localStorage.getItem("lastSelectedWallet");
-
-  //   if(tracklogin) {
-
-  //     await store.dispatch["zk-onboard/restoreLogin"]
-  //     const canLogin = store.getters["zk-onboard/restoringSession"]
-  //     console.log("can login?", canLogin);
-
-  //     // return redirect('/account');
-  //     // console.log(refreshWalletTry);
-
-  //     // if (!refreshWalletTry) {
-  //     //   return store.dispatch("zk-account/logout");
-  //     // } else {
-  //       // this.$analytics.track("login", {
-  //       //   connectionType: "Rootstock Wallet",
-  //       //   wallet: store.getters["zk-onboard/selectedWallet"],
-  //       // });
-  //       //
-  //     // }
-  //   }
-  // },
   computed: {
     isMainnet(): boolean {
       return this.$store.getters["zk-provider/network"] === "mainnet";
