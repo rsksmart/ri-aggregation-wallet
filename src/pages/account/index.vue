@@ -5,12 +5,6 @@
         <total-usd-balance />
       </h3>
 
-      <wallet-address
-        :wallet="$store.getters['zk-account/address']"
-        class="clickablePicture _margin-bottom-1"
-        @clickPicture="openAccountModal"
-      />
-
       <div v-if="emptyBalances" class="centerBlock">
         <p class="tileText">
           No balances yet, please
@@ -19,41 +13,66 @@
           someone!
         </p>
         <i-button
-          id="btn-account-deposit-empty-balances"
+          id="btn-account-deposit"
           block
-          class="_margin-top-1"
+          class="_margin-top-1 action-button"
           data-cy="account_deposit_button"
-          size="lg"
+          size="md"
           to="/transaction/deposit"
           variant="secondary"
         >
-          <v-icon class="planeIcon" name="ri-add-fill" />&nbsp;Deposit&nbsp;
+          <img src="../../static/images/deposit_icon.svg" />&nbsp;Deposit
         </i-button>
       </div>
       <div v-else class="balances">
         <template v-if="!showLoader">
-          <div class="_display-flex _justify-content-space-between balancesButtonGroup _margin-y-1">
+          <div
+            id="account-buttons"
+            class="_display-flex _justify-content-space-between balancesButtonGroup _margin-y-1"
+          >
+            <i-button
+              id="btn-account-send"
+              block
+              class="action-button _margin-y-0 _margin-right-1 _padding-right-2"
+              data-cy="account_send_button"
+              size="md"
+              variant="secondary"
+              to="transaction/transfer"
+            >
+              <img src="../../static/images/send_icon.svg" class="button-icon" />&nbsp;Send
+            </i-button>
+            <i-button
+              id="btn-account-receive"
+              block
+              class="action-button _margin-y-0 _margin-right-1 _padding-right-2"
+              data-cy="account_receive_button"
+              size="md"
+              variant="secondary"
+              @click="togglePopup"
+            >
+              <img src="../../static/images/receive_icon.svg" />&nbsp;Receive
+            </i-button>
             <i-button
               id="btn-account-deposit"
               block
-              class="_margin-y-0 _margin-right-1 _padding-right-2"
+              class="action-button second-row-button _margin-y-0 _margin-right-1 _padding-right-2"
               data-cy="account_deposit_button"
               size="md"
               to="/transaction/deposit"
               variant="secondary"
             >
-              <v-icon class="planeIcon" name="ri-add-fill" />&nbsp;Deposit
+              <img src="../../static/images/deposit_icon.svg" />&nbsp;Deposit
             </i-button>
             <i-button
               id="btn-account-transfer"
               block
-              class="_margin-y-0"
+              class="action-button second-row-button _margin-y-0 _margin-right-1 _padding-right-2"
               data-cy="account_send_zksync_button"
               size="md"
-              to="/account/transfer"
+              to="/transaction/withdraw"
               variant="secondary"
             >
-              <v-icon class="planeIcon" name="ri-send-plane-fill" />&nbsp;Transfer
+              <img src="../../static/images/withdraw_icon.svg" />&nbsp;Withdraw
             </i-button>
           </div>
 
@@ -204,6 +223,46 @@ export default Vue.extend({
     openBalanceInfoModal(): void {
       this.$accessor.openModal("BalanceInfo");
     },
+    togglePopup(): void {
+      this.$accessor.setAccountModalState(true);
+    },
   },
 });
 </script>
+
+<style lang="scss" scoped>
+#account-buttons {
+  display: grid !important;
+  grid-template-rows: 50% 50% !important;
+  grid-template-columns: 49.5% 49.5% !important;
+  grid-column-gap: 1%;
+  grid-row-gap: 6%;
+}
+
+.action-button {
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.second-row-button {
+  background-color: black !important;
+}
+
+.button-icon {
+  object-position: 20% 20%;
+}
+
+@media screen and (max-width: $mobile) {
+  #account-buttons {
+    display: grid !important;
+    grid-template-rows: 50% 50% !important;
+    grid-template-columns: 49.5% 49.5% !important;
+    grid-column-gap: 1%;
+    grid-row-gap: 6%;
+  }
+
+  .action-button {
+    width: 100% !important;
+  }
+}
+</style>
