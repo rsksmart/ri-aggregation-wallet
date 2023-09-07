@@ -27,10 +27,16 @@
     </div>
     <div v-else class="transactionTile tileBlock">
       <div class="tileHeadline withBtn h3">
-        <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex">
+        <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex _align-items-initial">
           <v-icon name="ri-arrow-left-line" scale="1" />
         </nuxt-link>
-        <div>{{ transactionActionName }}</div>
+        <template v-if="type === 'Transfer'">
+          <div class="transfer">
+            <div class="back">Back</div>
+            <div class="title">Send</div>
+          </div>
+        </template>
+        <template v-else>{{ transactionActionName }}</template>
       </div>
 
       <div v-if="isDeposit">
@@ -53,36 +59,41 @@
         </template>
       </div>
 
-      <template v-if="type === 'Transfer'">
-        <div class="_padding-0 _display-flex _justify-content-end">
-          <i-button
-            id="btn-withdraw-l1"
-            class="_padding-y-0 send-link"
-            data-cy="send_send_l1_button"
-            link
-            to="/transaction/withdraw"
-            variant=""
-          >
-            Send to Rootstock (L1)
-            <v-icon class="" name="ri-arrow-right-up-line" scale="0.75" />
-          </i-button>
-        </div>
-      </template>
-
       <template v-if="displayAddressInput">
-        <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
-        <address-input
-          ref="addressInput"
-          v-model="inputtedAddress"
-          :token="chosenToken ? chosenToken : undefined"
-          @enter="commitTransaction()"
-        />
-        <!-- <block-choose-contact
-          :address="inputtedAddressWithDomain"
-          :display-own-address="displayOwnAddress"
-          class="_margin-top-05"
-          @chosen="chooseAddress($event)"
-        /> -->
+        <template v-if="type === 'Transfer'">
+          <div class="transfer">
+            <div class="addressValidation">
+              <div :class="addressValidation ? 'valid' : 'error'">
+                {{ addressValidation ? "Address is valid" : "Address is invalid" }}
+              </div>
+            </div>
+            <input
+              id="addressInput"
+              ref="addressInput"
+              v-model="inputtedAddress"
+              placeholder="Recipient address"
+              type="text"
+              autocomplete="none"
+              data-cy="address_block_wallet_address_input"
+              spellcheck="false"
+            />
+          </div>
+        </template>
+        <template v-else>
+          <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
+          <address-input
+            ref="addressInput"
+            v-model="inputtedAddress"
+            :token="chosenToken ? chosenToken : undefined"
+            @enter="commitTransaction()"
+          />
+          <!-- <block-choose-contact
+            :address="inputtedAddressWithDomain"
+            :display-own-address="displayOwnAddress"
+            class="_margin-top-05"
+            @chosen="chooseAddress($event)"
+          /> -->
+        </template>
       </template>
 
       <template v-if="displayAmountInput">
@@ -249,7 +260,7 @@
         </span>
       </div>
       <div
-        v-if="feeError"
+        v-if="feeError && addressValidation"
         class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
       >
         <div class="errorText _text-center">
@@ -310,6 +321,7 @@ export default Vue.extend({
       requestingSigner: false,
       amountOrAddressEmpty: false,
       addressIsMyOwn: false,
+      addressValidation: true,
     };
   },
   computed: {
@@ -502,6 +514,11 @@ export default Vue.extend({
     },
     contentHash(val) {
       this.$store.commit("zk-transaction/setContentHash", val);
+    },
+    inputtedAddress(val) {
+      console.log("val", val);
+      this.addressValidation = this.type === "Transfer" ? val.match(/0x[a-fA-F0-9]{40}$/) !== null : true;
+      console.log("addressValidation", this.addressValidation);
     },
   },
   async mounted() {
@@ -781,6 +798,14 @@ export default Vue.extend({
         color: transparentize($color: $gray, $amount: 0.3);
       }
     }
+
+    .transfer {
+      color: #fff !important;
+      input {
+        color: $white !important;
+        background: #ffffff30 !important;
+      }
+    }
   }
 }
 
@@ -799,6 +824,52 @@ h4.tileSmallHeadline {
     flex-flow: nowrap row;
     justify-content: space-between;
     align-items: flex-start;
+  }
+}
+
+.transfer {
+  grid-template-rows: 50% 50%;
+  color: #000;
+  font-style: normal;
+  text-align: left;
+  .back {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+    margin-top: 7px;
+  }
+  .title {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 140%;
+    margin: 10px 0 0 -40px;
+  }
+  input {
+    color: $black;
+    width: 100%;
+    height: 78px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: #fff;
+    padding: 16px;
+  }
+  input::placeholder {
+    color: #b8b8b8;
+    margin: 0 !important;
+  }
+  .addressValidation {
+    margin: 0 0 -25px 15px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 140%;
+    position: relative;
+    z-index: 1;
+    .error {
+      color: #e94141;
+    }
+    .valid {
+      color: #58cb8d;
+    }
   }
 }
 </style>
