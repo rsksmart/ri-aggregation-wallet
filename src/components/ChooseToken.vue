@@ -221,7 +221,7 @@ export default Vue.extend({
       return this.$emit("chosen", symbolOrID);
     },
     parseBigNumber(value: string) {
-      return formatFixed(value);
+      return formatFixed(value, 18);
     },
   },
 });
