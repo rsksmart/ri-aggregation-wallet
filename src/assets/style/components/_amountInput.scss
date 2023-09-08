@@ -1,6 +1,7 @@
 .amountInput {
   transition: box-shadow $transition1;
   will-change: box-shadow;
+  margin-top: 12px;
 
   &.allowance {
     .minAmount {
@@ -27,5 +28,19 @@
     color: $red;
     font-size: 12px;
     line-height: $fontSizeRegular;
+  }
+
+  .tokenSelector {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+  }
+  .tokenDetail {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    color: #b8b8b8;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
   }
 }

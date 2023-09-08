@@ -61,23 +61,12 @@
 
       <template v-if="displayAddressInput">
         <template v-if="type === 'Transfer'">
-          <div class="transfer">
-            <div class="addressValidation">
-              <div :class="addressValidation ? 'valid' : 'error'">
-                {{ addressValidation ? "Address is valid" : "Address is invalid" }}
-              </div>
-            </div>
-            <input
-              id="addressInput"
-              ref="addressInput"
-              v-model="inputtedAddress"
-              placeholder="Recipient address"
-              type="text"
-              autocomplete="none"
-              data-cy="address_block_wallet_address_input"
-              spellcheck="false"
-            />
-          </div>
+          <address-input-new
+            ref="addressInput"
+            v-model="inputtedAddress"
+            :token="chosenToken ? chosenToken : undefined"
+            @enter="commitTransaction()"
+          />
         </template>
         <template v-else>
           <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
@@ -97,18 +86,33 @@
       </template>
 
       <template v-if="displayAmountInput">
-        <div class="_padding-top-3 inputLabel">Amount</div>
-        <amount-input
-          ref="amountInput"
-          v-model="inputtedAmount"
-          :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
-          :token="chosenToken ? chosenToken : undefined"
-          :type="type"
-          :type-name="transactionActionName"
-          autofocus
-          @chooseToken="chooseTokenModal = 'mainToken'"
-          @enter="commitTransaction()"
-        />
+        <template v-if="type === 'Transfer'">
+          <amount-input-new
+            ref="amountInput"
+            v-model="inputtedAmount"
+            :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
+            :token="chosenToken ? chosenToken : undefined"
+            :type="type"
+            :type-name="transactionActionName"
+            autofocus
+            @chooseToken="chooseTokenModal = 'mainToken'"
+            @enter="commitTransaction()"
+          />
+        </template>
+        <template v-else>
+          <div class="_padding-top-3 inputLabel">Amount</div>
+          <amount-input
+            ref="amountInput"
+            v-model="inputtedAmount"
+            :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
+            :token="chosenToken ? chosenToken : undefined"
+            :type="type"
+            :type-name="transactionActionName"
+            autofocus
+            @chooseToken="chooseTokenModal = 'mainToken'"
+            @enter="commitTransaction()"
+          />
+        </template>
       </template>
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
@@ -260,7 +264,7 @@
         </span>
       </div>
       <div
-        v-if="feeError && addressValidation"
+        v-if="feeError"
         class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
       >
         <div class="errorText _text-center">
@@ -304,6 +308,7 @@ import { getAddress } from "@ethersproject/address";
 import { RestProvider } from "@rsksmart/rif-rollup-js-sdk";
 import { warningCanceledKey } from "@/blocks/modals/TransferWarning.vue";
 import { DO_NOT_SHOW_WITHDRAW_WARNING_KEY } from "@/blocks/modals/WithdrawWarning.vue";
+import AddressInputNew from "@/components/AddressInputNew.vue";
 
 const feeNameDict = new Map([
   ["txFee", "Fee"],
@@ -311,6 +316,7 @@ const feeNameDict = new Map([
 ]);
 
 export default Vue.extend({
+  components: { AddressInputNew },
   data() {
     return {
       inputtedAmount: this.$store.getters["zk-transaction/amount"],
@@ -321,7 +327,6 @@ export default Vue.extend({
       requestingSigner: false,
       amountOrAddressEmpty: false,
       addressIsMyOwn: false,
-      addressValidation: true,
     };
   },
   computed: {
@@ -514,11 +519,6 @@ export default Vue.extend({
     },
     contentHash(val) {
       this.$store.commit("zk-transaction/setContentHash", val);
-    },
-    inputtedAddress(val) {
-      console.log("val", val);
-      this.addressValidation = this.type === "Transfer" ? val.match(/0x[a-fA-F0-9]{40}$/) !== null : true;
-      console.log("addressValidation", this.addressValidation);
     },
   },
   async mounted() {
@@ -801,10 +801,6 @@ export default Vue.extend({
 
     .transfer {
       color: #fff !important;
-      input {
-        color: $white !important;
-        background: #ffffff30 !important;
-      }
     }
   }
 }
@@ -826,7 +822,6 @@ h4.tileSmallHeadline {
     align-items: flex-start;
   }
 }
-
 .transfer {
   grid-template-rows: 50% 50%;
   color: #000;
@@ -843,33 +838,6 @@ h4.tileSmallHeadline {
     font-weight: 600;
     line-height: 140%;
     margin: 10px 0 0 -40px;
-  }
-  input {
-    color: $black;
-    width: 100%;
-    height: 78px;
-    border-radius: 6px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background: #fff;
-    padding: 16px;
-  }
-  input::placeholder {
-    color: #b8b8b8;
-    margin: 0 !important;
-  }
-  .addressValidation {
-    margin: 0 0 -25px 15px;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 140%;
-    position: relative;
-    z-index: 1;
-    .error {
-      color: #e94141;
-    }
-    .valid {
-      color: #58cb8d;
-    }
   }
 }
 </style>
