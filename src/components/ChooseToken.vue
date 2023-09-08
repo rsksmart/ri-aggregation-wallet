@@ -47,7 +47,7 @@
             <div class="rightSide">
               <div class="rowItem">
                 <div class="total">
-                  {{ parseBigNumberish(balance.toString()) }}
+                  {{ parseBigNumber(balance.toString()) }}
                   <span class="balancePrice">
                     <token-price :amount="balance" :symbol="symbolOrID" />
                   </span>
@@ -82,7 +82,7 @@ import {
   ZkTokenBalances,
   ZkTransactionMainToken,
 } from "@rsksmart/rif-rollup-nuxt-core/types";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, formatFixed } from "@ethersproject/bignumber";
 import { Tokens } from "@rsksmart/rif-rollup-js-sdk/build/types";
 
 export default Vue.extend({
@@ -220,10 +220,8 @@ export default Vue.extend({
       }
       return this.$emit("chosen", symbolOrID);
     },
-    parseBigNumberish(value: string) {
-      value = "";
-      value = value + "";
-      return value + "0.1";
+    parseBigNumber(value: string) {
+      return formatFixed(value);
     },
   },
 });
