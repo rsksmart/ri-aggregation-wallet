@@ -4,12 +4,15 @@
       <loader />
     </div>
     <template v-else>
+      <div class="select-token-header">
+        <p>Select token</p>
+      </div>
       <div class="searchContainer">
         <i-input
           ref="tokenSymbolInput"
           v-model="search"
           data-cy="choose_token_block_token_input"
-          :placeholder="tokensType === 'L2-NFT' ? 'Filter NFT tokens' : `Filter balances in ${tokensType}`"
+          placeholder="Search token"
           maxlength="10"
         >
           <template #prefix>
@@ -18,18 +21,6 @@
             </i>
           </template>
         </i-input>
-        <div
-          id="btn-update-balances"
-          class="updateBtn"
-          :class="{ disabled: secondaryLoading }"
-          @click="updateBalances()"
-        >
-          <i-tooltip placement="left">
-            <v-icon v-if="secondaryLoading" name="ri-loader-5-line" class="spin-animation" />
-            <v-icon v-else name="ri-restart-line" />
-            <template #body>Update {{ tokensType }} balances</template>
-          </i-tooltip>
-        </div>
       </div>
       <div class="tokenListContainer genericListContainer _margin-top-05">
         <template v-for="(balance, symbolOrID) in displayedList">
@@ -41,15 +32,27 @@
             :data-cy="`token_item_${symbolOrID}`"
             @click="chooseToken(symbolOrID)"
           >
-            <div class="tokenSymbol">
-              <span>{{ tokensType === "L2-NFT" ? "NFT-" : "" }}{{ symbolOrID }}</span>
-              <i-tooltip v-if="tokensType === 'L2-Tokens' && !allowedFeeTokens[symbolOrID]" placement="bottom">
-                <v-icon class="iconInfo" name="ri-error-warning-line" />
-                <template #body>Not available for paying fees</template>
-              </i-tooltip>
+            <div class="token-info">
+              <div>
+                <token-logo class="token-logo" :symbol="symbolOrID" />
+              </div>
+              <div id="token-description">
+                <div class="tokenSymbol">
+                  {{ symbolOrID }}
+                </div>
+                <token-name :symbol="symbolOrID" />
+              </div>
             </div>
-            <div v-if="displayTokenBalance" class="rightSide">
-              <div class="balance">{{ balance | parseBigNumberish(symbolOrID) }}</div>
+
+            <div class="rightSide">
+              <div class="rowItem">
+                <div class="total">
+                  {{ parseBigNumber(balance.toString()) }}
+                  <span class="balancePrice">
+                    <token-price :amount="balance" :symbol="symbolOrID" />
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </template>
@@ -79,7 +82,7 @@ import {
   ZkTokenBalances,
   ZkTransactionMainToken,
 } from "@rsksmart/rif-rollup-nuxt-core/types";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { BigNumberish, formatFixed } from "@ethersproject/bignumber";
 import { Tokens } from "@rsksmart/rif-rollup-js-sdk/build/types";
 
 export default Vue.extend({
@@ -217,6 +220,60 @@ export default Vue.extend({
       }
       return this.$emit("chosen", symbolOrID);
     },
+    parseBigNumber(value: string) {
+      return formatFixed(value, 18);
+    },
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.select-token-header {
+  font-weight: bold;
+  margin-top: 30px;
+  margin-left: 5px;
+  font-size: 1.2rem;
+}
+
+.tokenListContainer {
+  margin-bottom: 30px;
+  overflow-y: scroll;
+}
+.tokenItem {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-top: 10px !important;
+  height: 80px !important;
+
+  &.-light {
+    background-color: white !important;
+  }
+}
+.token-logo {
+  text-align: left;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-right: 0px !important;
+}
+
+.token-info {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 60px;
+  margin-left: 10px;
+
+  &.-light {
+    background-color: white !important;
+  }
+}
+
+.tokenName {
+  font-size: 0.8rem;
+}
+
+.rightSide {
+  margin-right: 10px;
+}
+</style>
