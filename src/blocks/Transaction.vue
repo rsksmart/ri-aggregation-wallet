@@ -114,6 +114,8 @@
           />
         </template>
       </template>
+      <div v-if="type === 'Transfer'"></div>
+      <template> </template>
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
           <div>Content Address</div>

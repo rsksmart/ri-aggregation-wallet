@@ -29,18 +29,82 @@
     font-size: 12px;
     line-height: $fontSizeRegular;
   }
+}
+.amountInputNew {
+  transition: box-shadow $transition1;
+  will-change: box-shadow;
+  margin-top: 12px;
 
+  &.allowance {
+    .minAmount {
+      min-height: 24px;
+    }
+  }
+
+  input {
+    border-radius: $borderRadiusSm 0 0 $borderRadiusSm !important;
+    height: 78px;
+    padding: 12px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  button {
+    border-radius: 0 $borderRadiusSm $borderRadiusSm 0 !important;
+  }
+
+  &.error .form-input-group input {
+    box-shadow: 0 0 0 1px $red !important;
+  }
+
+  .error {
+    width: 100%;
+    min-height: 18px;
+    padding-top: 5px;
+    color: $red;
+    font-size: 12px;
+    line-height: $fontSizeRegular;
+  }
   .tokenSelector {
     display: grid;
     grid-template-columns: 20% 60% 20%;
-  }
-  .tokenDetail {
-    display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 100%;
+    align-items: center;
     color: #b8b8b8;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: 100%;
+  }
+
+  .button {
+    padding: 0 !important;
+    border-radius: 6px;
+    height: 100%;
+    &.-light.-link {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background-color: $white;
+      &:not(:disabled):not(.-disabled):hover,
+      &:not(:disabled):not(.-disabled).-hovered {
+        background-color: $white !important;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+    }
+    &.-dark.-link {
+      background-color: #ffffff30;
+    }
+  }
+  .form-input-group {
+    border-radius: 6px !important;
+    &.-light .form-input input {
+      border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+
+  .maxValue {
+    color: #4b5cf0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+    text-decoration-line: underline;
   }
 }

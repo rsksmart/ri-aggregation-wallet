@@ -1,56 +1,59 @@
 <template>
-  <div class="amountInput" :class="{ error: error }">
-    <i-input
-      ref="amountInput"
-      v-model="inputtedAmount"
-      data-cy="amount_block_token_input"
-      maxlength="35"
-      size="lg"
-      type="text"
-      @keyup.enter="$emit('enter')"
-    >
-      <template #prefix>
-        <i-button
-          v-if="!token"
-          id="btn-token-select"
-          data-cy="amount_block_token_select_button"
-          block
-          link
-          variant="secondary"
-          @click="$emit('chooseToken')"
-        >
-          Select token
-        </i-button>
-        <i-button
-          v-else
-          id="btn-token-select"
-          data-cy="amount_block_token_select_button"
-          block
-          class="selectedTokenBtn"
-          link
-          variant="secondary"
-          @click="$emit('chooseToken')"
-        >
-          <div class="tokenSelector">
-            <token-logo :symbol="token" />
-            <div class="tokenDetail">
+  <div class="amountInputNew" :class="{ error: error }">
+    <i-container>
+      <i-row>
+        <i-column class="_padding-0 _margin-right-1-2" xs="4">
+          <i-button
+            v-if="!token"
+            id="btn-token-select"
+            data-cy="amount_block_token_select_button"
+            block
+            link
+            @click="$emit('chooseToken')"
+          >
+            Select token
+          </i-button>
+          <i-button
+            v-else
+            id="btn-token-select"
+            data-cy="amount_block_token_select_button"
+            block
+            class="selectedTokenBtn"
+            link
+            @click="$emit('chooseToken')"
+          >
+            <div class="tokenSelector">
+              <token-logo :symbol="token" class="_padding-left-1" />
               <span class="tokenSymbol">{{ token }}</span>
-              <token-name :symbol="token" />
+              <v-icon name="ri-arrow-down-s-line" />
             </div>
-            <v-icon name="ri-arrow-down-s-line" />
-          </div>
-        </i-button>
-      </template>
-    </i-input>
+          </i-button>
+        </i-column>
+        <i-column class="_padding-0">
+          <i-input
+            ref="amountInput"
+            v-model="inputtedAmount"
+            data-cy="amount_block_token_input"
+            maxlength="35"
+            size="lg"
+            type="text"
+            @keyup.enter="$emit('enter')"
+          >
+            <template #suffix>
+              <div class="maxValue" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
+                {{ amountInputMaxText }}
+              </div>
+            </template>
+          </i-input>
+        </i-column>
+      </i-row>
+    </i-container>
     <div class="error" data-cy="amount_block_token_error_message">
       {{ error }}
     </div>
-    <div v-if="token && maxAmount" class="_display-flex _justify-content-space-between">
+    <div v-if="token && maxAmount" class="_display-flex _justify-content-end">
       <div class="secondaryText">
         <token-price :symbol="token" :amount="inputtedAmountBigNumber.toString()" />
-      </div>
-      <div class="linkText" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
-        {{ amountInputMaxText }}: {{ maxAmount | parseBigNumberish(token) }}
       </div>
     </div>
   </div>
@@ -63,11 +66,10 @@ import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { isTransactionAmountPackable } from "@rsksmart/rif-rollup-js-sdk/build/utils";
 import { DecimalBalance, ZkTransactionType } from "@rsksmart/rif-rollup-nuxt-core/types";
 import TokenLogo from "@/components/TokenLogo.vue";
-import TokenName from "@/components/TokenName.vue";
 
 export default Vue.extend({
   name: "AmountInputNew",
-  components: { TokenName, TokenLogo },
+  components: { TokenLogo },
   props: {
     value: {
       type: String,
