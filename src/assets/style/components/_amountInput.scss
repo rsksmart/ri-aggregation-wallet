@@ -57,42 +57,16 @@
   }
 
   .error {
+    display: flex;
+    justify-items: flex-end;
     width: 100%;
+    padding-top: 1px;
     min-height: 18px;
-    padding-top: 5px;
     color: $red;
     font-size: 12px;
     line-height: $fontSizeRegular;
   }
-  .tokenSelector {
-    display: grid;
-    grid-template-columns: 20% 60% 20%;
-    grid-template-rows: 100%;
-    align-items: center;
-    color: #b8b8b8;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 100%;
-  }
 
-  .button {
-    padding: 0 !important;
-    border-radius: 6px;
-    height: 100%;
-    &.-light.-link {
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      background-color: $white;
-      &:not(:disabled):not(.-disabled):hover,
-      &:not(:disabled):not(.-disabled).-hovered {
-        background-color: $white !important;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-      }
-    }
-    &.-dark.-link {
-      background-color: #ffffff30;
-    }
-  }
   .form-input-group {
     border-radius: 6px !important;
     &.-light .form-input input {

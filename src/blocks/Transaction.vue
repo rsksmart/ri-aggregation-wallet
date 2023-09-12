@@ -114,8 +114,9 @@
           />
         </template>
       </template>
-      <div v-if="type === 'Transfer'"></div>
-      <template> </template>
+      <div v-if="type === 'Transfer'">
+        <fee-input @chooseFeeToken="showChangeFeeTokenModal" />
+      </div>
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
           <div>Content Address</div>
@@ -237,58 +238,63 @@
       </div>
 
       <!-- Fees -->
-      <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
-        Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
-      </div>
-      <div v-if="feeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-        {{ getFeeName("txFee") }}:
-        <span>
-          <span class="secondaryText">Loading...</span>
-        </span>
-      </div>
-      <template v-for="item in fees">
-        <div :key="item.key" class="_text-center _margin-top-1" data-cy="fee_block_fee_message">
-          {{ getFeeName(item.key) }}:
-          <span
-            v-if="(item.key === 'txFee' && !feeLoading) || (item.key === 'accountActivation' && !activationFeeLoading)"
-          >
-            {{ item.amount.toString() | parseBigNumberish(feeSymbol) }} <span class="tokenSymbol">{{ feeSymbol }}</span>
-            <span class="secondaryText">
-              <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
-            </span>
+      <div v-if="type !== 'Transfer'">
+        <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
+          Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
+        </div>
+        <div v-if="feeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
+          {{ getFeeName("txFee") }}:
+          <span>
+            <span class="secondaryText">Loading...</span>
           </span>
         </div>
-      </template>
-      <div v-if="activationFeeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-        {{ getFeeName("accountActivation") }}:
-        <span>
-          <span class="secondaryText">Loading...</span>
+        <template v-for="item in fees">
+          <div :key="item.key" class="_text-center _margin-top-1" data-cy="fee_block_fee_message">
+            {{ getFeeName(item.key) }}:
+            <span
+              v-if="
+                (item.key === 'txFee' && !feeLoading) || (item.key === 'accountActivation' && !activationFeeLoading)
+              "
+            >
+              {{ item.amount.toString() | parseBigNumberish(feeSymbol) }}
+              <span class="tokenSymbol">{{ feeSymbol }}</span>
+              <span class="secondaryText">
+                <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
+              </span>
+            </span>
+          </div>
+        </template>
+        <div v-if="activationFeeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
+          {{ getFeeName("accountActivation") }}:
+          <span>
+            <span class="secondaryText">Loading...</span>
+          </span>
+        </div>
+        <div
+          v-if="feeError"
+          class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
+        >
+          <div class="errorText _text-center">
+            <span>{{ feeError }}</span>
+            <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
+          </div>
+          <v-icon
+            id="questionMark"
+            class="iconInfo _margin-left-1"
+            name="ri-question-mark"
+            scale="0.9"
+            @click.native="$accessor.openModal('FeeReqError')"
+          />
+        </div>
+        <span
+          v-if="requiredFees.length > 0"
+          class="linkText _width-100 _display-block _text-center _margin-top-1"
+          data-cy="fee_block_change_fee_token_button"
+          @click="showChangeFeeTokenModal"
+        >
+          Change fee token
         </span>
       </div>
-      <div
-        v-if="feeError"
-        class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
-      >
-        <div class="errorText _text-center">
-          <span>{{ feeError }}</span>
-          <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
-        </div>
-        <v-icon
-          id="questionMark"
-          class="iconInfo _margin-left-1"
-          name="ri-question-mark"
-          scale="0.9"
-          @click.native="$accessor.openModal('FeeReqError')"
-        />
-      </div>
-      <span
-        v-if="requiredFees.length > 0"
-        class="linkText _width-100 _display-block _text-center _margin-top-1"
-        data-cy="fee_block_change_fee_token_button"
-        @click="showChangeFeeTokenModal"
-      >
-        Change fee token
-      </span>
     </div>
   </div>
 </template>
@@ -311,6 +317,7 @@ import { RestProvider } from "@rsksmart/rif-rollup-js-sdk";
 import { warningCanceledKey } from "@/blocks/modals/TransferWarning.vue";
 import { DO_NOT_SHOW_WITHDRAW_WARNING_KEY } from "@/blocks/modals/WithdrawWarning.vue";
 import AddressInputNew from "@/components/AddressInputNew.vue";
+import FeeInput from "@/components/FeeInputNew.vue";
 
 const feeNameDict = new Map([
   ["txFee", "Fee"],
@@ -318,7 +325,7 @@ const feeNameDict = new Map([
 ]);
 
 export default Vue.extend({
-  components: { AddressInputNew },
+  components: { FeeInput, AddressInputNew },
   data() {
     return {
       inputtedAmount: this.$store.getters["zk-transaction/amount"],

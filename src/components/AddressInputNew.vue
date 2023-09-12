@@ -144,7 +144,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 #addressInput,
 #addressInput::placeholder {
-  font-family: Sora;
   font-size: 13px;
 }
 .txAddressInput {
@@ -178,10 +177,20 @@ export default Vue.extend({
     }
   }
 }
+.inkline.-light {
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px $white inset !important;
+  }
+}
+
 .inkline.-dark {
   input {
     color: $white !important;
     background: #ffffff30 !important;
+  }
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px transparentize($color: #252e78, $amount: 0.1) inset !important;
+    -webkit-text-fill-color: $white !important;
   }
 }
 </style>

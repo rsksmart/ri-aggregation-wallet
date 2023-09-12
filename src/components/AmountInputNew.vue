@@ -3,31 +3,7 @@
     <i-container>
       <i-row>
         <i-column class="_padding-0 _margin-right-1-2" xs="4">
-          <i-button
-            v-if="!token"
-            id="btn-token-select"
-            data-cy="amount_block_token_select_button"
-            block
-            link
-            @click="$emit('chooseToken')"
-          >
-            Select token
-          </i-button>
-          <i-button
-            v-else
-            id="btn-token-select"
-            data-cy="amount_block_token_select_button"
-            block
-            class="selectedTokenBtn"
-            link
-            @click="$emit('chooseToken')"
-          >
-            <div class="tokenSelector">
-              <token-logo :symbol="token" class="_padding-left-1" />
-              <span class="tokenSymbol">{{ token }}</span>
-              <v-icon name="ri-arrow-down-s-line" />
-            </div>
-          </i-button>
+          <token-selector :token="token" @chooseToken="$emit('chooseToken')" />
         </i-column>
         <i-column class="_padding-0">
           <i-input
@@ -48,13 +24,8 @@
         </i-column>
       </i-row>
     </i-container>
-    <div class="error" data-cy="amount_block_token_error_message">
+    <div class="error _padding-top-0 _justify-content-end" data-cy="amount_block_token_error_message">
       {{ error }}
-    </div>
-    <div v-if="token && maxAmount" class="_display-flex _justify-content-end">
-      <div class="secondaryText">
-        <token-price :symbol="token" :amount="inputtedAmountBigNumber.toString()" />
-      </div>
     </div>
   </div>
 </template>
@@ -65,11 +36,11 @@ import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { isTransactionAmountPackable } from "@rsksmart/rif-rollup-js-sdk/build/utils";
 import { DecimalBalance, ZkTransactionType } from "@rsksmart/rif-rollup-nuxt-core/types";
-import TokenLogo from "@/components/TokenLogo.vue";
+import TokenSelector from "@/components/TokenSelector.vue";
 
 export default Vue.extend({
   name: "AmountInputNew",
-  components: { TokenLogo },
+  components: { TokenSelector },
   props: {
     value: {
       type: String,
