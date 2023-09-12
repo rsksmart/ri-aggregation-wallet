@@ -7,32 +7,22 @@
         </i-column>
         <i-column class="_padding-0">
           <div class="feeValue">
-            <template v-for="item in fees">
-              <div :key="item.key" data-cy="fee_block_fee_message">
-                <i-container>
-                  <i-row>
-                    <span class="txFees">Transaction fees</span>
-                  </i-row>
-                  <i-row>
-                    <i-column class="_padding-left-0">
-                      <div>
-                        <span
-                          v-if="
-                            (item.key === 'txFee' && !feeLoading) ||
-                            (item.key === 'accountActivation' && !activationFeeLoading)
-                          "
-                        >
-                          {{ item.amount.toString() | parseBigNumberish(feeSymbol) }}
-                        </span>
-                        <span v-else>Loading...</span>
-                      </div>
-                    </i-column>
-                    <i-column class="_padding-right-0 _text-right">
-                      <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
-                    </i-column>
-                  </i-row>
-                </i-container>
-              </div>
+            <template>
+              <i-container>
+                <i-row>
+                  <span class="txFees">Transaction fees</span>
+                </i-row>
+                <i-row>
+                  <i-column class="_padding-left-0">
+                    <span>
+                      {{ totalFee.toString() | parseBigNumberish(feeSymbol) }}
+                    </span>
+                  </i-column>
+                  <i-column class="_padding-right-0 _text-right">
+                    <token-price :amount="totalFee.toString()" :symbol="feeSymbol" />
+                  </i-column>
+                </i-row>
+              </i-container>
             </template>
           </div>
         </i-column>
@@ -41,13 +31,29 @@
     <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
       Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
     </div>
+    <div
+      v-if="feeError"
+      class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
+    >
+      <div class="errorText _text-center">
+        <span>{{ feeError }}</span>
+        <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
+      </div>
+      <v-icon
+        id="questionMark"
+        class="iconInfo _margin-left-1"
+        name="ri-question-mark"
+        scale="0.9"
+        @click.native="$accessor.openModal('FeeReqError')"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import { ZkFee, ZkFeeType } from "@rsksmart/rif-rollup-nuxt-core/types";
+import { BigNumberish } from "@ethersproject/bignumber";
 import TokenSelector from "@/components/TokenSelector.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
@@ -64,31 +70,25 @@ export default Vue.extend({
     };
   },
   computed: {
-    fees(): ZkFee[] {
-      return this.$store.getters["zk-transaction/fees"];
-    },
-    requiredFees(): ZkFeeType[] {
-      return this.$store.getters["zk-transaction/requiredFees"];
-    },
     feeError(): Error {
       return this.$store.getters["zk-transaction/feeError"];
     },
     feeSymbol(): TokenSymbol | undefined {
       return this.$store.getters["zk-transaction/feeSymbol"];
     },
-    feeLoading(): boolean {
-      return this.$store.getters["zk-transaction/feeLoading"];
-    },
     enoughBalanceToPayFee(): boolean {
       return this.$store.getters["zk-transaction/enoughBalanceToPayFee"];
     },
-    activationFeeLoading(): boolean {
-      return this.$store.getters["zk-transaction/activationFeeLoading"];
+    totalFee(): any | BigNumberish {
+      return this.$store.getters["zk-transaction/totalFee"];
     },
   },
   methods: {
     getFeeName(key: string): string | undefined {
       return feeNameDict!.has(key) ? feeNameDict.get(key) : "";
+    },
+    async requestFees() {
+      await this.$store.dispatch("zk-transaction/requestAllFees", true);
     },
   },
 });
