@@ -21,13 +21,12 @@
         @input="getDomainAddress"
       />
     </div>
-    <div class="walletContainer inputWallet" :class="{ error: error }">
+    <div :class="{ error: error }">
       <transition name="fadeFast">
         <div v-if="rnsDomain" class="text-xs text-left flex domainAddress">
           <img height="16" width="16" src="/images/rootstock.png" alt="RNS Domain Logo" />
           {{ domainSubText }}
         </div>
-        <div v-if="error" class="errorText" data-cy="address_block_error_message">{{ error }}</div>
         <div v-if="domainFetchingInProgress">
           <img src="../static/rif-loading.gif" alt="domain fetching in progress icon" />
         </div>

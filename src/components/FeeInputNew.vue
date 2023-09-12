@@ -100,8 +100,8 @@ export default Vue.extend({
   font-weight: 400;
   line-height: 140%;
   .txFees {
-    color: #3a3a3a !important;
-    font-size: 10px !important;
+    color: #3a3a3a;
+    font-size: 10px;
   }
   .feeValue {
     border-radius: $borderRadiusSm 0 0 $borderRadiusSm !important;
@@ -110,6 +110,14 @@ export default Vue.extend({
     border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: $white;
     font-size: 1.15rem;
+  }
+}
+body.inkline.-dark {
+  .feeValue {
+    background-color: #ffffff30;
+  }
+  .txFees {
+    color: $white;
   }
 }
 </style>

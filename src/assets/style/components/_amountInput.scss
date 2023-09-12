@@ -82,3 +82,8 @@
     text-decoration-line: underline;
   }
 }
+body.inkline.-dark {
+  .amountInputNew .maxValue {
+    color: $white;
+  }
+}
