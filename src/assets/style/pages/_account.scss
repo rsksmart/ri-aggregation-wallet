@@ -267,10 +267,6 @@ body.inkline {
     .contactItem:hover {
       background: transparentize($color: $gray, $amount: 0.9);
     }
-
-    .form-input-group .form-input input {
-      padding: 1.5rem 0.5rem 1.5rem 3rem !important;
-    }
   }
 
   &.-dark {
@@ -293,9 +289,6 @@ body.inkline {
           color: $white !important;
         }
       }
-    }
-    .form-input-group .form-input input {
-      padding: 1.5rem 0.5rem 1.5rem 3rem !important;
     }
 
     .contactItem {

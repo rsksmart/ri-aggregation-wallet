@@ -11,7 +11,7 @@
     height: auto;
     margin-right: auto;
     margin-left: auto;
-    padding: 20px;
+    padding: 30px;
     min-height: 0;
     border-radius: $borderRadius;
     box-shadow: 4px 4px 8px 0 rgba(11, 52, 102, 0.02);
@@ -37,7 +37,7 @@
         display: grid;
         grid-template-rows: 100%;
         grid-template-columns: 40px 1fr;
-        align-items: center;
+        align-items: initial;
         padding-right: 40px;
       }
 

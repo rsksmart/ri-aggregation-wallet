@@ -27,10 +27,16 @@
     </div>
     <div v-else class="transactionTile tileBlock">
       <div class="tileHeadline withBtn h3">
-        <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex">
+        <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex _align-items-initial">
           <v-icon name="ri-arrow-left-line" scale="1" />
         </nuxt-link>
-        <div>{{ transactionActionName }}</div>
+        <template v-if="type === 'Transfer'">
+          <div class="transfer">
+            <div class="back">Back</div>
+            <div class="title">Send</div>
+          </div>
+        </template>
+        <template v-else>{{ transactionActionName }}</template>
       </div>
 
       <div v-if="isDeposit">
@@ -53,52 +59,64 @@
         </template>
       </div>
 
-      <template v-if="type === 'Transfer'">
-        <div class="_padding-0 _display-flex _justify-content-end">
-          <i-button
-            id="btn-withdraw-l1"
-            class="_padding-y-0 send-link"
-            data-cy="send_send_l1_button"
-            link
-            to="/transaction/withdraw"
-            variant=""
-          >
-            Send to Rootstock (L1)
-            <v-icon class="" name="ri-arrow-right-up-line" scale="0.75" />
-          </i-button>
-        </div>
-      </template>
-
       <template v-if="displayAddressInput">
-        <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
-        <address-input
-          ref="addressInput"
-          v-model="inputtedAddress"
-          :token="chosenToken ? chosenToken : undefined"
-          @enter="commitTransaction()"
-        />
-        <!-- <block-choose-contact
-          :address="inputtedAddressWithDomain"
-          :display-own-address="displayOwnAddress"
-          class="_margin-top-05"
-          @chosen="chooseAddress($event)"
-        /> -->
+        <template v-if="type === 'Transfer'">
+          <address-input-new
+            ref="addressInput"
+            v-model="inputtedAddress"
+            :token="chosenToken ? chosenToken : undefined"
+            @enter="commitTransaction()"
+          />
+        </template>
+        <template v-else>
+          <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
+          <address-input
+            ref="addressInput"
+            v-model="inputtedAddress"
+            :token="chosenToken ? chosenToken : undefined"
+            @enter="commitTransaction()"
+          />
+          <!-- <block-choose-contact
+            :address="inputtedAddressWithDomain"
+            :display-own-address="displayOwnAddress"
+            class="_margin-top-05"
+            @chosen="chooseAddress($event)"
+          /> -->
+        </template>
       </template>
 
       <template v-if="displayAmountInput">
-        <div class="_padding-top-3 inputLabel">Amount</div>
-        <amount-input
-          ref="amountInput"
-          v-model="inputtedAmount"
-          :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
-          :token="chosenToken ? chosenToken : undefined"
-          :type="type"
-          :type-name="transactionActionName"
-          autofocus
-          @chooseToken="chooseTokenModal = 'mainToken'"
-          @enter="commitTransaction()"
-        />
+        <template v-if="type === 'Transfer'">
+          <amount-input-new
+            ref="amountInput"
+            v-model="inputtedAmount"
+            :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
+            :token="chosenToken ? chosenToken : undefined"
+            :type="type"
+            :type-name="transactionActionName"
+            autofocus
+            @chooseToken="chooseTokenModal = 'mainToken'"
+            @enter="commitTransaction()"
+          />
+        </template>
+        <template v-else>
+          <div class="_padding-top-3 inputLabel">Amount</div>
+          <amount-input
+            ref="amountInput"
+            v-model="inputtedAmount"
+            :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
+            :token="chosenToken ? chosenToken : undefined"
+            :type="type"
+            :type-name="transactionActionName"
+            autofocus
+            @chooseToken="chooseTokenModal = 'mainToken'"
+            @enter="commitTransaction()"
+          />
+        </template>
       </template>
+      <div v-if="type === 'Transfer'">
+        <fee-input @chooseFeeToken="showChangeFeeTokenModal" />
+      </div>
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
           <div>Content Address</div>
@@ -220,58 +238,63 @@
       </div>
 
       <!-- Fees -->
-      <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
-        Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
-      </div>
-      <div v-if="feeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-        {{ getFeeName("txFee") }}:
-        <span>
-          <span class="secondaryText">Loading...</span>
-        </span>
-      </div>
-      <template v-for="item in fees">
-        <div :key="item.key" class="_text-center _margin-top-1" data-cy="fee_block_fee_message">
-          {{ getFeeName(item.key) }}:
-          <span
-            v-if="(item.key === 'txFee' && !feeLoading) || (item.key === 'accountActivation' && !activationFeeLoading)"
-          >
-            {{ item.amount.toString() | parseBigNumberish(feeSymbol) }} <span class="tokenSymbol">{{ feeSymbol }}</span>
-            <span class="secondaryText">
-              <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
-            </span>
+      <div v-if="type !== 'Transfer'">
+        <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
+          Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
+        </div>
+        <div v-if="feeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
+          {{ getFeeName("txFee") }}:
+          <span>
+            <span class="secondaryText">Loading...</span>
           </span>
         </div>
-      </template>
-      <div v-if="activationFeeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-        {{ getFeeName("accountActivation") }}:
-        <span>
-          <span class="secondaryText">Loading...</span>
+        <template v-for="item in fees">
+          <div :key="item.key" class="_text-center _margin-top-1" data-cy="fee_block_fee_message">
+            {{ getFeeName(item.key) }}:
+            <span
+              v-if="
+                (item.key === 'txFee' && !feeLoading) || (item.key === 'accountActivation' && !activationFeeLoading)
+              "
+            >
+              {{ item.amount.toString() | parseBigNumberish(feeSymbol) }}
+              <span class="tokenSymbol">{{ feeSymbol }}</span>
+              <span class="secondaryText">
+                <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
+              </span>
+            </span>
+          </div>
+        </template>
+        <div v-if="activationFeeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
+          {{ getFeeName("accountActivation") }}:
+          <span>
+            <span class="secondaryText">Loading...</span>
+          </span>
+        </div>
+        <div
+          v-if="feeError"
+          class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
+        >
+          <div class="errorText _text-center">
+            <span>{{ feeError }}</span>
+            <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
+          </div>
+          <v-icon
+            id="questionMark"
+            class="iconInfo _margin-left-1"
+            name="ri-question-mark"
+            scale="0.9"
+            @click.native="$accessor.openModal('FeeReqError')"
+          />
+        </div>
+        <span
+          v-if="requiredFees.length > 0"
+          class="linkText _width-100 _display-block _text-center _margin-top-1"
+          data-cy="fee_block_change_fee_token_button"
+          @click="showChangeFeeTokenModal"
+        >
+          Change fee token
         </span>
       </div>
-      <div
-        v-if="feeError"
-        class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
-      >
-        <div class="errorText _text-center">
-          <span>{{ feeError }}</span>
-          <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
-        </div>
-        <v-icon
-          id="questionMark"
-          class="iconInfo _margin-left-1"
-          name="ri-question-mark"
-          scale="0.9"
-          @click.native="$accessor.openModal('FeeReqError')"
-        />
-      </div>
-      <span
-        v-if="requiredFees.length > 0"
-        class="linkText _width-100 _display-block _text-center _margin-top-1"
-        data-cy="fee_block_change_fee_token_button"
-        @click="showChangeFeeTokenModal"
-      >
-        Change fee token
-      </span>
     </div>
   </div>
 </template>
@@ -293,6 +316,8 @@ import { getAddress } from "@ethersproject/address";
 import { RestProvider } from "@rsksmart/rif-rollup-js-sdk";
 import { warningCanceledKey } from "@/blocks/modals/TransferWarning.vue";
 import { DO_NOT_SHOW_WITHDRAW_WARNING_KEY } from "@/blocks/modals/WithdrawWarning.vue";
+import AddressInputNew from "@/components/AddressInputNew.vue";
+import FeeInput from "@/components/FeeInputNew.vue";
 
 const feeNameDict = new Map([
   ["txFee", "Fee"],
@@ -300,6 +325,7 @@ const feeNameDict = new Map([
 ]);
 
 export default Vue.extend({
+  components: { FeeInput, AddressInputNew },
   data() {
     return {
       inputtedAmount: this.$store.getters["zk-transaction/amount"],
@@ -781,6 +807,10 @@ export default Vue.extend({
         color: transparentize($color: $gray, $amount: 0.3);
       }
     }
+
+    .transfer {
+      color: #fff !important;
+    }
   }
 }
 
@@ -799,6 +829,24 @@ h4.tileSmallHeadline {
     flex-flow: nowrap row;
     justify-content: space-between;
     align-items: flex-start;
+  }
+}
+.transfer {
+  grid-template-rows: 50% 50%;
+  color: #000;
+  font-style: normal;
+  text-align: left;
+  .back {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+    margin-top: 7px;
+  }
+  .title {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 140%;
+    margin: 10px 0 0 -40px;
   }
 }
 </style>
