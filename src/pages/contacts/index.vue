@@ -24,6 +24,7 @@
           ref="addressInput"
           v-model="contactModal.address"
           @enter="saveContact()"
+          @input="clearError()"
         />
       </div>
 
