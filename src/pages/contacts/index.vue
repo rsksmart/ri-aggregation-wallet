@@ -39,6 +39,7 @@
           size="lg"
           type="text"
           @keyup.enter="saveContact()"
+          @input="clearError()"
         />
       </div>
       <div v-if="contactModal.error" class="modalError _padding-bottom-2">{{ contactModal.error }}</div>
@@ -196,6 +197,10 @@ export default Vue.extend({
         openedAddress: contact.address,
       };
     },
+    clearError() {
+      this.contactModal.error = "";
+    },
+
     async saveContact() {
       if (this.contactModal.name.trim().length <= 0) {
         this.contactModal.error = "Invalid name";
