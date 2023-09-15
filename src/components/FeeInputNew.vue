@@ -3,7 +3,10 @@
     <i-container class="_margin-top-0">
       <i-row>
         <i-column class="_padding-0 _margin-right-1-2" xs="4">
-          <token-selector :token="feeSymbol" @chooseToken="$emit('chooseFeeToken')" />
+          <token-selector
+            :token="type === 'Deposit' ? 'RBTC' : feeSymbol"
+            @chooseToken="type !== 'Deposit' ? $emit('chooseFeeToken') : null"
+          />
         </i-column>
         <i-column class="_padding-0">
           <div class="feeValue">
@@ -51,7 +54,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropOptions } from "vue";
+import { ZkTransactionType } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { BigNumberish } from "@ethersproject/bignumber";
 import TokenSelector from "@/components/TokenSelector.vue";
@@ -64,6 +68,13 @@ const feeNameDict = new Map([
 export default Vue.extend({
   name: "FeeInputNew",
   components: { TokenPrice, TokenSelector },
+  props: {
+    type: {
+      type: String,
+      default: "Transfer",
+      required: false,
+    } as PropOptions<ZkTransactionType>,
+  },
   data() {
     return {
       chooseTokenModal: false as false | "mainToken" | "feeToken",
@@ -80,6 +91,7 @@ export default Vue.extend({
       return this.$store.getters["zk-transaction/enoughBalanceToPayFee"];
     },
     totalFee(): any | BigNumberish {
+      console.log("totalFee: ", this.$store.getters["zk-transaction/totalFee"].toString());
       return this.$store.getters["zk-transaction/totalFee"];
     },
   },

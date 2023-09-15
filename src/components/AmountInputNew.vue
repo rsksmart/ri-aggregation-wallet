@@ -16,8 +16,8 @@
             @keyup.enter="$emit('enter')"
           >
             <template #suffix>
-              <div class="maxValue" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
-                {{ amountInputMaxText }}
+              <div v-if="token" class="maxValue" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
+                Max
               </div>
             </template>
           </i-input>
@@ -87,13 +87,6 @@ export default Vue.extend({
         } catch (error) {}
       }
       return BigNumber.from("0");
-    },
-    amountInputMaxText(): string {
-      if (this.type === "Deposit" && this.token === "RBTC") {
-        return "RBTC balance";
-      } else {
-        return "Max";
-      }
     },
   },
   watch: {
@@ -192,6 +185,7 @@ export default Vue.extend({
       this.error = "";
     },
     chooseMaxAmount() {
+      console.log("maxAmount: ", this.maxAmount);
       try {
         this.inputtedAmount = this.$options.filters!.parseBigNumberish(this.maxAmount, this.token);
       } catch (error) {

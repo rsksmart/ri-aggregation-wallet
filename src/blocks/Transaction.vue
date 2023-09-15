@@ -30,37 +30,18 @@
         <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex _align-items-initial">
           <v-icon name="ri-arrow-left-line" scale="1" />
         </nuxt-link>
-        <template v-if="type === 'Transfer'">
+        <template v-if="type === 'Transfer' || type === 'Deposit'">
           <div class="transfer">
             <div class="back">Back</div>
-            <div class="title">Send</div>
+            <div v-if="type === 'Transfer'" class="title">Send</div>
+            <div v-else-if="type === 'Deposit'" class="title">Deposit</div>
           </div>
         </template>
         <template v-else>{{ transactionActionName }}</template>
       </div>
 
-      <div v-if="isDeposit">
-        <h4 class="tileSmallHeadline">
-          Deposit tokens from Rootstock Wallet
-          <div class="secondaryText estimatedFee _text-nowrap _displayFlex">
-            <!-- <v-icon name="la-charging-station-solid" /> -->
-            <!-- <deposit-usd-fee /> -->
-          </div>
-        </h4>
-        <div class="secondaryText small">You can deposit tokens from your Rootstock wallet to RIF Rollup</div>
-
-        <template v-if="isDeposit">
-          <div v-if="!isMainnet" class="_padding-0 _display-flex _justify-content-end">
-            <i-button id="btn-mint-deposit" class="_padding-y-0 _margin-top-05" link to="/transaction/mint">
-              Mint tokens
-              <v-icon name="ri-add-fill" scale="0.75" />
-            </i-button>
-          </div>
-        </template>
-      </div>
-
       <template v-if="displayAddressInput">
-        <template v-if="type === 'Transfer'">
+        <template v-if="type === 'Transfer' || type === 'Deposit'">
           <address-input-new
             ref="addressInput"
             v-model="inputtedAddress"
@@ -69,24 +50,18 @@
           />
         </template>
         <template v-else>
-          <div :class="[isDeposit ? '_margin-top-05' : '_margin-top-1']" class="inputLabel">Address</div>
+          <div :class="'_margin-top-1'" class="inputLabel">Address</div>
           <address-input
             ref="addressInput"
             v-model="inputtedAddress"
             :token="chosenToken ? chosenToken : undefined"
             @enter="commitTransaction()"
           />
-          <!-- <block-choose-contact
-            :address="inputtedAddressWithDomain"
-            :display-own-address="displayOwnAddress"
-            class="_margin-top-05"
-            @chosen="chooseAddress($event)"
-          /> -->
         </template>
       </template>
 
       <template v-if="displayAmountInput">
-        <template v-if="type === 'Transfer'">
+        <template v-if="type === 'Transfer' || type === 'Deposit'">
           <amount-input-new
             ref="amountInput"
             v-model="inputtedAmount"
@@ -114,8 +89,9 @@
           />
         </template>
       </template>
-      <div v-if="type === 'Transfer'">
-        <fee-input @chooseFeeToken="showChangeFeeTokenModal" />
+
+      <div v-if="type === 'Transfer' || type === 'Deposit'">
+        <fee-input :type="type" @chooseFeeToken="showChangeFeeTokenModal" />
       </div>
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
