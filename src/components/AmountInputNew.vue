@@ -16,8 +16,13 @@
             @keyup.enter="$emit('enter')"
           >
             <template #suffix>
-              <div class="maxValue" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
-                {{ amountInputMaxText }}
+              <div
+                v-if="type !== 'Deposit'"
+                class="maxValue"
+                data-cy="amount_block_token_max_amount"
+                @click="chooseMaxAmount()"
+              >
+                Max
               </div>
             </template>
           </i-input>
@@ -87,13 +92,6 @@ export default Vue.extend({
         } catch (error) {}
       }
       return BigNumber.from("0");
-    },
-    amountInputMaxText(): string {
-      if (this.type === "Deposit" && this.token === "RBTC") {
-        return "RBTC balance";
-      } else {
-        return "Max";
-      }
     },
   },
   watch: {

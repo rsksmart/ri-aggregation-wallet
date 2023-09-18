@@ -246,6 +246,7 @@ export default Vue.extend({
 
 .second-row-button {
   background-color: black !important;
+  border-color: black !important;
 }
 
 .button-icon {
