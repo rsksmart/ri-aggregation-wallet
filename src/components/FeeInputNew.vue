@@ -91,7 +91,6 @@ export default Vue.extend({
       return this.$store.getters["zk-transaction/enoughBalanceToPayFee"];
     },
     totalFee(): any | BigNumberish {
-      console.log("totalFee: ", this.$store.getters["zk-transaction/totalFee"].toString());
       return this.$store.getters["zk-transaction/totalFee"];
     },
   },

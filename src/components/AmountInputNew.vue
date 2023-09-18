@@ -16,7 +16,12 @@
             @keyup.enter="$emit('enter')"
           >
             <template #suffix>
-              <div v-if="token" class="maxValue" data-cy="amount_block_token_max_amount" @click="chooseMaxAmount()">
+              <div
+                v-if="type !== 'Deposit'"
+                class="maxValue"
+                data-cy="amount_block_token_max_amount"
+                @click="chooseMaxAmount()"
+              >
                 Max
               </div>
             </template>
@@ -185,7 +190,6 @@ export default Vue.extend({
       this.error = "";
     },
     chooseMaxAmount() {
-      console.log("maxAmount: ", this.maxAmount);
       try {
         this.inputtedAmount = this.$options.filters!.parseBigNumberish(this.maxAmount, this.token);
       } catch (error) {

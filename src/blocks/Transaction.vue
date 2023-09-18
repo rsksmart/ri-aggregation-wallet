@@ -90,7 +90,7 @@
         </template>
       </template>
 
-      <div v-if="type === 'Transfer' || type === 'Deposit'">
+      <div v-if="type === 'Transfer'">
         <fee-input :type="type" @chooseFeeToken="showChangeFeeTokenModal" />
       </div>
       <template v-if="displayContentHashInput">
@@ -119,60 +119,6 @@
         </i-input>
       </template>
 
-      <!-- Allowance -->
-      <div v-if="chosenToken && displayTokenUnlock">
-        <div
-          class="_padding-top-1 _display-flex _align-items-center inputLabel"
-          @click="$accessor.openModal('Allowance')"
-        >
-          <span>
-            <span class="tokenSymbol">{{ chosenToken }}</span> Allowance
-          </span>
-          <div class="iconInfo">
-            <v-icon name="ri-question-mark" />
-          </div>
-        </div>
-        <div class="grid-cols-2-layout">
-          <!-- :class="{ 'single-col': singleColumnButtons }" -->
-          <i-button block data-cy="approve_unlimited_button" size="md" variant="secondary" @click="unlockToken(true)">
-            Approve unlimited <span class="tokenSymbol">{{ chosenToken }}</span>
-          </i-button>
-          <i-button
-            v-if="inputtedAmount && amountBigNumber"
-            key="approveAmount"
-            block
-            class="_margin-top-0"
-            data-cy="approve_button"
-            size="md"
-            variant="secondary"
-            @click="unlockToken(false)"
-          >
-            Approve {{ amountBigNumber | formatBigNumLimited(chosenToken, 7) }}
-            <span class="tokenSymbol">{{ chosenToken }}</span>
-          </i-button>
-          <i-button v-else key="noApproveAmount" block class="_margin-top-0" disabled size="md">
-            Introduce <span class="tokenSymbol">{{ chosenToken }}</span> amount
-          </i-button>
-        </div>
-        <p class="_text-center _margin-top-05">
-          <span v-if="zeroAllowance">
-            You should firstly approve selected token in order to authorize deposits for
-            <span class="tokenSymbol">{{ chosenToken }}</span>
-          </span>
-          <span v-else>
-            You do not have enough allowance for <span class="tokenSymbol">{{ chosenToken }}.</span>
-            <br class="desktopOnly" />
-            Set higher allowance to proceed to deposit.
-            <span v-if="allowance">
-              <br class="desktopOnly" />Your current allowance is
-              <span class="linkText" @click="setAllowanceMax()">
-                {{ allowance | formatBigNumLimited(chosenToken, 7) }} <span class="tokenSymbol">{{ chosenToken }}</span>
-              </span>
-            </span>
-          </span>
-        </p>
-      </div>
-
       <div v-if="type === 'CPK' && cpkStatus === true" class="_text-center _margin-top-1">
         Your account is already activated
       </div>
@@ -185,7 +131,6 @@
 
       <!-- Commit button -->
       <i-button
-        :disabled="isSubmitDisabled"
         block
         class="flex-row _margin-top-1 _display-flex"
         data-cy="commit_transaction_button"
@@ -591,6 +536,7 @@ export default Vue.extend({
       }
       this.addressIsMyOwn = false;
       this.amountOrAddressEmpty = false;
+
       if (!this.hasSigner && this.requireSigner) {
         try {
           this.requestingSigner = true;
@@ -603,7 +549,7 @@ export default Vue.extend({
         }
         this.requestingSigner = false;
       } else {
-        if (!this.commitAllowed || this.loading) {
+        if (this.type !== "Deposit" && (!this.commitAllowed || this.loading)) {
           return;
         }
 
@@ -624,6 +570,10 @@ export default Vue.extend({
 
           if (!(await this.checkIfDestinationIsERC20Address())) {
             return;
+          }
+
+          if (this.type === "Deposit") {
+            this.unlockToken();
           }
 
           const result = await this.$store.dispatch("zk-transaction/commitTransaction", { requestFees: true });
