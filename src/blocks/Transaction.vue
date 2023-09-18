@@ -572,7 +572,7 @@ export default Vue.extend({
             return;
           }
 
-          if (this.type === "Deposit") {
+          if (this.displayTokenUnlock) {
             this.unlockToken();
           }
 
