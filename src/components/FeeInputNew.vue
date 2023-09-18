@@ -28,6 +28,25 @@
         </i-column>
       </i-row>
     </i-container>
+    <template v-if="hasAccountActivationFee & !activationFeeLoading">
+      <i-container class="_margin-top-1">
+        <i-row>
+          <i-column xs="7" class="_padding-left-0">
+            <i-tooltip>
+              <v-icon class="infoIcon" name="ri-question-mark" scale="0.8" />
+              <template #body>Added to your transaction fee only once</template>
+            </i-tooltip>
+            <span>Account activation fee:</span>
+          </i-column>
+          <i-column xs="3" class="_padding-left-0 _padding-right-0 _text-right">
+            {{ accountActivationFee | parseBigNumberish(feeSymbol) }}
+          </i-column>
+          <i-column xs="2" class="_padding-right-0 _text-right">
+            <token-price :amount="accountActivationFee" :symbol="feeSymbol" />
+          </i-column>
+        </i-row>
+      </i-container>
+    </template>
     <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
       Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
     </div>
@@ -53,14 +72,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import { BigNumberish } from "@ethersproject/bignumber";
+import { ZkFee } from "@rsksmart/rif-rollup-nuxt-core/types";
+import { BigNumberish } from "@web3-onboard/common/node_modules/@ethersproject/bignumber";
 import TokenSelector from "@/components/TokenSelector.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
-const feeNameDict = new Map([
-  ["txFee", "Fee"],
-  ["accountActivation", "Account Activation single-time fee"],
-]);
 export default Vue.extend({
   name: "FeeInputNew",
   components: { TokenPrice, TokenSelector },
@@ -82,11 +98,21 @@ export default Vue.extend({
     totalFee(): any | BigNumberish {
       return this.$store.getters["zk-transaction/totalFee"];
     },
+    fees(): ZkFee[] {
+      return this.$store.getters["zk-transaction/fees"];
+    },
+    hasAccountActivationFee(): boolean {
+      return this.fees.filter((f: ZkFee) => f.key === "accountActivation").length > 0;
+    },
+    accountActivationFee(): string | undefined {
+      const [accountActivation] = this.fees.filter((f: ZkFee) => f.key === "accountActivation");
+      return this.activationFeeLoading ? "Loading..." : accountActivation?.amount?.toString();
+    },
+    activationFeeLoading(): boolean {
+      return this.$store.getters["zk-transaction/activationFeeLoading"];
+    },
   },
   methods: {
-    getFeeName(key: string): string | undefined {
-      return feeNameDict!.has(key) ? feeNameDict.get(key) : "";
-    },
     async requestFees() {
       await this.$store.dispatch("zk-transaction/requestAllFees", true);
     },
@@ -119,5 +145,16 @@ body.inkline.-dark {
   .txFees {
     color: $white;
   }
+  .infoIcon {
+    background-color: #ffffff30;
+    border: 1.25px solid #ffffff30 !important;
+  }
+}
+
+.infoIcon {
+  margin-left: 0;
+  background-color: $white;
+  border: 1.25px solid $white !important;
+  border-radius: 10px;
 }
 </style>
