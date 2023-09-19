@@ -30,18 +30,19 @@
         <nuxt-link :to="routeBack" class="_icon-wrapped -rounded -sm returnBtn _display-flex _align-items-initial">
           <v-icon name="ri-arrow-left-line" scale="1" />
         </nuxt-link>
-        <template v-if="type === 'Transfer' || type === 'Deposit'">
+        <template v-if="type === 'Transfer' || type === 'Deposit' || type === 'Withdraw'">
           <div class="transfer">
             <div class="back">Back</div>
             <div v-if="type === 'Transfer'" class="title">Send</div>
             <div v-else-if="type === 'Deposit'" class="title">Deposit</div>
+            <div v-else-if="type === 'Withdraw'" class="title">Withdraw</div>
           </div>
         </template>
-        <template v-else>{{ transactionActionName }}</template>
+        <!-- <template v-else>{{ transactionActionName }} kk</template> -->
       </div>
 
       <template v-if="displayAddressInput">
-        <template v-if="type === 'Transfer' || type === 'Deposit'">
+        <template v-if="type === 'Transfer' || type === 'Deposit' || type === 'Withdraw'">
           <address-input-new
             ref="addressInput"
             v-model="inputtedAddress"
@@ -49,7 +50,7 @@
             @enter="commitTransaction()"
           />
         </template>
-        <template v-else>
+        <!-- <template v-else>
           <div :class="'_margin-top-1'" class="inputLabel">Address</div>
           <address-input
             ref="addressInput"
@@ -57,11 +58,11 @@
             :token="chosenToken ? chosenToken : undefined"
             @enter="commitTransaction()"
           />
-        </template>
+        </template> -->
       </template>
 
       <template v-if="displayAmountInput">
-        <template v-if="type === 'Transfer' || type === 'Deposit'">
+        <template v-if="type === 'Transfer' || type === 'Deposit' || type === 'Withdraw'">
           <amount-input-new
             ref="amountInput"
             v-model="inputtedAmount"
@@ -74,7 +75,7 @@
             @enter="commitTransaction()"
           />
         </template>
-        <template v-else>
+        <!-- <template v-else>
           <div class="_padding-top-3 inputLabel">Amount</div>
           <amount-input
             ref="amountInput"
@@ -87,12 +88,15 @@
             @chooseToken="chooseTokenModal = 'mainToken'"
             @enter="commitTransaction()"
           />
-        </template>
+        </template> -->
       </template>
 
-      <div v-if="type === 'Transfer'">
+      <div v-if="type === 'Transfer' || type === 'Withdraw'">
         <fee-input :type="type" @chooseFeeToken="showChangeFeeTokenModal" />
       </div>
+      <!-- <div v-if="type === 'Withdraw'">
+
+      </div> -->
       <template v-if="displayContentHashInput">
         <div class="_padding-top-1 inputLabel _display-flex _align-items-center">
           <div>Content Address</div>
@@ -159,7 +163,7 @@
       </div>
 
       <!-- Fees -->
-      <div v-if="type !== 'Transfer'">
+      <!-- <div v-if="type !== 'Transfer'">
         <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
           Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
         </div>
@@ -215,7 +219,7 @@
         >
           Change fee token
         </span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
