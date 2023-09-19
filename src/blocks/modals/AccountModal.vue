@@ -52,6 +52,12 @@
       <div class="_justify-content-center">
         <vue-qrcode v-if="accountAddress" class="addressQR" :value="accountAddress" :margin="1" :scale="6" />
       </div>
+      <template #footer>
+        <div id="btn-disconnect-wallet" class="modalFooterBtn" @click="logout()">
+          <v-icon name="ri-link-unlink-m" />
+          <span>Disconnect wallet</span>
+        </div>
+      </template>
     </i-modal>
   </div>
 </template>

@@ -55,20 +55,25 @@
           background: $lightGrey !important;
         }
         & > .body {
+          border-radius: 0 !important;
           .receiveDisclaimer {
             color: $white !important;
             background: $hyperlinkBlue !important;
           }
+        }
+        & > .footer {
+          background: $lightGrey !important;
         }
       }
       &.-dark {
         border-radius: 8px !important;
         & > .header {
           background: #161b48 !important;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
         }
         & > .body {
+          border-radius: 0 !important;
           .receiveDisclaimer {
             color: $white !important;
             background: $hyperlinkBlue !important;
