@@ -576,8 +576,16 @@ export default Vue.extend({
             return;
           }
 
+          // Only for Deposit
           if (this.displayTokenUnlock) {
             this.unlockToken();
+          }
+
+          // Two step withdraw verification
+          const isTwoStepWithdrawEnabled = process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
+          if (this.type === "Withdraw" && isTwoStepWithdrawEnabled) {
+            console.log("Not implemented yet");
+            return;
           }
 
           const result = await this.$store.dispatch("zk-transaction/commitTransaction", { requestFees: true });
