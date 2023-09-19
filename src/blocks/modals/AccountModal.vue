@@ -26,34 +26,32 @@
       </div>
     </i-modal>
 
-    <i-modal v-model="accountModal" size="md">
+    <i-modal v-model="accountModal" class="receive" size="md">
       <template #header>
-        <b>{{ accountName }}</b>
+        <div class="title">Receive</div>
       </template>
-      <div>
-        <wallet-address :wallet="accountAddress" />
+      <div class="receiveDisclaimer">
+        <span>Make sure to only share this address with wallets that have their layer 2 account activated.</span>
+      </div>
+      <div class="addressInput">
+        <div class="addressValidation">Your address</div>
+        <input
+          id="addressInput"
+          ref="addressInput"
+          v-model="accountAddress"
+          placeholder="Your address"
+          type="text"
+          autocomplete="none"
+          data-cy="address_block_wallet_address_input"
+          spellcheck="false"
+          maxlength="100"
+          @keyup.enter="$emit('enter')"
+          @change="$emit('change', $event)"
+        />
+      </div>
+      <div class="_justify-content-center">
         <vue-qrcode v-if="accountAddress" class="addressQR" :value="accountAddress" :margin="1" :scale="6" />
       </div>
-      <template #footer>
-        <a
-          id="btn-view-in-blockexplorer-account"
-          class="modalFooterBtn"
-          :href="accountZkScanUrl"
-          target="_blank"
-          @click.passive="$analytics.track('view_in_blockexplorer')"
-        >
-          <v-icon name="ri-external-link-line" />
-          <span>View in block explorer</span>
-        </a>
-        <div id="btn-rename-wallet" class="modalFooterBtn" @click="renameWalletOpen">
-          <v-icon name="ri-pencil-line" />
-          <span>Rename wallet</span>
-        </div>
-        <div id="btn-disconnect-wallet" class="modalFooterBtn" @click="logout()">
-          <v-icon name="ri-link-unlink-m" />
-          <span>Disconnect wallet</span>
-        </div>
-      </template>
     </i-modal>
   </div>
 </template>
