@@ -29,7 +29,10 @@ export default Vue.extend({
   name: "NetworkSwitch",
   computed: {
     options() {
-      return Object.keys(zkSyncNetworkConfig);
+      const allNetworks = Object.keys(zkSyncNetworkConfig);
+      const supportedNetworks = allNetworks.filter((network) => network.toUpperCase() !== "MAINNET");
+
+      return supportedNetworks;
     },
     network() {
       return this.$store.getters["zk-provider/network"];
