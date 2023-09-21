@@ -146,8 +146,10 @@ export default Vue.extend({
         } else {
           return op.to;
         }
-      } else if (op.type === "Deposit" || op.type === "Withdraw" || op.type === "WithdrawNFT") {
+      } else if (op.type === "Deposit" || op.type === "WithdrawNFT") {
         return op.from;
+      } else if (op.type === "Withdraw") {
+        return op.to;
       } else if (op.type === "MintNFT") {
         return op.recipient;
       } else if (op.type === "ForcedExit") {
@@ -367,6 +369,7 @@ export default Vue.extend({
       if (
         (this.transaction.op.type === "Transfer" && this.isSameAddress(this.transaction.op.from)) ||
         (this.transaction.op.type === "Deposit" && !this.isSameAddress(this.transaction.op.to)) ||
+        (this.transaction.op.type === "Withdraw" && !this.isSameAddress(this.transaction.op.to)) ||
         this.transaction.op.type === "FullExit"
       ) {
         return "-";
@@ -392,8 +395,6 @@ export default Vue.extend({
   },
   methods: {
     isSameAddress(address: Address): boolean {
-      console.log(address, this.walletAddressFull);
-
       return getAddress(address) === getAddress(this.walletAddressFull);
     },
     getTimeAgo(time?: string): string {
