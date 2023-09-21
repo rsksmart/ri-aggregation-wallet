@@ -242,7 +242,7 @@ export default Vue.extend({
           };
         case "Deposit":
           return {
-            type: "Deposit From:",
+            type: "Deposit from:",
             showAddress: true,
             modal: false,
           };
@@ -268,7 +268,7 @@ export default Vue.extend({
               };
             }
             return {
-              type: "Transfer To:",
+              type: "Transfer to:",
               showAddress: true,
               modal: false,
             };
