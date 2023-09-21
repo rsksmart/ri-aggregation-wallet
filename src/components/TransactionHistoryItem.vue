@@ -368,8 +368,8 @@ export default Vue.extend({
     itReducesMyBalance(): string {
       if (
         (this.transaction.op.type === "Transfer" && this.isSameAddress(this.transaction.op.from)) ||
-        (this.transaction.op.type === "Deposit" && !this.isSameAddress(this.transaction.op.to)) ||
         (this.transaction.op.type === "Withdraw" && !this.isSameAddress(this.transaction.op.to)) ||
+        (this.transaction.op.type === "Deposit" && !this.isSameAddress(this.transaction.op.to)) ||
         this.transaction.op.type === "FullExit"
       ) {
         return "-";
