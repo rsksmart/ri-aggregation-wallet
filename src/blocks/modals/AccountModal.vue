@@ -31,7 +31,10 @@
         <div class="title">Receive</div>
       </template>
       <div class="receiveDisclaimer">
-        <span>Make sure to only share this address with wallets that have their layer 2 account activated.</span>
+        <span
+          >This address is exclusively intended for transactions within the Rollup Layer 2 network. Do not expect any
+          Layer 1 transactions to be received at this wallet!</span
+        >
       </div>
       <div class="addressInput">
         <div class="addressValidation">Your address</div>
@@ -45,6 +48,7 @@
           data-cy="address_block_wallet_address_input"
           spellcheck="false"
           maxlength="100"
+          readonly
           @keyup.enter="$emit('enter')"
           @change="$emit('change', $event)"
         />
