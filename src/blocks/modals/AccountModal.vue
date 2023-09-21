@@ -48,6 +48,7 @@
           data-cy="address_block_wallet_address_input"
           spellcheck="false"
           maxlength="100"
+          readonly
           @keyup.enter="$emit('enter')"
           @change="$emit('change', $event)"
         />
