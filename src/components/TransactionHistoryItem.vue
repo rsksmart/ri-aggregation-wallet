@@ -197,7 +197,7 @@ export default Vue.extend({
       switch (this.transaction.op.type) {
         case "Withdraw":
           return {
-            type: "Withdrawn to:",
+            type: "Withdrawal to:",
             showAddress: true,
             modal: false,
           };
