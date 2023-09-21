@@ -240,7 +240,7 @@ export default Vue.extend({
           };
         case "Deposit":
           return {
-            type: "From:",
+            type: "Deposit From:",
             showAddress: true,
             modal: false,
           };
@@ -266,7 +266,7 @@ export default Vue.extend({
               };
             }
             return {
-              type: "To:",
+              type: "Transfer To:",
               showAddress: true,
               modal: false,
             };
@@ -392,6 +392,8 @@ export default Vue.extend({
   },
   methods: {
     isSameAddress(address: Address): boolean {
+      console.log(address, this.walletAddressFull);
+
       return getAddress(address) === getAddress(this.walletAddressFull);
     },
     getTimeAgo(time?: string): string {
