@@ -1,0 +1,67 @@
+.withdrawsPage {
+  display: flex;
+  .centerBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    padding-top: 30px;
+    overflow: hidden;
+    text-align: center;
+    .withdrawBlock {
+      width: 90%;
+      max-width: 505px;
+      height: auto;
+      margin-right: auto;
+      margin-left: auto;
+      padding: 30px;
+      min-height: 0;
+      border-radius: 8px;
+      box-shadow: 4px 4px 8px 0 rgba(11, 52, 102, 0.02);
+      transition: background-color 0.2s ease;
+      .title {
+        font-size: 42px;
+        font-weight: 600;
+        line-height: 140%;
+        margin: 10px 0 0 -40px;
+      }
+      .withdrawTxItem {
+        display: grid;
+        grid-template-columns: 50px auto;
+        border-radius: 8px;
+        box-shadow: 4px 4px 8px 0 rgba(11, 52, 102, 0.02);
+        margin-bottom: 12px;
+        padding: 20px;
+        &:not(:last-child) {
+          margin-bottom: 0;
+        }
+        .tokenSymbol {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+body.inkline {
+  &.-light {
+    .withdrawBlock {
+      background-color: $lightGrey !important;
+    }
+    .withdrawTxItem {
+      background-color: $white;
+    }
+  }
+  &.-dark {
+    .withdrawBlock {
+      background-color: $midHyperlinkBlue;
+    }
+    .withdrawTxItem {
+      background-color: $hyperlinkBlue;
+    }
+  }
+}

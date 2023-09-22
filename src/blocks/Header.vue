@@ -25,6 +25,10 @@
               <v-icon class="mobileOnly" name="ri-history-line" />
               <span>History</span>
             </nuxt-link>
+            <nuxt-link class="headerLink" to="/withdraws">
+              <v-icon class="mobileOnly" name="ri-co-arrow-thick-to-bottom" />
+              <span>Withdraw</span>
+            </nuxt-link>
             <div class="mobileOnly headerLink _cursor-pointer" @click="footerModal = !footerModal">
               <v-icon class="mobileOnly" name="ri-more-2-fill" />
               <span>More</span>
