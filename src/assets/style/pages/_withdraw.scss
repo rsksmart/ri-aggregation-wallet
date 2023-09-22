@@ -42,6 +42,53 @@
           align-items: center;
           justify-content: center;
         }
+        .createdAt {
+          display: flex;
+          justify-content: start !important;
+          color: #898989;
+          font-size: 12px;
+          line-height: 14px;
+          cursor: default;
+        }
+        .tokenPrice {
+          display: flex;
+          justify-content: end !important;
+          color: #898989;
+          font-size: 12px;
+          line-height: 14px;
+        }
+        .status {
+          width: 25px;
+          height: 25px;
+          font-size: 20px;
+          line-height: 25px;
+          text-align: center;
+
+          .verified {
+            color: $green;
+          }
+
+          .committed {
+            color: #aa935d;
+          }
+
+          .inProgress {
+            color: $gray;
+          }
+
+          svg {
+            position: relative;
+            display: block;
+            top: 1.5px;
+          }
+
+          .loaderContainer {
+            position: relative;
+            left: 1px;
+            margin-top: 1px;
+            margin-left: 2px;
+          }
+        }
       }
     }
   }

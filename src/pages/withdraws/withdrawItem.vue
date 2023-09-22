@@ -25,7 +25,7 @@
             </i>
           </i-row>
         </i-column>
-        <i-column xs="4" class="_align-content-space-around">
+        <i-column xs="4">
           <i-row class="_justify-content-end">
             <i-button data-cy="account_withdraw_l1_button" size="sm" variant="secondary"> Withdraw </i-button>
           </i-row>
@@ -37,6 +37,18 @@
           </i-row>
         </i-column>
       </i-row>
+      <i-row>
+        <i-column class="_padding-0">
+          <div class="createdAt">{{ timeAgo }}</div>
+          <i-tooltip placement="bottom-start" class="status">
+            <v-icon :name="transactionStatus.icon" :class="transactionStatus.class" />
+            <template #body>{{ transactionStatus.text }}</template>
+          </i-tooltip>
+        </i-column>
+        <i-column class="_padding-0">
+          <token-price :symbol="tokenSymbol" :amount="transaction.op.amount" />
+        </i-column>
+      </i-row>
     </i-container>
   </div>
 </template>
@@ -46,9 +58,13 @@ import Vue, { PropOptions } from "vue";
 import { ApiTransaction, TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { Token } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import moment from "moment-timezone";
+import { WithdrawData } from "@rsksmart/rif-rollup-js-sdk/src/types";
 import TokenLogo from "@/components/TokenLogo.vue";
+import TokenPrice from "@/components/TokenPrice.vue";
+
 export default Vue.extend({
-  components: { TokenLogo },
+  components: { TokenPrice, TokenLogo },
   props: {
     transaction: {
       type: Object,
@@ -58,12 +74,48 @@ export default Vue.extend({
   },
   computed: {
     tokenSymbol(): TokenSymbol | number {
-      const tokenId = this.transaction.op.token;
+      console.log("tx:", this.transaction);
+      const txData: WithdrawData = this.transaction.op;
+      const tokenId = txData.token;
       const token: Token = this.$store.getters["zk-tokens/zkTokenByID"](tokenId);
       if (token) {
         return token.symbol;
       }
       return tokenId;
+    },
+    transactionStatus(): { text: string; icon: string; class: string } {
+      if (this.transaction.failReason) {
+        return {
+          text: this.transaction.failReason ? this.transaction.failReason : "Rejected",
+          icon: "ri-close-circle-fill",
+          class: "rejected",
+        };
+      }
+      if (this.transaction.status === "finalized") {
+        return {
+          text: "Verified",
+          icon: "ri-check-double-line",
+          class: "verified",
+        };
+      } else if (this.transaction.status === "committed") {
+        return {
+          text: "Committed",
+          icon: "ri-check-line",
+          class: "committed",
+        };
+      } else {
+        return {
+          text: "Initiated",
+          icon: "ri-loader-5-line",
+          class: "inProgress",
+        };
+      }
+    },
+    timeAgo(): string {
+      if (!this.transaction.createdAt) {
+        return "";
+      }
+      return moment(this.transaction.createdAt).tz("UTC").fromNow();
     },
   },
   methods: {
