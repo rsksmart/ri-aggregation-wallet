@@ -26,14 +26,12 @@
           </i-row>
         </i-column>
         <i-column xs="4" class="details">
-          <i-row class="_justify-content-end">
-            <i-button class="withdraw-btn" data-cy="account_withdraw_l1_button" size="sm" variant="secondary">
-              Withdraw
-            </i-button>
-          </i-row>
           <i-row class="_justify-content-end"> - {{ transaction.op.amount | parseBigNumberish(tokenSymbol) }} </i-row>
           <i-row class="_justify-content-end">
             {{ tokenSymbol }}
+          </i-row>
+          <i-row class="_justify-content-end">
+            <token-price :symbol="tokenSymbol" :amount="transaction.op.amount" />
           </i-row>
         </i-column>
       </i-row>
@@ -45,9 +43,19 @@
             <template #body>{{ transactionStatus.text }}</template>
           </i-tooltip>
         </i-column>
-        <i-column class="_padding-0">
-          <token-price :symbol="tokenSymbol" :amount="transaction.op.amount" />
-        </i-column>
+      </i-row>
+      <i-row class="_justify-content-end">
+        <i-button
+          v-if="isTwoStepWithdrawEnabled()"
+          class="withdraw-btn"
+          data-cy="account_withdraw_l1_button"
+          variant="secondary"
+        >
+          complete withdrawal
+        </i-button>
+        <i-button v-else disabled class="withdraw-btn" data-cy="account_withdraw_l1_button" variant="secondary">
+          withdrawal complete
+        </i-button>
       </i-row>
     </i-container>
   </div>
@@ -124,6 +132,9 @@ export default Vue.extend({
     },
     trimHash(hash: string) {
       return `${hash.substr(0, 4)}...${hash.substr(hash.length - 4, hash.length)}`;
+    },
+    isTwoStepWithdrawEnabled(): boolean {
+      return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
     },
   },
 });

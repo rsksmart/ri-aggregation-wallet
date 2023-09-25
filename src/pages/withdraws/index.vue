@@ -2,7 +2,7 @@
   <div class="withdrawsPage">
     <div class="centerBlock">
       <div class="withdrawBlock">
-        <span class="title">Withdraw</span>
+        <span class="title">Withdrawals</span>
         <template v-if="withdrawTxs">
           <div style="margin-top: 35px">
             <div v-for="(tx, idx) in withdrawTxs" :key="idx">
