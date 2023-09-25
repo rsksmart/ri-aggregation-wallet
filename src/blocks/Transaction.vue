@@ -581,12 +581,15 @@ export default Vue.extend({
             this.unlockToken();
           }
 
-          // Two step withdraw verification
-          const isTwoStepWithdrawEnabled = process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
-          if (this.type === "Withdraw" && isTwoStepWithdrawEnabled) {
-            console.log("Not implemented yet");
-            return;
-          }
+          /*
+           * Step below becomes redundant as the withdrawals page reacts as appropriate
+           * depending on the flag set for the IS_TWO_STEP_WITHDRAW_ENABLED env variable
+           */
+          // // Two step withdraw verification
+          // const isTwoStepWithdrawEnabled = process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
+          // if (this.type === "Withdraw" && isTwoStepWithdrawEnabled) {
+          //   alert("correct behaviour not yet implemented as two step withdrawal is enabled"); //TODO: Implement correct behaviour
+          // }
 
           const result = await this.$store.dispatch("zk-transaction/commitTransaction", { requestFees: true });
 

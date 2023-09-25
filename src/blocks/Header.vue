@@ -27,7 +27,7 @@
             </nuxt-link>
             <nuxt-link class="headerLink" to="/withdraws">
               <v-icon class="mobileOnly" name="ri-arrow-down-s-line" />
-              <span>Withdraw</span>
+              <span>Withdrawals</span>
             </nuxt-link>
             <div class="mobileOnly headerLink _cursor-pointer" @click="footerModal = !footerModal">
               <v-icon class="mobileOnly" name="ri-more-2-fill" />

@@ -11,6 +11,10 @@
           Your withdrawal process has been initiated. Once the Rollup Tx is committed, you will be able to proceed with
           the final step from the <nuxt-link style="color: aquamarine" to="/withdrawals">Withdrawals tab.</nuxt-link>
         </template>
+        <template v-if="activeTransaction.type === 'Withdraw' && !isTwoStepWithdrawEnabled()">
+          Your withdrawal process has been initiated. Once the Rollup Tx is committed, your funds should become
+          available your l1 wallet
+        </template>
         <template v-else-if="activeTransaction.type === 'Deposit'">
           Your deposit transaction has been mined and will be processed after required number of confirmations. Use the
           transaction link to track the progress.
@@ -27,7 +31,7 @@
       </p>
     </div>
 
-    <div class="pageDetails">
+    <div class="pageDetails _margin-top-1">
       <div class="txLink _margin-top-1">
         <a
           v-if="isL1Transaction()"
@@ -51,14 +55,15 @@
 
       <div v-if="activeTransaction.address" class="newInfoBlockItem smaller _margin-top-2">
         <div class="amount">
-          <span>Recipient: </span>
+          <span>Sent to: </span>
           <span v-if="isOwnAddress" class="secondaryText">Own account</span>
           <span v-else-if="openedContact" class="secondaryText">{{ openedContact.name }}</span>
         </div>
         <wallet-address :wallet="activeTransaction.address" />
       </div>
-      <div v-if="activeTransaction.amount" class="infoBlockItem _margin-top-1">
-        <div class="headline">Amount:</div>
+
+      <div v-if="activeTransaction.amount" class="infoAmountBlockItem _margin-top-1">
+        <div class="headline">Amount</div>
         <div class="amount">
           <span v-if="typeof activeTransaction.token === 'string'">
             <span class="tokenSymbol">{{ activeTransaction.token }}</span>
@@ -70,8 +75,8 @@
           <span v-else>NFT-{{ activeTransaction.token }}</span>
         </div>
       </div>
-      <div v-if="activeTransaction.fee" class="infoBlockItem smaller _margin-top-1">
-        <div class="headline">Fee:</div>
+      <div v-if="activeTransaction.fee" class="infoFeeBlockItem smaller _margin-top-1">
+        <div class="headline">Fee</div>
         <div class="amount">
           <span class="tokenSymbol">{{ activeTransaction.feeToken }}</span>
           {{ activeTransaction.fee | parseBigNumberish(activeTransaction.feeToken) }}
@@ -116,7 +121,7 @@
         v-else-if="activeTransaction.type === 'Allowance' && type === 'Deposit'"
         data-cy="success_unlock_ok_button"
         block
-        size="lg"
+        size="sm"
         variant="secondary"
         class="_margin-top-2"
         @click="clearActiveTransaction()"
@@ -248,5 +253,19 @@ export default Vue.extend({
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.infoAmountBlockItem {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: 14px;
+}
+.infoFeeBlockItem {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: 14px;
 }
 </style>
