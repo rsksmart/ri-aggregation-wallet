@@ -53,7 +53,7 @@
         >
           complete withdrawal
         </i-button>
-        <i-button v-else disabled class="withdraw-btn" data-cy="account_withdraw_l1_button" variant="secondary">
+        <i-button v-else disabled class="withdraw-btn" data-cy="account_withdraw_l1_button" variant="success">
           withdrawal complete
         </i-button>
       </i-row>
