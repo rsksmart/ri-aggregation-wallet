@@ -13,7 +13,7 @@
         </template>
         <template v-if="activeTransaction.type === 'Withdraw' && !isTwoStepWithdrawEnabled()">
           Your withdrawal process has been initiated. Once the Rollup Tx is committed, your funds should become
-          available your l1 wallet
+          available your L1 wallet
         </template>
         <template v-else-if="activeTransaction.type === 'Deposit'">
           Your deposit transaction has been mined and will be processed after required number of confirmations. Use the
