@@ -75,7 +75,7 @@ export default Vue.extend({
   computed: {
     tokenSymbol(): TokenSymbol | number {
       console.log("tx:", this.transaction);
-      const txData: WithdrawData = this.transaction.op;
+      const txData: WithdrawData = this.transaction.op as WithdrawData;
       const tokenId = txData.token;
       const token: Token = this.$store.getters["zk-tokens/zkTokenByID"](tokenId);
       if (token) {
