@@ -4,8 +4,10 @@
       <div class="withdrawBlock">
         <span class="title">Withdraw</span>
         <template v-if="withdrawTxs">
-          <div v-for="(tx, idx) in withdrawTxs" :key="idx">
-            <withdraw-item :transaction="tx" />
+          <div style="margin-top: 35px">
+            <div v-for="(tx, idx) in withdrawTxs" :key="idx">
+              <withdraw-item :transaction="tx" />
+            </div>
           </div>
         </template>
       </div>

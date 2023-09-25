@@ -12,20 +12,24 @@
     text-align: center;
     .withdrawBlock {
       width: 90%;
-      max-width: 505px;
+      max-width: 605px;
       height: auto;
       margin-right: auto;
       margin-left: auto;
-      padding: 30px;
+      padding: 20px;
       min-height: 0;
       border-radius: 8px;
       box-shadow: 4px 4px 8px 0 rgba(11, 52, 102, 0.02);
       transition: background-color 0.2s ease;
       .title {
-        font-size: 42px;
-        font-weight: 600;
+        font-size: 30px;
+        font-weight: normal;
+        text-align: center;
         line-height: 140%;
-        margin: 10px 0 0 -40px;
+        // margin: 10px 0 0 -40px;
+      }
+      .withdrawTxt {
+        font-size: 14px;
       }
       .withdrawTxItem {
         display: grid;
@@ -47,8 +51,8 @@
           justify-content: start !important;
           color: #898989;
           font-size: 12px;
-          line-height: 14px;
           cursor: default;
+          margin-top: -8px;
         }
         .tokenPrice {
           display: flex;
@@ -57,10 +61,17 @@
           font-size: 12px;
           line-height: 14px;
         }
+        .details {
+          font-size: 12px;
+        }
+        .withdraw-btn {
+          border-radius: 15px;
+          font-size: 11px;
+        }
         .status {
           width: 25px;
-          height: 25px;
-          font-size: 20px;
+          // height: 25px;
+          font-size: 15px;
           line-height: 25px;
           text-align: center;
 
@@ -80,6 +91,7 @@
             position: relative;
             display: block;
             top: 1.5px;
+            left: -100px;
           }
 
           .loaderContainer {

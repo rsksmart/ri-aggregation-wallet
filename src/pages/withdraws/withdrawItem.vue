@@ -5,7 +5,7 @@
     </div>
     <i-container>
       <i-row>
-        <i-column xs="8">
+        <i-column class="withdrawTxt" xs="8">
           <i-row>
             <span>Tx hash: {{ trimHash(transaction.txHash) }}</span>
             <i class="copy" @click="copyAddress(transaction.txHash)">
@@ -25,13 +25,13 @@
             </i>
           </i-row>
         </i-column>
-        <i-column xs="4">
+        <i-column xs="4" class="details">
           <i-row class="_justify-content-end">
-            <i-button data-cy="account_withdraw_l1_button" size="sm" variant="secondary"> Withdraw </i-button>
+            <i-button class="withdraw-btn" data-cy="account_withdraw_l1_button" size="sm" variant="secondary">
+              Withdraw
+            </i-button>
           </i-row>
-          <i-row class="_justify-content-end">
-            {{ transaction.op.amount | parseBigNumberish(tokenSymbol) }}
-          </i-row>
+          <i-row class="_justify-content-end"> - {{ transaction.op.amount | parseBigNumberish(tokenSymbol) }} </i-row>
           <i-row class="_justify-content-end">
             {{ tokenSymbol }}
           </i-row>
