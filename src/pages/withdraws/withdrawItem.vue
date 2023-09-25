@@ -60,8 +60,8 @@ import { Token } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import moment from "moment-timezone";
 import { WithdrawData } from "@rsksmart/rif-rollup-js-sdk/src/types";
-import TokenLogo from "@/components/TokenLogo.vue";
-import TokenPrice from "@/components/TokenPrice.vue";
+import TokenLogo from "../../components/TokenLogo.vue";
+import TokenPrice from "../../components/TokenPrice.vue";
 
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },

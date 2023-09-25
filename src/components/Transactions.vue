@@ -16,7 +16,6 @@
         </div>
         <transaction-history-item
           v-for="item in transactions"
-          v-else
           :key="item.txHash"
           class="transactionItem"
           :transaction="item"
