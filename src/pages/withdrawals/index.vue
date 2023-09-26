@@ -19,7 +19,7 @@
 import Vue from "vue";
 import { ZkTransactionHistoryLoadingState } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { ApiTransaction } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import WithdrawItem from "../../pages/withdraws/withdrawItem.vue";
+import WithdrawItem from "../../pages/withdrawals/withdrawItem.vue";
 
 let updateListInterval: ReturnType<typeof setInterval>;
 export default Vue.extend({
