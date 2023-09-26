@@ -26,7 +26,7 @@
     </div>
     <div class="actionInfo">
       <div v-if="!isNFT && !isSwap" :class="{ small: smallAmountText }" class="amount">
-        {{ itReducesMyBalance }} {{ amount | parseBigNumberish(tokenSymbol) }}
+        {{ itReducesMyBalance }} {{ fixDecimals(amount.toString(), tokenSymbol) }}
       </div>
       <div v-if="!isNFT && !isSwap" :class="{ small: smallAmountText }" class="symbol">
         {{ tokenSymbol }}
@@ -107,15 +107,16 @@
 </template>
 
 <script lang="ts">
-import { utils } from "@rsksmart/rif-rollup-js-sdk";
+import { utils, RestProvider } from "@rsksmart/rif-rollup-js-sdk";
 
 import moment from "moment-timezone";
 import Vue, { PropOptions } from "vue";
 import { BigNumberish } from "@ethersproject/bignumber";
 import { Address, ApiTransaction, TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { Token, ZkConfig, ZkContact } from "@rsksmart/rif-rollup-nuxt-core/types";
-import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import { copyToClipboard, parseBigNumberish } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import { getAddress } from "ethers/lib/utils";
+import { adjustNumberOfDigits } from "../utils/number";
 import TokenPrice from "@/components/TokenPrice.vue";
 import TokenLogo from "@/components/TokenLogo.vue";
 
@@ -394,6 +395,9 @@ export default Vue.extend({
     transactionChange() {
       return this.transaction;
     },
+    provider(): RestProvider {
+      return this.$store.getters["zk-provider/syncProvider"];
+    },
   },
   watch: {
     transactionChange(newValue, oldValue) {
@@ -463,6 +467,11 @@ export default Vue.extend({
     },
     isTransactionVerified(): boolean {
       return this.transactionStatus.text.toUpperCase() === "VERIFIED";
+    },
+    fixDecimals(value: string, symbol: string | number): string {
+      const asBigNumberString = parseBigNumberish(this.provider, symbol, value) as string;
+
+      return adjustNumberOfDigits(asBigNumberString);
     },
   },
 });

@@ -47,7 +47,7 @@
             <div class="rightSide">
               <div class="rowItem">
                 <div class="total">
-                  {{ parseBigNumber(balance.toString()) }}
+                  {{ fixDecimals(balance.toString(), symbolOrID) }}
                   <span class="balancePrice">
                     <token-price :amount="balance" :symbol="symbolOrID" />
                   </span>
@@ -75,15 +75,17 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { searchByKey, searchInObject } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import { searchByKey, searchInObject, parseBigNumberish } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import {
   ZkEthereumBalances,
   ZkNFTBalances,
   ZkTokenBalances,
   ZkTransactionMainToken,
 } from "@rsksmart/rif-rollup-nuxt-core/types";
-import { BigNumberish, formatFixed } from "@ethersproject/bignumber";
+import { RestProvider } from "@rsksmart/rif-rollup-js-sdk";
+import { BigNumberish } from "@ethersproject/bignumber";
 import { Tokens } from "@rsksmart/rif-rollup-js-sdk/build/types";
+import { adjustNumberOfDigits } from "../utils/number";
 
 export default Vue.extend({
   props: {
@@ -202,6 +204,9 @@ export default Vue.extend({
     displayTokenBalance(): boolean {
       return !this.onlyMintTokens && (this.tokensType === "L1-Tokens" || this.tokensType === "L2-Tokens");
     },
+    provider(): RestProvider {
+      return this.$store.getters["zk-provider/syncProvider"];
+    },
   },
   methods: {
     updateBalances() {
@@ -220,8 +225,10 @@ export default Vue.extend({
       }
       return this.$emit("chosen", symbolOrID);
     },
-    parseBigNumber(value: string) {
-      return formatFixed(value, 18);
+    fixDecimals(value: string, symbol: string | number): string {
+      const asBigNumberString = parseBigNumberish(this.provider, symbol, value) as string;
+
+      return adjustNumberOfDigits(asBigNumberString);
     },
   },
 });
