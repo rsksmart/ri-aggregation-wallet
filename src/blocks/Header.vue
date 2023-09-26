@@ -25,7 +25,7 @@
               <v-icon class="mobileOnly" name="ri-history-line" />
               <span>History</span>
             </nuxt-link>
-            <nuxt-link class="headerLink" to="/withdraws">
+            <nuxt-link class="headerLink" to="/withdrawals">
               <v-icon class="mobileOnly" name="ri-arrow-down-s-line" />
               <span>Withdrawals</span>
             </nuxt-link>
