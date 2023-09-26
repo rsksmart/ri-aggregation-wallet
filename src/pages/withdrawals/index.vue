@@ -10,6 +10,11 @@
             </div>
           </div>
         </template>
+        <template v-else>
+          <div style="display: flex; justify-content: center; align-content: center; text-align: center">
+            <p>No Withdrawals yet</p>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -38,7 +43,7 @@ export default Vue.extend({
       return this.$store.getters["zk-history/transactionHistoryAllLoaded"];
     },
     withdrawTxs(): ApiTransaction[] {
-      return this.transactionHistoryAllLoaded ? this.transactions.filter((t) => t.op.type === "Withdraw") : [];
+      return this.transactions.filter((t) => t.op.type === "Withdraw") || [];
     },
   },
   async mounted() {
