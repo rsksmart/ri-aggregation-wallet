@@ -391,6 +391,16 @@ export default Vue.extend({
     linkColor(): string {
       return this.$inkline.config.variant === "dark" ? "#FFF" : "#A5ADF7";
     },
+    transactionChange() {
+      return this.transaction;
+    },
+  },
+  watch: {
+    transactionChange(newValue, oldValue) {
+      if (oldValue.status === "committed" && newValue.status === "finalized") {
+        this.getL1TransactionHash();
+      }
+    },
   },
   mounted() {
     this.timeAgo = this.getTimeAgo(this.transaction.createdAt);
