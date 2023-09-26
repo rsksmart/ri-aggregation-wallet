@@ -1,126 +1,144 @@
 <template>
   <div class="successBlock tileBlock">
+    <checkmark />
     <div class="tileHeadline h3">
       <span>{{ activeTransaction.type }}</span>
     </div>
-    <checkmark />
-    <p class="_text-center _margin-top-0">
-      <template v-if="activeTransaction.type === 'Deposit'">
-        Your deposit transaction has been mined and will be processed after required number of confirmations.<br />Use
-        the transaction link to track the progress.
-      </template>
-      <template v-else-if="activeTransaction.type === 'Allowance' && activeTransaction.data">
-        Token <span class="tokenSymbol">{{ activeTransaction.data.token }}</span> was successfully approved
-        <span v-if="activeTransaction.data.allowance.lt(unlimitedUnlockAmount)">
-          for {{ activeTransaction.data.allowance.toString() | parseBigNumberish(activeTransaction.data.token) }}
-          <span class="tokenSymbol">{{ activeTransaction.data.token }}</span>
-        </span>
-        <br />
-        Now you can proceed to deposit.
-      </template>
-    </p>
-    <a
-      v-if="isL1Transaction()"
-      id="btn-link-to-transaction"
-      :href="getL1ExplorerTransactionLink()"
-      class="_display-block _text-center _margin-top-1"
-      target="_blank"
-      >Rootstock transacion
-      <v-icon name="ri-external-link-line"></v-icon>
-    </a>
-    <a
-      v-if="isL2Transaction()"
-      id="btn-link-to-transaction"
-      :href="getL2ExplorerTransactionLink()"
-      class="_display-block _text-center _margin-top-1"
-      target="_blank"
-      >Rollup transacion
-      <v-icon name="ri-external-link-line"></v-icon>
-    </a>
-    <div v-if="activeTransaction.address" class="infoBlockItem smaller _margin-top-2">
-      <div class="amount">
-        <span>Recipient:</span>
-        <span v-if="isOwnAddress" class="secondaryText">Own account</span>
-        <span v-else-if="openedContact" class="secondaryText">{{ openedContact.name }}</span>
-      </div>
-      <wallet-address :wallet="activeTransaction.address" />
-    </div>
-    <div v-if="activeTransaction.amount" class="infoBlockItem _margin-top-1">
-      <div class="headline">Amount:</div>
-      <div class="amount">
-        <span v-if="typeof activeTransaction.token === 'string'">
-          <span class="tokenSymbol">{{ activeTransaction.token }}</span>
-          {{ activeTransaction.amount | parseBigNumberish(activeTransaction.token) }}
-          <span class="secondaryText">
-            <token-price :symbol="activeTransaction.token" :amount="activeTransaction.amount" />
+    <div class="additionalInfo _margin-top-2">
+      <p class="_text-center">
+        <span>&#9432; </span>
+        <template v-if="activeTransaction.type === 'Withdraw' && isTwoStepWithdrawEnabled()">
+          Your withdrawal process has been initiated. Once the Rollup Tx is committed, you will be able to proceed with
+          the final step from the <nuxt-link style="color: aquamarine" to="/withdrawals">Withdrawals tab.</nuxt-link>
+        </template>
+        <template v-if="activeTransaction.type === 'Withdraw' && !isTwoStepWithdrawEnabled()">
+          Your withdrawal process has been initiated. Once the Rollup Tx is committed, your funds should become
+          available your L1 wallet
+        </template>
+        <template v-else-if="activeTransaction.type === 'Deposit'">
+          Your deposit transaction has been mined and will be processed after required number of confirmations. Use the
+          transaction link to track the progress.
+        </template>
+        <template v-else-if="activeTransaction.type === 'Allowance' && activeTransaction.data">
+          Token <span class="tokenSymbol">{{ activeTransaction.data.token }}</span> was successfully approved
+          <span v-if="activeTransaction.data.allowance.lt(unlimitedUnlockAmount)">
+            for {{ activeTransaction.data.allowance.toString() | parseBigNumberish(activeTransaction.data.token) }}
+            <span class="tokenSymbol">{{ activeTransaction.data.token }}</span>
           </span>
-        </span>
-        <span v-else>NFT-{{ activeTransaction.token }}</span>
-      </div>
+          <br />
+          Now you can proceed to deposit.
+        </template>
+      </p>
     </div>
-    <div v-if="activeTransaction.fee" class="infoBlockItem smaller _margin-top-1">
-      <div class="headline">Fee:</div>
-      <div class="amount">
-        <span class="tokenSymbol">{{ activeTransaction.feeToken }}</span>
-        {{ activeTransaction.fee | parseBigNumberish(activeTransaction.feeToken) }}
-        <span class="secondaryText">
-          <token-price :symbol="activeTransaction.feeToken" :amount="activeTransaction.fee" />
-        </span>
+
+    <div class="pageDetails _margin-top-1">
+      <div class="txLink _margin-top-1">
+        <a
+          v-if="isL1Transaction()"
+          id="btn-link-to-transaction"
+          :href="getL1ExplorerTransactionLink()"
+          class="_display-block _text-center"
+          target="_blank"
+          >Rootstock transacion
+          <v-icon name="ri-external-link-line"></v-icon>
+        </a>
+        <a
+          v-if="isL2Transaction()"
+          id="btn-link-to-transaction"
+          :href="getL2ExplorerTransactionLink()"
+          class="_display-block _text-center"
+          target="_blank"
+          >Rollup transacion
+          <v-icon name="ri-external-link-line"></v-icon>
+        </a>
       </div>
-    </div>
-    <div v-if="activeTransaction.type === 'Allowance' && type === 'Deposit' && commitAllowed">
-      <div class="border-line _margin-top-1"></div>
-      <div class="infoBlockItem smaller _margin-top-1">
-        <div class="headline">Amount to deposit:</div>
+
+      <div v-if="activeTransaction.address" class="newInfoBlockItem smaller _margin-top-2">
         <div class="amount">
-          <span class="tokenSymbol">{{ chosenToken }}</span>
-          {{ amountBigNumber.toString() | parseBigNumberish(chosenToken) }}
+          <span>Sent to: </span>
+          <span v-if="isOwnAddress" class="secondaryText">Own account</span>
+          <span v-else-if="openedContact" class="secondaryText">{{ openedContact.name }}</span>
+        </div>
+        <wallet-address :wallet="activeTransaction.address" />
+      </div>
+
+      <div v-if="activeTransaction.amount" class="infoAmountBlockItem _margin-top-1">
+        <div class="headline">Amount</div>
+        <div class="amount">
+          <span v-if="typeof activeTransaction.token === 'string'">
+            <span class="tokenSymbol">{{ activeTransaction.token }}</span>
+            {{ activeTransaction.amount | parseBigNumberish(activeTransaction.token) }}
+            <span class="secondaryText">
+              <token-price :symbol="activeTransaction.token" :amount="activeTransaction.amount" />
+            </span>
+          </span>
+          <span v-else>NFT-{{ activeTransaction.token }}</span>
+        </div>
+      </div>
+      <div v-if="activeTransaction.fee" class="infoFeeBlockItem smaller _margin-top-1">
+        <div class="headline">Fee</div>
+        <div class="amount">
+          <span class="tokenSymbol">{{ activeTransaction.feeToken }}</span>
+          {{ activeTransaction.fee | parseBigNumberish(activeTransaction.feeToken) }}
           <span class="secondaryText">
-            <token-price :symbol="chosenToken" :amount="amountBigNumber.toString()" />
+            <token-price :symbol="activeTransaction.feeToken" :amount="activeTransaction.fee" />
           </span>
         </div>
       </div>
-      <div class="goBackContinueBtns _margin-top-1">
-        <i-button
-          data-cy="deposit_arrow_back_button"
-          size="lg"
-          variant="secondary"
-          circle
-          @click="clearActiveTransaction()"
-        >
-          <v-icon name="ri-arrow-left-line" />
-        </i-button>
-        <i-button
-          data-cy="deposit_proceed_to_deposit_button"
-          block
-          size="lg"
-          variant="secondary"
-          @click="commitTransaction()"
-          >Proceed to deposit
-        </i-button>
+      <div v-if="activeTransaction.type === 'Allowance' && type === 'Deposit' && commitAllowed">
+        <div class="border-line _margin-top-1"></div>
+        <div class="infoBlockItem smaller _margin-top-1">
+          <div class="headline">Amount to deposit:</div>
+          <div class="amount">
+            <span class="tokenSymbol">{{ chosenToken }}</span>
+            {{ amountBigNumber.toString() | parseBigNumberish(chosenToken) }}
+            <span class="secondaryText">
+              <token-price :symbol="chosenToken" :amount="amountBigNumber.toString()" />
+            </span>
+          </div>
+        </div>
+        <div class="goBackContinueBtns _margin-top-1">
+          <i-button
+            data-cy="deposit_arrow_back_button"
+            size="lg"
+            variant="secondary"
+            circle
+            @click="clearActiveTransaction()"
+          >
+            <v-icon name="ri-arrow-left-line" />
+          </i-button>
+          <i-button
+            data-cy="deposit_proceed_to_deposit_button"
+            block
+            size="lg"
+            variant="secondary"
+            @click="commitTransaction()"
+            >Proceed to deposit
+          </i-button>
+        </div>
       </div>
+      <i-button
+        v-else-if="activeTransaction.type === 'Allowance' && type === 'Deposit'"
+        data-cy="success_unlock_ok_button"
+        block
+        size="sm"
+        variant="secondary"
+        class="_margin-top-2"
+        @click="clearActiveTransaction()"
+      >
+        Ok
+      </i-button>
+      <i-button
+        v-else
+        data-cy="success_block_ok_button"
+        block
+        size="lg"
+        variant="secondary"
+        class="_margin-top-2"
+        :to="continueBtnLink"
+        >Ok
+      </i-button>
     </div>
-    <i-button
-      v-else-if="activeTransaction.type === 'Allowance' && type === 'Deposit'"
-      data-cy="success_unlock_ok_button"
-      block
-      size="lg"
-      variant="secondary"
-      class="_margin-top-2"
-      @click="clearActiveTransaction()"
-    >
-      Ok
-    </i-button>
-    <i-button
-      v-else
-      data-cy="success_block_ok_button"
-      block
-      size="lg"
-      variant="secondary"
-      class="_margin-top-2"
-      :to="continueBtnLink"
-      >Ok
-    </i-button>
   </div>
 </template>
 
@@ -201,6 +219,53 @@ export default Vue.extend({
     isL2Transaction(): boolean {
       return ["Deposit", "Transfer", "Withdraw"].includes(this.activeTransaction.type);
     },
+    isTwoStepWithdrawEnabled(): boolean {
+      return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
+    },
   },
 });
 </script>
+
+<style>
+.additionalInfo {
+  background-color: #6170f2;
+  padding: 10px;
+  font-size: 12px;
+  color: white;
+  border-radius: 5px;
+}
+.pageDetails {
+  background-color: #ffff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.txLink {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 12px;
+}
+
+.newInfoBlockItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.infoAmountBlockItem {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: 14px;
+}
+.infoFeeBlockItem {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: 14px;
+}
+</style>

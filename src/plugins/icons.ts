@@ -29,6 +29,7 @@ import {
   RiArrowUpSLine,
   RiAtLine,
   RiBook2Line,
+  RiBankLine,
   RiCheckDoubleLine,
   RiCheckLine,
   RiClipboardLine,
@@ -138,7 +139,8 @@ const iconsPlugin: Plugin = () => {
     RiMediumLine,
     RiTwitterLine,
     RiDiscordLine,
-    RiTelegramLine
+    RiTelegramLine,
+    RiBankLine
   ); // Used icons (to reduce bundle-size)
 
   Vue.component("VIcon", OhVueIcon);

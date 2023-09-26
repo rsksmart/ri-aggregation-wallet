@@ -2,10 +2,17 @@
   <div class="withdrawsPage">
     <div class="centerBlock">
       <div class="withdrawBlock">
-        <span class="title">Withdraw</span>
+        <span class="title">Withdrawals</span>
         <template v-if="withdrawTxs">
-          <div v-for="(tx, idx) in withdrawTxs" :key="idx">
-            <withdraw-item :transaction="tx" />
+          <div style="margin-top: 35px">
+            <div v-for="(tx, idx) in withdrawTxs" :key="idx">
+              <withdraw-item :transaction="tx" />
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div style="display: flex; justify-content: center; align-content: center; text-align: center">
+            <p>No Withdrawals yet</p>
           </div>
         </template>
       </div>
@@ -17,7 +24,7 @@
 import Vue from "vue";
 import { ZkTransactionHistoryLoadingState } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { ApiTransaction } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import WithdrawItem from "@/pages/withdraws/withdrawItem.vue";
+import WithdrawItem from "../../pages/withdrawals/withdrawItem.vue";
 
 let updateListInterval: ReturnType<typeof setInterval>;
 export default Vue.extend({
@@ -36,7 +43,7 @@ export default Vue.extend({
       return this.$store.getters["zk-history/transactionHistoryAllLoaded"];
     },
     withdrawTxs(): ApiTransaction[] {
-      return this.transactionHistoryAllLoaded ? this.transactions.filter((t) => t.op.type === "Withdraw") : [];
+      return this.transactions.filter((t) => t.op.type === "Withdraw") || [];
     },
   },
   async mounted() {

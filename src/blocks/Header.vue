@@ -25,9 +25,9 @@
               <v-icon class="mobileOnly" name="ri-history-line" />
               <span>History</span>
             </nuxt-link>
-            <nuxt-link class="headerLink" to="/withdraws">
-              <v-icon class="mobileOnly" name="ri-arrow-down-s-line" />
-              <span>Withdraw</span>
+            <nuxt-link class="headerLink" to="/withdrawals">
+              <v-icon class="mobileOnly" name="ri-bank-line" />
+              <span>Withdrawals</span>
             </nuxt-link>
             <div class="mobileOnly headerLink _cursor-pointer" @click="footerModal = !footerModal">
               <v-icon class="mobileOnly" name="ri-more-2-fill" />
