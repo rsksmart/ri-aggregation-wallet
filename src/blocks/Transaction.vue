@@ -10,7 +10,6 @@
 
     <!-- Choose token -->
     <i-modal v-model="chooseTokenModalOpened" :value="chooseTokenModalOpened" size="md">
-      <!-- <template #header>Choose token</template> -->
       <choose-token
         v-if="mainToken || chooseTokenModal === 'feeToken'"
         :fee-acceptable="chooseTokenModal === 'feeToken'"
@@ -38,7 +37,6 @@
             <div v-else-if="type === 'Withdraw'" class="title">Withdraw</div>
           </div>
         </template>
-        <!-- <template v-else>{{ transactionActionName }} kk</template> -->
       </div>
 
       <template v-if="displayAddressInput">
@@ -48,17 +46,9 @@
             v-model="inputtedAddress"
             :token="chosenToken ? chosenToken : undefined"
             @enter="commitTransaction()"
+            @input="clearError"
           />
         </template>
-        <!-- <template v-else>
-          <div :class="'_margin-top-1'" class="inputLabel">Address</div>
-          <address-input
-            ref="addressInput"
-            v-model="inputtedAddress"
-            :token="chosenToken ? chosenToken : undefined"
-            @enter="commitTransaction()"
-          />
-        </template> -->
       </template>
 
       <template v-if="displayAmountInput">
@@ -75,20 +65,6 @@
             @enter="commitTransaction()"
           />
         </template>
-        <!-- <template v-else>
-          <div class="_padding-top-3 inputLabel">Amount</div>
-          <amount-input
-            ref="amountInput"
-            v-model="inputtedAmount"
-            :max-amount="type !== 'Mint' ? maxAmount.toString() : undefined"
-            :token="chosenToken ? chosenToken : undefined"
-            :type="type"
-            :type-name="transactionActionName"
-            autofocus
-            @chooseToken="chooseTokenModal = 'mainToken'"
-            @enter="commitTransaction()"
-          />
-        </template> -->
       </template>
 
       <div v-if="type === 'Transfer' || type === 'Withdraw'">
@@ -161,65 +137,6 @@
       <div v-if="requestingSigner" class="_text-center _margin-top-1" data-cy="requesting_signer_text">
         Follow the instructions in your Rootstock wallet
       </div>
-
-      <!-- Fees -->
-      <!-- <div v-if="type !== 'Transfer'">
-        <div v-if="feeSymbol && !enoughBalanceToPayFee" class="errorText _text-center _margin-top-1">
-          Not enough <span class="tokenSymbol">{{ feeSymbol }}</span> to pay the fee
-        </div>
-        <div v-if="feeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-          {{ getFeeName("txFee") }}:
-          <span>
-            <span class="secondaryText">Loading...</span>
-          </span>
-        </div>
-        <template v-for="item in fees">
-          <div :key="item.key" class="_text-center _margin-top-1" data-cy="fee_block_fee_message">
-            {{ getFeeName(item.key) }}:
-            <span
-              v-if="
-                (item.key === 'txFee' && !feeLoading) || (item.key === 'accountActivation' && !activationFeeLoading)
-              "
-            >
-              {{ item.amount.toString() | parseBigNumberish(feeSymbol) }}
-              <span class="tokenSymbol">{{ feeSymbol }}</span>
-              <span class="secondaryText">
-                <token-price :amount="item.amount.toString()" :symbol="feeSymbol" />
-              </span>
-            </span>
-          </div>
-        </template>
-        <div v-if="activationFeeLoading" class="_text-center _margin-top-1" data-cy="fee_block_fee_message_loading">
-          {{ getFeeName("accountActivation") }}:
-          <span>
-            <span class="secondaryText">Loading...</span>
-          </span>
-        </div>
-        <div
-          v-if="feeError"
-          class="_display-flex _justify-content-center _align-items-center _padding-left-2 _margin-top-1"
-        >
-          <div class="errorText _text-center">
-            <span>{{ feeError }}</span>
-            <div class="_text-decoration-underline _cursor-pointer" @click="requestFees()">Try again</div>
-          </div>
-          <v-icon
-            id="questionMark"
-            class="iconInfo _margin-left-1"
-            name="ri-question-mark"
-            scale="0.9"
-            @click.native="$accessor.openModal('FeeReqError')"
-          />
-        </div>
-        <span
-          v-if="requiredFees.length > 0"
-          class="linkText _width-100 _display-block _text-center _margin-top-1"
-          data-cy="fee_block_change_fee_token_button"
-          @click="showChangeFeeTokenModal"
-        >
-          Change fee token
-        </span>
-      </div> -->
     </div>
   </div>
 </template>
@@ -480,6 +397,10 @@ export default Vue.extend({
     this.$store.commit("zk-transaction/setContentHash", undefined);
   },
   methods: {
+    clearError() {
+      this.addressIsMyOwn = false;
+      this.amountOrAddressEmpty = false;
+    },
     chooseToken(token: TokenLike) {
       if (!this.chooseTokenModal || this.chooseTokenModal === "mainToken") {
         this.$store.dispatch("zk-transaction/setSymbol", token);
