@@ -160,7 +160,10 @@ export default Vue.extend({
           return op.to;
         }
       } else if (op.type === "Deposit" || op.type === "WithdrawNFT") {
-        return op.from;
+        if (op.from === getAddress(this.walletAddressFull)) {
+          return op.from;
+        }
+        return op.to;
       } else if (op.type === "Withdraw") {
         return op.to;
       } else if (op.type === "MintNFT") {
@@ -254,8 +257,15 @@ export default Vue.extend({
             },
           };
         case "Deposit":
+          if (this.transaction.op.to === this.transaction.op.from) {
+            return {
+              type: "Deposit from:",
+              showAddress: true,
+              modal: false,
+            };
+          }
           return {
-            type: "Deposit from:",
+            type: "Deposit To:",
             showAddress: true,
             modal: false,
           };
@@ -382,7 +392,6 @@ export default Vue.extend({
       if (
         (this.transaction.op.type === "Transfer" && this.isSameAddress(this.transaction.op.from)) ||
         this.transaction.op.type === "Withdraw" ||
-        (this.transaction.op.type === "Deposit" && !this.isSameAddress(this.transaction.op.to)) ||
         this.transaction.op.type === "FullExit"
       ) {
         return "-";
