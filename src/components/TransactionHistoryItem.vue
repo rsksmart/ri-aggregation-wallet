@@ -160,10 +160,10 @@ export default Vue.extend({
           return op.to;
         }
       } else if (op.type === "Deposit" || op.type === "WithdrawNFT") {
-        if (op.from === getAddress(this.walletAddressFull)) {
-          return op.from;
+        if (op.from === op.to) {
+          return op.to;
         }
-        return op.to;
+        return op.from;
       } else if (op.type === "Withdraw") {
         return op.to;
       } else if (op.type === "MintNFT") {
