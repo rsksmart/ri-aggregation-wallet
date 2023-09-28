@@ -79,51 +79,36 @@
             Your search <b>"{{ search }}"</b> did not match any contacts
           </span>
         </div>
-        <div
-          v-for="(contact, address) in displayedContactsList"
-          :key="address"
-          class="contactItem"
-          :class="{ deleted: contact.deleted === true }"
-          @click.self="openContact(contact)"
-        >
-          <user-img :wallet="contact.address" />
-          <div class="contactInfo">
-            <div class="contactName">{{ contact.name }}</div>
-            <div class="contactAddress walletAddress">
-              {{ contact.address.slice(0, 6) }}...{{ contact.address.slice(-4) }}
+        <div v-for="(contact, address) in displayedContactsList" :key="address">
+          <div v-if="!contact.deleted" class="contactItem" @click.self="openContact(contact)">
+            <user-img :wallet="contact.address" />
+            <div class="contactInfo">
+              <div class="contactName">{{ contact.name }}</div>
+              <div class="contactAddress walletAddress">
+                {{ contact.address.slice(0, 6) }}...{{ contact.address.slice(-4) }}
+              </div>
             </div>
-          </div>
-          <div class="iconsBlock">
-            <template v-if="!contact.deleted">
-              <i-button block link size="md" :to="`/transaction/transfer?address=${contact.address}`">
-                <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
-                <img v-else src="../../static/images/arrow-forward.svg" />
-              </i-button>
-              <i-popover id="popover" placement="left-end" size="sm">
-                <i-button link size="sm" variant="secondary">
-                  <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
-                  <img v-else src="../../static/images/three-dots.svg" />
+            <div class="iconsBlock">
+              <template v-if="!contact.deleted">
+                <i-button block link size="md" :to="`/transaction/transfer?address=${contact.address}`">
+                  <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/arrow-forward-white.svg" />
+                  <img v-else src="../../static/images/arrow-forward.svg" />
                 </i-button>
-                <template #body>
-                  <div id="edit-delete-nav">
-                    <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit Contact </i-button>
-                    <hr class="customHr" />
-                    <i-button class="edit-delete-btn" @click="deleteContact(contact)"> Delete Contact </i-button>
-                  </div>
-                </template>
-              </i-popover>
-            </template>
-            <i-button
-              v-else
-              class="iconsBlock"
-              block
-              link
-              size="md"
-              variant="secondary"
-              @click="restoreDeleted(contact)"
-            >
-              <v-icon name="ri-arrow-go-back-line" />
-            </i-button>
+                <i-popover id="popover" placement="left-end" size="sm">
+                  <i-button link size="sm" variant="secondary">
+                    <img v-if="$inkline.config.variant == 'dark'" src="../../static/images/three-dots-white.svg" />
+                    <img v-else src="../../static/images/three-dots.svg" />
+                  </i-button>
+                  <template #body>
+                    <div id="edit-delete-nav">
+                      <i-button class="edit-delete-btn" @click="editContact(contact)"> Edit Contact </i-button>
+                      <hr class="customHr" />
+                      <i-button class="edit-delete-btn" @click="deleteContact(contact)"> Delete Contact </i-button>
+                    </div>
+                  </template>
+                </i-popover>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -149,6 +134,7 @@ export default Vue.extend({
         name: "",
         address: "" as Address,
         openedAddress: undefined as Address | undefined,
+        openedName: undefined as string | undefined,
       },
     };
   },
@@ -184,6 +170,7 @@ export default Vue.extend({
         name: "",
         address: "",
         openedAddress: undefined,
+        openedName: undefined,
       };
     },
     editContact(contact: ZkContact) {
@@ -196,12 +183,12 @@ export default Vue.extend({
         name: contact.name,
         address: contact.address,
         openedAddress: contact.address,
+        openedName: contact.name,
       };
     },
     clearError() {
       this.contactModal.error = "";
     },
-
     async saveContact() {
       if (this.contactModal.name.trim().length <= 0) {
         this.contactModal.error = "Invalid name";
@@ -215,41 +202,56 @@ export default Vue.extend({
         this.contactModal.error = "Can't add own address";
         return;
       }
-      if (
-        this.contactModal.openedAddress &&
-        getAddress(this.contactModal.openedAddress) !== getAddress(this.contactModal.address)
-      ) {
+
+      if (this.contactModal.type === "add") {
+        if (this.getContactWithSameName()) {
+          this.contactModal.error = "Contact name already exists";
+          return;
+        }
+
+        const contactWithSameAddress = this.getContactWithSameAddress();
+        if (contactWithSameAddress) {
+          this.contactModal.error = `Contact: ${contactWithSameAddress.name} already has this same address`;
+          return;
+        }
+      } else if (this.contactModal.type === "edit") {
+        const isEditingAddress = this.contactModal.address !== this.contactModal.openedAddress;
+        const isEditingName = this.contactModal.name !== this.contactModal.openedName;
+
+        // The user opened the editing modal but did not changed anything, just clicked save
+        if (!isEditingAddress && !isEditingName) {
+          this.contactModal.enabled = false;
+
+          return;
+        }
+
+        if (isEditingAddress && isEditingName) {
+          if (this.getContactWithSameName()) {
+            this.contactModal.error = "Contact name already exists";
+            return;
+          }
+
+          const contactWithSameAddress = this.getContactWithSameAddress();
+          if (contactWithSameAddress) {
+            this.contactModal.error = `Contact: ${contactWithSameAddress.name} already has this same address`;
+            return;
+          }
+        }
+        if (isEditingName) {
+          const contactWithSameName = this.getContactWithSameName();
+          if (contactWithSameName && contactWithSameName.address !== this.contactModal.openedAddress) {
+            this.contactModal.error = "Contact name already exists";
+            return;
+          }
+        } else if (isEditingAddress) {
+          const contactWithSameAddress = this.getContactWithSameAddress();
+          if (contactWithSameAddress && contactWithSameAddress.name !== this.contactModal.openedName) {
+            this.contactModal.error = `Contact: ${contactWithSameAddress.name} already has this same address`;
+            return;
+          }
+        }
+
         await this.$store.dispatch("zk-contacts/removeContact", this.contactModal.openedAddress);
-      }
-
-      const contactNameExists = searchInObject(
-        this.contactsList,
-        this.contactModal.name.trim(),
-        ([_, contact]: [string, ZkContact]) => contact.name
-      );
-
-      if (
-        Object.keys(contactNameExists).length > 0 &&
-        Object.values(contactNameExists)[0].name.trim() === this.contactModal.name.trim()
-      ) {
-        this.contactModal.error = "Contact name already exists";
-        return;
-      }
-
-      const contactAddressExists = searchInObject(
-        this.contactsList,
-        this.contactModal.address,
-        ([_, contact]: [string, ZkContact]) => contact.address
-      );
-
-      if (
-        Object.keys(contactAddressExists).length > 0 &&
-        Object.values(contactAddressExists)[0].address === this.contactModal.address
-      ) {
-        this.contactModal.error = `Contact: ${
-          Object.values(contactAddressExists)[0].name
-        } already has this same address`;
-        return;
       }
 
       this.$analytics.track(this.contactModal.type === "add" ? "add_contact" : "edit_contact");
@@ -260,14 +262,52 @@ export default Vue.extend({
       });
       this.contactModal.enabled = false;
     },
+    getContactWithSameName(): ZkContact | undefined {
+      const listOfContactsWithSameName = searchInObject(
+        this.contactsList,
+        this.contactModal.name.trim(),
+        ([_, contact]: [string, ZkContact]) => contact.name
+      );
+
+      const contactWithSameName = Object.values(listOfContactsWithSameName)[0];
+
+      if (
+        contactWithSameName &&
+        contactWithSameName.name.trim() === this.contactModal.name.trim() &&
+        !contactWithSameName.deleted
+      ) {
+        return {
+          name: contactWithSameName.name.trim(),
+          address: contactWithSameName.address,
+        } as ZkContact;
+      }
+      return undefined;
+    },
+    getContactWithSameAddress(): ZkContact | undefined {
+      const listOfContactsWithSameAddress = searchInObject(
+        this.contactsList,
+        this.contactModal.address,
+        ([_, contact]: [string, ZkContact]) => contact.address
+      );
+
+      const contactWithSameAddress = Object.values(listOfContactsWithSameAddress)[0];
+
+      if (
+        contactWithSameAddress &&
+        contactWithSameAddress.address === this.contactModal.address &&
+        !contactWithSameAddress.deleted
+      ) {
+        return {
+          name: contactWithSameAddress.name.trim(),
+          address: contactWithSameAddress.address,
+        } as ZkContact;
+      }
+      return undefined;
+    },
     deleteContact(contact: ZkContact) {
       this.$analytics.track("delete_contact");
 
       this.$store.dispatch("zk-contacts/removeContact", contact.address);
-      this.contactModal.enabled = false;
-    },
-    restoreDeleted(contact: ZkContact) {
-      this.$store.dispatch("zk-contacts/setContact", { address: contact.address, name: contact.name });
       this.contactModal.enabled = false;
     },
     openContact(contact: ZkContact) {
