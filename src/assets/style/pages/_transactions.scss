@@ -17,6 +17,8 @@
     max-height: 60vh;
 
     .transactionItem {
+      overflow: hidden;
+      white-space: nowrap;
       display: grid;
       grid-gap: 5px;
       grid-template-rows: 100%;
