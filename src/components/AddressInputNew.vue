@@ -121,6 +121,7 @@ export default Vue.extend({
       }
     },
     getDomainAddress() {
+      this.$emit("clearError");
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
       this.debounceTimer = setTimeout(async () => {

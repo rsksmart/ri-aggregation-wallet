@@ -46,6 +46,7 @@
             v-model="inputtedAddress"
             :token="chosenToken ? chosenToken : undefined"
             @enter="commitTransaction()"
+            @input="clearError"
           />
         </template>
       </template>
@@ -396,6 +397,10 @@ export default Vue.extend({
     this.$store.commit("zk-transaction/setContentHash", undefined);
   },
   methods: {
+    clearError() {
+      this.addressIsMyOwn = false;
+      this.amountOrAddressEmpty = false;
+    },
     chooseToken(token: TokenLike) {
       if (!this.chooseTokenModal || this.chooseTokenModal === "mainToken") {
         this.$store.dispatch("zk-transaction/setSymbol", token);
