@@ -15,6 +15,9 @@
           Your withdrawal process has been initiated. Once the Rollup Tx is committed, your funds should become
           available your L1 wallet
         </template>
+        <template v-if="activeTransaction.type === 'WithdrawPending' && isTwoStepWithdrawEnabled()">
+          Your withdrawal process has been completed. Your funds should be available your L1 wallet.
+        </template>
         <template v-else-if="activeTransaction.type === 'Deposit'">
           Your deposit transaction has been mined and will be processed after required number of confirmations. Use the
           transaction link to track the progress.
@@ -151,6 +154,7 @@ import { ERC20_APPROVE_TRESHOLD } from "@rsksmart/rif-rollup-js-sdk/build/utils"
 import { getAddress } from "@ethersproject/address";
 
 export default Vue.extend({
+  name: "SuccessBlock",
   data() {
     return {
       displayAllowanceDeposit: false,
@@ -176,6 +180,8 @@ export default Vue.extend({
         case "TransferNFT":
         case "WithdrawNFT":
           return "/account/nft";
+        case "WithdrawPending":
+          return "/account//withdrawals";
 
         default:
           return "/account";
@@ -214,7 +220,7 @@ export default Vue.extend({
       return this.config.zkSyncNetwork.rollupExplorer + "transactions/" + this.activeTransaction.txHash;
     },
     isL1Transaction(): boolean {
-      return ["Deposit", "Allowance", "Mint"].includes(this.activeTransaction.type);
+      return ["Deposit", "Allowance", "Mint", "WithdrawPending"].includes(this.activeTransaction.type);
     },
     isL2Transaction(): boolean {
       return ["Deposit", "Transfer", "Withdraw"].includes(this.activeTransaction.type);

@@ -1,139 +1,102 @@
 <template>
-  <div class="withdrawTxItem">
-    <div class="tokenSymbol">
-      <token-logo :symbol="tokenSymbol" />
-    </div>
-    <i-container>
-      <i-row>
-        <i-column class="withdrawTxt" xs="8">
+  <div>
+    <template v-if="pendingBalance > 0">
+      <div class="withdrawTxItem">
+        <div class="tokenSymbol">
+          <token-logo :symbol="tokenSymbol" />
+        </div>
+        <i-container>
           <i-row>
-            <span>Tx hash: {{ trimHash(transaction.txHash) }}</span>
-            <i class="copy" @click="copyAddress(transaction.txHash)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
+            <i-column>
+              <i-row>
+                {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
+              </i-row>
+              <i-row class="_margin-top-1">
+                {{ tokenSymbol }}
+              </i-row>
+            </i-column>
+            <i-column xs="5" class="_justify-content-end _align-content-center">
+              <i-row class="_justify-content-end _margin-bottom-1">
+                <i-button
+                  v-if="isTwoStepWithdrawEnabled()"
+                  class="withdraw-btn"
+                  data-cy="account_withdraw_l1_button"
+                  variant="secondary"
+                  block
+                  size="md"
+                  @click="withdrawPendingBalance()"
+                >
+                  withdraw
+                </i-button>
+                <i-button
+                  v-else
+                  disabled
+                  class="withdraw-btn"
+                  data-cy="account_withdraw_l1_button"
+                  variant="success"
+                  block
+                  size="md"
+                >
+                  completed
+                </i-button>
+              </i-row>
+              <i-row class="_justify-content-end">
+                <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" />
+              </i-row>
+            </i-column>
           </i-row>
-          <i-row>
-            <span>From: {{ trimHash(transaction.op.from) }}</span>
-            <i class="copy" @click="copyAddress(transaction.op.from)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
-          </i-row>
-          <i-row>
-            <span>To: {{ trimHash(transaction.op.to) }}</span>
-            <i class="copy" @click="copyAddress(transaction.op.to)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
-          </i-row>
-        </i-column>
-        <i-column xs="4" class="details">
-          <i-row class="_justify-content-end"> - {{ transaction.op.amount | parseBigNumberish(tokenSymbol) }} </i-row>
-          <i-row class="_justify-content-end">
-            {{ tokenSymbol }}
-          </i-row>
-          <i-row class="_justify-content-end">
-            <token-price :symbol="tokenSymbol" :amount="transaction.op.amount" />
-          </i-row>
-        </i-column>
-      </i-row>
-      <i-row>
-        <i-column class="_padding-0">
-          <div class="createdAt">{{ timeAgo }}</div>
-          <i-tooltip placement="bottom-start" class="status">
-            <v-icon :name="transactionStatus.icon" :class="transactionStatus.class" />
-            <template #body>{{ transactionStatus.text }}</template>
-          </i-tooltip>
-        </i-column>
-      </i-row>
-      <i-row class="_justify-content-end">
-        <i-button
-          v-if="isTwoStepWithdrawEnabled()"
-          class="withdraw-btn"
-          data-cy="account_withdraw_l1_button"
-          variant="secondary"
-        >
-          complete withdrawal
-        </i-button>
-        <i-button v-else disabled class="withdraw-btn" data-cy="account_withdraw_l1_button" variant="success">
-          withdrawal complete
-        </i-button>
-      </i-row>
-    </i-container>
+        </i-container>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { ApiTransaction, TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import { Token } from "@rsksmart/rif-rollup-nuxt-core/types";
+import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
-import moment from "moment-timezone";
-import { WithdrawData } from "@rsksmart/rif-rollup-js-sdk/src/types";
-import TokenLogo from "../../components/TokenLogo.vue";
-import TokenPrice from "../../components/TokenPrice.vue";
+import { ZkActiveTransaction } from "@rsksmart/rif-rollup-nuxt-core/types";
+import TokenLogo from "@/components/TokenLogo.vue";
+import TokenPrice from "@/components/TokenPrice.vue";
 
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },
   props: {
-    transaction: {
-      type: Object,
-      default: () => {},
+    tokenSymbol: {
+      type: String,
+      default: "RBTC",
       required: true,
-    } as PropOptions<ApiTransaction>,
+    } as PropOptions<TokenSymbol>,
   },
   computed: {
-    tokenSymbol(): TokenSymbol | number {
-      const txData: WithdrawData = this.transaction.op as WithdrawData;
-      const tokenId = txData.token;
-      const token: Token = this.$store.getters["zk-tokens/zkTokenByID"](tokenId);
-      if (token) {
-        return token.symbol;
-      }
-      return tokenId;
+    pendingBalance() {
+      return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-    transactionStatus(): { text: string; icon: string; class: string } {
-      if (this.transaction.failReason) {
-        return {
-          text: this.transaction.failReason ? this.transaction.failReason : "Rejected",
-          icon: "ri-close-circle-fill",
-          class: "rejected",
-        };
-      }
-      if (this.transaction.status === "finalized") {
-        return {
-          text: "Verified",
-          icon: "ri-check-double-line",
-          class: "verified",
-        };
-      } else if (this.transaction.status === "committed") {
-        return {
-          text: "Committed",
-          icon: "ri-check-line",
-          class: "committed",
-        };
-      } else {
-        return {
-          text: "Initiated",
-          icon: "ri-loader-5-line",
-          class: "inProgress",
-        };
-      }
+    activeTransaction(): ZkActiveTransaction {
+      return this.$store.getters["zk-transaction/activeTransaction"];
     },
-    timeAgo(): string {
-      if (!this.transaction.createdAt) {
-        return "";
-      }
-      return moment(this.transaction.createdAt).tz("UTC").fromNow();
-    },
+  },
+  created() {
+    if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
+    this.requestPendingBalance(this.tokenSymbol);
   },
   methods: {
     copyAddress(hash: string) {
       copyToClipboard(hash.toLowerCase());
     },
-    trimHash(hash: string) {
-      return `${hash.substr(0, 4)}...${hash.substr(hash.length - 4, hash.length)}`;
-    },
     isTwoStepWithdrawEnabled(): boolean {
       return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
+    },
+    async requestPendingBalance(tokenSymbol: TokenSymbol) {
+      return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
+    },
+    async withdrawPendingBalance() {
+      await this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
+        tokenSymbol: this.tokenSymbol,
+      });
+    },
+    async clearActiveTransaction() {
+      await this.$store.commit("zk-transaction/clearActiveTransaction");
     },
   },
 });
