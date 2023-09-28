@@ -112,7 +112,7 @@
             <div class="rightSide">
               <div class="rowItem">
                 <div class="total">
-                  {{ item.balance | parseBigNumberish(symbol) }}
+                  {{ fixDecimals(item.balance.toString(), symbol) }}
                   <span class="balancePrice">
                     <token-price :amount="item.balance" :symbol="symbol" />
                   </span>
@@ -143,7 +143,9 @@
 import Vue from "vue";
 import { AccountState as WalletAccountState, TokenInfo } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { ZkTokenBalances } from "@rsksmart/rif-rollup-nuxt-core/types";
-import { searchByKey } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import { searchByKey, parseBigNumberish } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import { RestProvider } from "@rsksmart/rif-rollup-js-sdk";
+import { adjustNumberOfDigits } from "../../utils/number";
 import BlockModalsBalanceInfo from "@/blocks/modals/BalanceInfo.vue";
 import TotalUsdBalance from "@/components/TotalUsdBalance.vue";
 
@@ -212,6 +214,9 @@ export default Vue.extend({
     isSearching(): boolean {
       return this.search.trim().length > 0;
     },
+    provider(): RestProvider {
+      return this.$store.getters["zk-provider/syncProvider"];
+    },
   },
   mounted() {
     this.$analytics.track("visit_home");
@@ -225,6 +230,11 @@ export default Vue.extend({
     },
     togglePopup(): void {
       this.$accessor.setAccountModalState(true);
+    },
+    fixDecimals(value: string, symbol: string | number): string {
+      const asBigNumberString = parseBigNumberish(this.provider, symbol, value) as string;
+
+      return adjustNumberOfDigits(asBigNumberString);
     },
   },
 });
