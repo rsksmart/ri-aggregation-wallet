@@ -4916,7 +4916,7 @@ __metadata:
 
 "@rsksmart/rif-rollup-nuxt-core@file:/Users/lordcheta/IOV/rif-rollup-nuxt-core::locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A.":
   version: 1.3.5
-  resolution: "@rsksmart/rif-rollup-nuxt-core@file:/Users/lordcheta/IOV/rif-rollup-nuxt-core#/Users/lordcheta/IOV/rif-rollup-nuxt-core::hash=d00a8d&locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A."
+  resolution: "@rsksmart/rif-rollup-nuxt-core@file:/Users/lordcheta/IOV/rif-rollup-nuxt-core#/Users/lordcheta/IOV/rif-rollup-nuxt-core::hash=30aa22&locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A."
   dependencies:
     "@nuxtjs/axios": ^5.13.1
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
@@ -4932,7 +4932,7 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
-  checksum: bca9eaffb1e64c0e8e23eaa7738e2c8300db89670dee7c2a0e4dbaabf3a3c204fcebf7f4a07962af8788a86eb96e78e8758e4dc858ca07c1185fbb56c8aab7ca
+  checksum: d617181b4637c5ff4dae058c48256ec467dc1a7e0e897628e96aa675fd0f6e9f816b9c7e60c531fd0d0531ea29ce24a32a26d7d442498d51c113cbe6dbcc64ca
   languageName: node
   linkType: hard
 

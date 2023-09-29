@@ -1,18 +1,16 @@
 <template>
   <div>
-    <template v-if="pendingBalance > 0">
-      <div class="withdrawTxItem">
+    <template v-if="pendingBalance">
+      <!-- <div class="withdrawTxItem">
         <div class="tokenSymbol">
           <token-logo :symbol="tokenSymbol" />
+          <p>{{ tokenSymbol }}</p>
         </div>
         <i-container>
           <i-row>
             <i-column>
               <i-row>
                 {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
-              </i-row>
-              <i-row class="_margin-top-1">
-                {{ tokenSymbol }}
               </i-row>
             </i-column>
             <i-column xs="5" class="_justify-content-end _align-content-center">
@@ -46,6 +44,45 @@
             </i-column>
           </i-row>
         </i-container>
+      </div> -->
+      <div class="withdrawalTokenItem">
+        <div class="tokenItem">
+          <token-logo :symbol="tokenSymbol" />
+          <p class="tokenName">{{ tokenSymbol.trim() }}</p>
+        </div>
+
+        <div class="tokenDetails">
+          <div class="availableText">
+            <p>Available</p>
+            <p>
+              {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
+              ( <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" /> )
+            </p>
+          </div>
+
+          <div class="availableText">
+            <p>Processing for Withdrawal</p>
+            <p>{{ processingForWithdrawal | parseBigNumberish(tokenSymbol) }}</p>
+          </div>
+        </div>
+
+        <div class="withdrawBtn">
+          <button
+            v-if="isTwoStepWithdrawEnabled() && pendingBalance > 0"
+            data-cy="account_withdraw_l1_button"
+            @click="withdrawPendingBalance()"
+          >
+            withdraw
+          </button>
+          <button
+            v-else-if="isTwoStepWithdrawEnabled() && processingForWithdrawal > 0"
+            disabled
+            data-cy="account_withdraw_l1_button"
+          >
+            withdraw in progress
+          </button>
+          <button v-else disabled data-cy="account_withdraw_l1_button">completed</button>
+        </div>
       </div>
     </template>
   </div>
@@ -55,7 +92,6 @@
 import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
-import { ZkActiveTransaction } from "@rsksmart/rif-rollup-nuxt-core/types";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
@@ -68,13 +104,18 @@ export default Vue.extend({
       required: true,
     } as PropOptions<TokenSymbol>,
   },
+  data() {
+    return {
+      processingForWithdrawal: 0,
+    };
+  },
   computed: {
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-    activeTransaction(): ZkActiveTransaction {
-      return this.$store.getters["zk-transaction/activeTransaction"];
-    },
+  },
+  mounted() {
+    this.renderActiveTransaction();
   },
   created() {
     if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
@@ -87,13 +128,45 @@ export default Vue.extend({
     isTwoStepWithdrawEnabled(): boolean {
       return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
     },
+    renderActiveTransaction() {
+      // checks the local storage for an active transaction for current token
+      const storageKey = JSON.stringify(this.tokenSymbol);
+      let tokenActiveTx: any = localStorage.getItem(storageKey);
+      tokenActiveTx = JSON.parse(tokenActiveTx);
+      if (this.pendingBalance < 0) {
+        // if there's no pending balance, it means any previous tx has been completed
+        this.processingForWithdrawal = 0;
+        localStorage.removeItem(storageKey);
+      } else if (tokenActiveTx?.processingForWithdrawal > 0) {
+        this.processingForWithdrawal = tokenActiveTx!.processingForWithdrawal;
+      }
+      return this.processingForWithdrawal;
+    },
     async requestPendingBalance(tokenSymbol: TokenSymbol) {
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
+      this.processingForWithdrawal = Number(this.pendingBalance.toString());
+      this.activeTransaction();
       await this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
         tokenSymbol: this.tokenSymbol,
       });
+    },
+    activeTransaction() {
+      const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
+      const storageKey = JSON.stringify(this.tokenSymbol);
+      let tokenActiveTx: any = localStorage.getItem(storageKey);
+      tokenActiveTx = JSON.parse(tokenActiveTx);
+
+      if ((!tokenActiveTx || tokenActiveTx.processingForWithdrawal < 1) && activeTx?.type === "WithdrawPending") {
+        console.log(activeTx, activeTx.type);
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
+        );
+      }
+      this.processingForWithdrawal = 0;
+      return this.processingForWithdrawal;
     },
     async clearActiveTransaction() {
       await this.$store.commit("zk-transaction/clearActiveTransaction");
@@ -101,3 +174,34 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.withdrawalTokenItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5%;
+}
+.tokenItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-content: center;
+  border-right: 1px solid aquamarine;
+  padding-right: 20px;
+  text-align: center;
+}
+.tokenName {
+  margin-top: -1px;
+}
+
+.withdrawBtn {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+</style>
