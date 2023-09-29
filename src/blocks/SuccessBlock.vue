@@ -181,7 +181,7 @@ export default Vue.extend({
         case "WithdrawNFT":
           return "/account/nft";
         case "WithdrawPending":
-          return "/account//withdrawals";
+          return "account/history";
 
         default:
           return "/account";

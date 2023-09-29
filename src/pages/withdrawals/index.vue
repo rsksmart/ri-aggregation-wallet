@@ -64,7 +64,10 @@ export default Vue.extend({
     },
     tokens(): string[] {
       const tokens = this.$store.getters["zk-tokens/zkTokens"];
-      return Object.keys(tokens);
+      if (tokens) {
+        return Object.keys(tokens);
+      }
+      return [];
     },
     activeTransaction(): ZkActiveTransaction {
       return this.$store.getters["zk-transaction/activeTransaction"];
