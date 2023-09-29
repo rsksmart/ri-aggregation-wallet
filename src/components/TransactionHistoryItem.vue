@@ -163,9 +163,6 @@ export default Vue.extend({
         if (op.from === op.to) {
           return op.from;
         }
-        if (getAddress(this.walletAddressFull) === op.to && op.from !== getAddress(this.walletAddressFull)) {
-          return op.from;
-        }
         return op.to;
       } else if (op.type === "Withdraw") {
         return op.to;
@@ -261,23 +258,6 @@ export default Vue.extend({
           };
         case "Deposit":
           if (this.transaction.op.to === this.transaction.op.from) {
-            return {
-              type: "Deposit from:",
-              showAddress: true,
-              modal: false,
-            };
-          }
-          if (
-            this.transaction.op.to === getAddress(this.walletAddressFull) &&
-            this.transaction.op.from !== getAddress(this.walletAddressFull)
-          ) {
-            return {
-              type: "Deposit from:",
-              showAddress: true,
-              modal: false,
-            };
-          }
-          if (this.transaction.op.from !== getAddress(this.walletAddressFull)) {
             return {
               type: "Deposit from:",
               showAddress: true,
@@ -412,7 +392,8 @@ export default Vue.extend({
       if (
         (this.transaction.op.type === "Transfer" && this.isSameAddress(this.transaction.op.from)) ||
         this.transaction.op.type === "Withdraw" ||
-        this.transaction.op.type === "FullExit"
+        this.transaction.op.type === "FullExit" ||
+        this.transaction.op.type === "ChangePubKey"
       ) {
         return "-";
       }
