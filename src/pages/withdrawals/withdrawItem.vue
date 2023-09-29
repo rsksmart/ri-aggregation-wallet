@@ -114,6 +114,30 @@ export default Vue.extend({
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
   },
+  watch: {
+    activeTransaction() {
+      const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
+      const storageKey = JSON.stringify(this.tokenSymbol);
+      let tokenActiveTx: any = localStorage.getItem(storageKey);
+      tokenActiveTx = JSON.parse(tokenActiveTx);
+
+      if (!tokenActiveTx) {
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
+        );
+      }
+
+      if (tokenActiveTx?.processingForWithdrawal < 1 && activeTx?.type === "WithdrawPending") {
+        console.log(activeTx, activeTx.type);
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
+        );
+      }
+      this.processingForWithdrawal = 0;
+    },
+  },
   mounted() {
     this.renderActiveTransaction();
   },
@@ -146,28 +170,14 @@ export default Vue.extend({
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
-      this.processingForWithdrawal = Number(this.pendingBalance.toString());
-      this.activeTransaction();
+      console.log(Number(this.pendingBalance.toString()));
+
+      this.processingForWithdrawal = this.pendingBalance;
       await this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
         tokenSymbol: this.tokenSymbol,
       });
     },
-    activeTransaction() {
-      const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
-      const storageKey = JSON.stringify(this.tokenSymbol);
-      let tokenActiveTx: any = localStorage.getItem(storageKey);
-      tokenActiveTx = JSON.parse(tokenActiveTx);
 
-      if ((!tokenActiveTx || tokenActiveTx.processingForWithdrawal < 1) && activeTx?.type === "WithdrawPending") {
-        console.log(activeTx, activeTx.type);
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
-        );
-      }
-      this.processingForWithdrawal = 0;
-      return this.processingForWithdrawal;
-    },
     async clearActiveTransaction() {
       await this.$store.commit("zk-transaction/clearActiveTransaction");
     },
