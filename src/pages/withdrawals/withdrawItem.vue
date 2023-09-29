@@ -120,22 +120,12 @@ export default Vue.extend({
       const storageKey = JSON.stringify(this.tokenSymbol);
       let tokenActiveTx: any = localStorage.getItem(storageKey);
       tokenActiveTx = JSON.parse(tokenActiveTx);
-
-      if (!tokenActiveTx) {
+      if (activeTx?.type === "WithdrawPending" && tokenActiveTx?.processingForWithdrawal === 0) {
         localStorage.setItem(
           storageKey,
           JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
         );
       }
-
-      if (tokenActiveTx?.processingForWithdrawal < 1 && activeTx?.type === "WithdrawPending") {
-        console.log(activeTx, activeTx.type);
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
-        );
-      }
-      this.processingForWithdrawal = 0;
     },
   },
   mounted() {
