@@ -60,7 +60,7 @@
             </p>
           </div>
 
-          <div class="availableText">
+          <div v-if="processingForWithdrawal > 0" class="availableText">
             <p>Processing for Withdrawal</p>
             <p>{{ processingForWithdrawal | parseBigNumberish(tokenSymbol) }}</p>
           </div>
@@ -92,6 +92,7 @@
 import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
+import { BigNumber } from "@ethersproject/bignumber";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
@@ -106,34 +107,46 @@ export default Vue.extend({
   },
   data() {
     return {
-      processingForWithdrawal: 0,
+      processingForWithdrawal: BigNumber.from(0) as BigNumber,
     };
   },
   computed: {
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-  },
-  watch: {
     activeTransaction() {
       const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
-      const storageKey = JSON.stringify(this.tokenSymbol);
-      let tokenActiveTx: any = localStorage.getItem(storageKey);
-      tokenActiveTx = JSON.parse(tokenActiveTx);
-      if (activeTx?.type === "WithdrawPending" && tokenActiveTx?.processingForWithdrawal === 0) {
-        localStorage.setItem(
-          storageKey,
-          JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
+      if (activeTx) {
+        console.log("processing withdrwal in active tx", this.processingForWithdrawal);
+        console.log("pending balance in active tx", this.pendingBalance);
+        const storageKey = JSON.stringify(this.tokenSymbol);
+        let tokenActiveTx: any = localStorage.getItem(storageKey);
+        tokenActiveTx = JSON.parse(tokenActiveTx);
+        console.log(
+          `activeTx: ${activeTx?.type === "WithdrawPending"}, tokenActive: ${
+            tokenActiveTx?.processingForWithdrawal === 0
+          }`
         );
+
+        if (activeTx?.type === "WithdrawPending") {
+          if (!tokenActiveTx || tokenActiveTx?.processingForWithdrawal === 0)
+            localStorage.setItem(
+              storageKey,
+              JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
+            );
+        }
       }
+      return this.processingForWithdrawal;
     },
   },
   mounted() {
+    // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
+    this.requestPendingBalance(this.tokenSymbol);
     this.renderActiveTransaction();
   },
   created() {
-    if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
-    this.requestPendingBalance(this.tokenSymbol);
+    // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
+    // this.requestPendingBalance(this.tokenSymbol);
   },
   methods: {
     copyAddress(hash: string) {
@@ -149,7 +162,7 @@ export default Vue.extend({
       tokenActiveTx = JSON.parse(tokenActiveTx);
       if (this.pendingBalance < 0) {
         // if there's no pending balance, it means any previous tx has been completed
-        this.processingForWithdrawal = 0;
+        this.processingForWithdrawal = BigNumber.from(0);
         localStorage.removeItem(storageKey);
       } else if (tokenActiveTx?.processingForWithdrawal > 0) {
         this.processingForWithdrawal = tokenActiveTx!.processingForWithdrawal;
@@ -160,12 +173,16 @@ export default Vue.extend({
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
-      console.log(Number(this.pendingBalance.toString()));
-
       this.processingForWithdrawal = this.pendingBalance;
+      console.log("processing withdrwal", this.processingForWithdrawal);
+      console.log("pending balance", this.pendingBalance);
+
       await this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
         tokenSymbol: this.tokenSymbol,
       });
+
+      console.log("processing withdrwal after", this.processingForWithdrawal);
+      console.log("pending balance after", this.pendingBalance);
     },
 
     async clearActiveTransaction() {
