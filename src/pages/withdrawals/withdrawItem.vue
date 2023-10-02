@@ -87,7 +87,7 @@ import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import { formatFixed } from "@ethersproject/bignumber";
-import { ethers, providers } from "ethers";
+import { providers } from "ethers";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/config";
@@ -186,7 +186,7 @@ export default Vue.extend({
 
       const networkConfig = ethereumNetworkConfig('')[this.network]
 
-      const customProvider = new providers.JsonRpcProvider(networkConfig.rpc_url); // or your node's URL and port
+      const customProvider = new providers.JsonRpcProvider(networkConfig.rpc_url);
 
 
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
