@@ -60,9 +60,9 @@
             </p>
           </div>
 
-          <div v-if="processingForWithdrawal > 0" class="availableText">
+          <div v-if="processingAmountForWithdraw > 0" class="availableText">
             <p>Processing for Withdrawal</p>
-            <p>{{ processingForWithdrawal | parseBigNumberish(tokenSymbol) }}</p>
+            <p>{{ processingAmountForWithdraw }}</p>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
             withdraw
           </button>
           <button
-            v-else-if="isTwoStepWithdrawEnabled() && processingForWithdrawal > 0"
+            v-else-if="isTwoStepWithdrawEnabled() && processingAmountForWithdraw > 0"
             disabled
             data-cy="account_withdraw_l1_button"
           >
@@ -92,7 +92,8 @@
 import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
-import { BigNumber } from "@ethersproject/bignumber";
+import { formatFixed } from "@ethersproject/bignumber";
+import { ethers } from "ethers";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
@@ -107,15 +108,19 @@ export default Vue.extend({
   },
   data() {
     return {
-      processingForWithdrawal: BigNumber.from(0) as BigNumber,
+      processingForWithdrawal: 0,
     };
   },
   computed: {
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
+    processingAmountForWithdraw() {
+      return this.processingForWithdrawal;
+    },
     activeTransaction() {
       const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
+
       if (activeTx) {
         console.log("processing withdrwal in active tx", this.processingForWithdrawal);
         console.log("pending balance in active tx", this.pendingBalance);
@@ -136,13 +141,15 @@ export default Vue.extend({
             );
         }
       }
-      return this.processingForWithdrawal;
+      // return this.processingForWithdrawal;
+      return activeTx;
     },
   },
   mounted() {
     // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
     this.requestPendingBalance(this.tokenSymbol);
-    this.renderActiveTransaction();
+
+    // this.renderActiveTransaction();
   },
   created() {
     // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
@@ -155,14 +162,17 @@ export default Vue.extend({
     isTwoStepWithdrawEnabled(): boolean {
       return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
     },
-    renderActiveTransaction() {
+    async renderActiveTransaction() {
       // checks the local storage for an active transaction for current token
       const storageKey = JSON.stringify(this.tokenSymbol);
       let tokenActiveTx: any = localStorage.getItem(storageKey);
       tokenActiveTx = JSON.parse(tokenActiveTx);
-      if (this.pendingBalance < 0) {
+      console.log("in render pending bal", await this.pendingBalance);
+
+      const p = Number(formatFixed(this.pendingBalance, 18));
+      if (p > 0) {
         // if there's no pending balance, it means any previous tx has been completed
-        this.processingForWithdrawal = BigNumber.from(0);
+        this.processingForWithdrawal = 0;
         localStorage.removeItem(storageKey);
       } else if (tokenActiveTx?.processingForWithdrawal > 0) {
         this.processingForWithdrawal = tokenActiveTx!.processingForWithdrawal;
@@ -173,16 +183,40 @@ export default Vue.extend({
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
-      this.processingForWithdrawal = this.pendingBalance;
+      this.processingForWithdrawal = Number(formatFixed(this.pendingBalance, 18)).toPrecision(8);
       console.log("processing withdrwal", this.processingForWithdrawal);
       console.log("pending balance", this.pendingBalance);
 
-      await this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
-        tokenSymbol: this.tokenSymbol,
-      });
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      console.log("processing withdrwal after", this.processingForWithdrawal);
-      console.log("pending balance after", this.pendingBalance);
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      console.log("Connected with account:", accounts[0]);
+
+      console.log("provider", Number(formatFixed(await provider.getBalance(accounts[0]), 18)));
+
+      const filter = {
+        address: accounts[0],
+      };
+
+      const transactions = await provider.getLogs(filter);
+
+      if (transactions.length > 0) {
+        // Retrieve the latest transaction from the array
+        const latestTransaction = transactions[transactions.length - 1];
+        console.log("Latest Transaction:", latestTransaction);
+      } else {
+        console.log("No transactions found for this account.");
+      }
+
+      const latestNonce = await provider.getTransactionCount(accounts[0], "latest");
+      const pendingNonce = await provider.getTransactionCount(accounts[0], "pending");
+      // return pendingNonce - latestNonce;
+
+      console.log(`pending: ${pendingNonce} latest: ${latestNonce}`);
+
+      //   this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
+      //   tokenSymbol: this.tokenSymbol,
+      // });
     },
 
     async clearActiveTransaction() {

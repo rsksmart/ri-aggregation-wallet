@@ -16,6 +16,7 @@
       <div class="centerBlock">
         <div class="withdrawBlock">
           <span class="title">Withdrawals</span>
+          <p>Active tx: {{ activeTransaction }}</p>
           <template v-if="tokens">
             <div style="margin-top: 35px">
               <div v-for="(token, idx) in tokens" :key="idx">
@@ -70,7 +71,10 @@ export default Vue.extend({
       return [];
     },
     activeTransaction(): ZkActiveTransaction {
-      return this.$store.getters["zk-transaction/activeTransaction"];
+      const tx = this.$store.getters["zk-transaction/activeTransaction"];
+      console.log("active tx calls:", tx);
+
+      return tx;
     },
   },
   async mounted() {
