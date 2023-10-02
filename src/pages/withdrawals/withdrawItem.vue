@@ -67,18 +67,12 @@
         </div>
 
         <div class="withdrawBtn">
-          <button
-            v-if="isTwoStepWithdrawEnabled() && pendingBalance > 0"
-            data-cy="account_withdraw_l1_button"
-            @click="withdrawPendingBalance()"
-          >
+          <button v-if="isTwoStepWithdrawEnabled() && pendingBalance > 0" data-cy="account_withdraw_l1_button"
+            @click="withdrawPendingBalance()">
             withdraw
           </button>
-          <button
-            v-else-if="isTwoStepWithdrawEnabled() && processingAmountForWithdraw > 0"
-            disabled
-            data-cy="account_withdraw_l1_button"
-          >
+          <button v-else-if="isTwoStepWithdrawEnabled() && processingAmountForWithdraw > 0" disabled
+            data-cy="account_withdraw_l1_button">
             withdraw in progress
           </button>
           <button v-else disabled data-cy="account_withdraw_l1_button">completed</button>
@@ -93,9 +87,10 @@ import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
 import { formatFixed } from "@ethersproject/bignumber";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
+import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/config";
 
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },
@@ -112,10 +107,13 @@ export default Vue.extend({
     };
   },
   computed: {
+    network(): string {
+      return this.$store.getters["zk-provider/network"];
+    },
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-    processingAmountForWithdraw() {
+    processingAmountForWithdraw(): Number {
       return this.processingForWithdrawal;
     },
     activeTransaction() {
@@ -128,8 +126,7 @@ export default Vue.extend({
         let tokenActiveTx: any = localStorage.getItem(storageKey);
         tokenActiveTx = JSON.parse(tokenActiveTx);
         console.log(
-          `activeTx: ${activeTx?.type === "WithdrawPending"}, tokenActive: ${
-            tokenActiveTx?.processingForWithdrawal === 0
+          `activeTx: ${activeTx?.type === "WithdrawPending"}, tokenActive: ${tokenActiveTx?.processingForWithdrawal === 0
           }`
         );
 
@@ -183,35 +180,22 @@ export default Vue.extend({
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
-      this.processingForWithdrawal = Number(formatFixed(this.pendingBalance, 18)).toPrecision(8);
+      this.processingForWithdrawal = Number(formatFixed(this.pendingBalance, 18))
       console.log("processing withdrwal", this.processingForWithdrawal);
       console.log("pending balance", this.pendingBalance);
 
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const networkConfig = ethereumNetworkConfig('')[this.network]
+
+      const customProvider = new providers.JsonRpcProvider(networkConfig.rpc_url); // or your node's URL and port
+
 
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      console.log("Connected with account:", accounts[0]);
 
-      console.log("provider", Number(formatFixed(await provider.getBalance(accounts[0]), 18)));
+      const pendingNonce = await customProvider.getTransactionCount(accounts[0], "pending");
 
-      const filter = {
-        address: accounts[0],
-      };
-
-      const transactions = await provider.getLogs(filter);
-
-      if (transactions.length > 0) {
-        // Retrieve the latest transaction from the array
-        const latestTransaction = transactions[transactions.length - 1];
-        console.log("Latest Transaction:", latestTransaction);
-      } else {
-        console.log("No transactions found for this account.");
-      }
-
-      const latestNonce = await provider.getTransactionCount(accounts[0], "latest");
-      const pendingNonce = await provider.getTransactionCount(accounts[0], "pending");
+      const latestNonce = await customProvider.getTransactionCount(accounts[0], "latest");
       // return pendingNonce - latestNonce;
-
+      //this now works
       console.log(`pending: ${pendingNonce} latest: ${latestNonce}`);
 
       //   this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
@@ -237,6 +221,7 @@ export default Vue.extend({
   padding: 10px;
   margin-top: 5%;
 }
+
 .tokenItem {
   display: flex;
   flex-direction: column;
@@ -246,6 +231,7 @@ export default Vue.extend({
   padding-right: 20px;
   text-align: center;
 }
+
 .tokenName {
   margin-top: -1px;
 }
