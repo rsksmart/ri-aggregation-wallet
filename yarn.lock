@@ -5313,9 +5313,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsksmart/rif-rollup-nuxt-core@file:/Users/lordcheta/IOV/rif-rollup-nuxt-core::locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A.":
-  version: 1.3.5
-  resolution: "@rsksmart/rif-rollup-nuxt-core@file:/Users/lordcheta/IOV/rif-rollup-nuxt-core#/Users/lordcheta/IOV/rif-rollup-nuxt-core::hash=f324aa&locator=%40rsksmart%2Frif-rollup-wallet%40workspace%3A."
+"@rsksmart/rif-rollup-nuxt-core@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@rsksmart/rif-rollup-nuxt-core@npm:1.3.2"
   dependencies:
     "@nuxtjs/axios": ^5.13.1
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
@@ -5331,7 +5331,7 @@ __metadata:
     nuxt: ^2.15.3
     ts-node: ^9.1.1
     web3: ^1.5.3
-  checksum: 9ffda6d4d5410a4c9cb0f5f2a6511b85fbd0fdfface7aef7dcbb310ade42f37db9956f3869acbbc379574ba6476f98db566a5ea09b599447fdf5e37dbbe7d0de
+  checksum: 571e0b7553779ced6ac2575d20afebb32a5818bb293f09a225096640ab9ebf5d51d3e1235c18b3f6cd3555ae569a55c59706b38dfefce3ff850c0bc7321e0e73
   languageName: node
   linkType: hard
 
@@ -5360,7 +5360,7 @@ __metadata:
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
     "@rsksmart/rif-rollup-js-sdk": ^0.13.7-alpha
-    "@rsksmart/rif-rollup-nuxt-core": "file:/Users/lordcheta/IOV/rif-rollup-nuxt-core"
+    "@rsksmart/rif-rollup-nuxt-core": ^1.3.2
     "@rsksmart/rns-sdk": ^1.0.0-beta.8
     "@semantic-release/changelog": ^6.0.1
     "@semantic-release/commit-analyzer": ^9.0.2
