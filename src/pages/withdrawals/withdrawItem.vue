@@ -1,81 +1,45 @@
 <template>
   <div>
     <template v-if="pendingBalance">
-      <!-- <div class="withdrawTxItem">
-        <div class="tokenSymbol">
-          <token-logo :symbol="tokenSymbol" />
-          <p>{{ tokenSymbol }}</p>
-        </div>
-        <i-container>
-          <i-row>
-            <i-column>
-              <i-row>
-                {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
-              </i-row>
-            </i-column>
-            <i-column xs="5" class="_justify-content-end _align-content-center">
-              <i-row class="_justify-content-end _margin-bottom-1">
-                <i-button
-                  v-if="isTwoStepWithdrawEnabled()"
-                  class="withdraw-btn"
-                  data-cy="account_withdraw_l1_button"
-                  variant="secondary"
-                  block
-                  size="md"
-                  @click="withdrawPendingBalance()"
-                >
-                  withdraw
-                </i-button>
-                <i-button
-                  v-else
-                  disabled
-                  class="withdraw-btn"
-                  data-cy="account_withdraw_l1_button"
-                  variant="success"
-                  block
-                  size="md"
-                >
-                  completed
-                </i-button>
-              </i-row>
-              <i-row class="_justify-content-end">
-                <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" />
-              </i-row>
-            </i-column>
-          </i-row>
-        </i-container>
-      </div> -->
       <div class="withdrawalTokenItem">
-        <div class="tokenItem">
-          <token-logo :symbol="tokenSymbol" />
-          <p class="tokenName">{{ tokenSymbol.trim() }}</p>
+        <div class="token-info">
+          <token-logo class="token-logo" :symbol="tokenSymbol" />
+          <div class="tokenSymbol">
+            {{ tokenSymbol }}
+          </div>
         </div>
 
         <div class="tokenDetails">
-          <div class="availableText">
-            <p>Available</p>
-            <p>
-              {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
-              ( <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" /> )
-            </p>
-          </div>
-
-          <div v-if="processingAmountForWithdraw > 0" class="availableText">
-            <p>Processing for Withdrawal</p>
-            <p>{{ processingAmountForWithdraw }}</p>
-          </div>
+          <p class="availableText">Available</p>
+          <p class="availableAmount">
+            {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
+            ( <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" /> )
+          </p>
         </div>
 
-        <div class="withdrawBtn">
-          <button v-if="isTwoStepWithdrawEnabled() && pendingBalance > 0" data-cy="account_withdraw_l1_button"
-            @click="withdrawPendingBalance()">
+        <div class="withdrawBtnSection">
+          <div v-if="txPending">
+            <button class="withdrawBtn withdrawBtnCompleted" disabled data-cy="account_withdraw_l1_button">
+              pending
+            </button>
+            <span class="tooltip">
+              &#9432;
+              <span class="tooltiptext">
+                you currently have a pending L1 transaction, please wait for it to be confirmed
+              </span>
+            </span>
+          </div>
+          <button
+            v-else-if="isTwoStepWithdrawEnabled() && pendingBalance > 0 && !txPending"
+            class="withdrawBtn withdrawBtnPending"
+            data-cy="account_withdraw_l1_button"
+            @click="withdrawPendingBalance()"
+          >
             withdraw
           </button>
-          <button v-else-if="isTwoStepWithdrawEnabled() && processingAmountForWithdraw > 0" disabled
-            data-cy="account_withdraw_l1_button">
-            withdraw in progress
+          <button v-else class="withdrawBtn withdrawBtnDisabled" disabled data-cy="account_withdraw_l1_button">
+            withdraw
           </button>
-          <button v-else disabled data-cy="account_withdraw_l1_button">completed</button>
         </div>
       </div>
     </template>
@@ -86,11 +50,12 @@
 import Vue, { PropOptions } from "vue";
 import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
-import { formatFixed } from "@ethersproject/bignumber";
 import { providers } from "ethers";
+import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/config";
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
-import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/config";
+
+let updateListInterval: ReturnType<typeof setInterval>;
 
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },
@@ -103,7 +68,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      processingForWithdrawal: 0,
+      txPending: false,
     };
   },
   computed: {
@@ -113,44 +78,15 @@ export default Vue.extend({
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-    processingAmountForWithdraw(): Number {
-      return this.processingForWithdrawal;
-    },
-    activeTransaction() {
-      const activeTx = this.$store.getters["zk-transaction/activeTransaction"];
-
-      if (activeTx) {
-        console.log("processing withdrwal in active tx", this.processingForWithdrawal);
-        console.log("pending balance in active tx", this.pendingBalance);
-        const storageKey = JSON.stringify(this.tokenSymbol);
-        let tokenActiveTx: any = localStorage.getItem(storageKey);
-        tokenActiveTx = JSON.parse(tokenActiveTx);
-        console.log(
-          `activeTx: ${activeTx?.type === "WithdrawPending"}, tokenActive: ${tokenActiveTx?.processingForWithdrawal === 0
-          }`
-        );
-
-        if (activeTx?.type === "WithdrawPending") {
-          if (!tokenActiveTx || tokenActiveTx?.processingForWithdrawal === 0)
-            localStorage.setItem(
-              storageKey,
-              JSON.stringify({ ...activeTx, processingForWithdrawal: this.processingForWithdrawal })
-            );
-        }
-      }
-      // return this.processingForWithdrawal;
-      return activeTx;
-    },
   },
-  mounted() {
-    // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
+  async mounted() {
     this.requestPendingBalance(this.tokenSymbol);
+    await this.checkPendingTx();
 
-    // this.renderActiveTransaction();
-  },
-  created() {
-    // if (this.activeTransaction?.type !== "WithdrawPending") this.clearActiveTransaction();
-    // this.requestPendingBalance(this.tokenSymbol);
+    setInterval(async () => {
+      this.requestPendingBalance(this.tokenSymbol);
+      await this.checkPendingTx();
+    }, 10000);
   },
   methods: {
     copyAddress(hash: string) {
@@ -159,52 +95,55 @@ export default Vue.extend({
     isTwoStepWithdrawEnabled(): boolean {
       return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
     },
-    async renderActiveTransaction() {
-      // checks the local storage for an active transaction for current token
-      const storageKey = JSON.stringify(this.tokenSymbol);
-      let tokenActiveTx: any = localStorage.getItem(storageKey);
-      tokenActiveTx = JSON.parse(tokenActiveTx);
-      console.log("in render pending bal", await this.pendingBalance);
-
-      const p = Number(formatFixed(this.pendingBalance, 18));
-      if (p > 0) {
-        // if there's no pending balance, it means any previous tx has been completed
-        this.processingForWithdrawal = 0;
-        localStorage.removeItem(storageKey);
-      } else if (tokenActiveTx?.processingForWithdrawal > 0) {
-        this.processingForWithdrawal = tokenActiveTx!.processingForWithdrawal;
-      }
-      return this.processingForWithdrawal;
-    },
     async requestPendingBalance(tokenSymbol: TokenSymbol) {
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
-      this.processingForWithdrawal = Number(formatFixed(this.pendingBalance, 18))
-      console.log("processing withdrwal", this.processingForWithdrawal);
-      console.log("pending balance", this.pendingBalance);
+      const doesPendingTxExist = await this.checkPendingTx();
 
-      const networkConfig = ethereumNetworkConfig('')[this.network]
+      if (doesPendingTxExist) {
+        alert("You have a pending transaction, please wait for it to be confirmed");
+        return;
+      }
+
+      this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
+        tokenSymbol: this.tokenSymbol,
+      });
+
+      this.txPending = true;
+    },
+    async checkPendingTx() {
+      const networkConfig = ethereumNetworkConfig("")[this.network];
 
       const customProvider = new providers.JsonRpcProvider(networkConfig.rpc_url);
-
 
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
 
       const pendingNonce = await customProvider.getTransactionCount(accounts[0], "pending");
 
       const latestNonce = await customProvider.getTransactionCount(accounts[0], "latest");
-      // return pendingNonce - latestNonce;
-      //this now works
-      console.log(`pending: ${pendingNonce} latest: ${latestNonce}`);
 
-      //   this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
-      //   tokenSymbol: this.tokenSymbol,
-      // });
+      const isTxPending = pendingNonce > latestNonce;
+
+      if (this.pendingBalance > 0 && isTxPending) {
+        this.txPending = true;
+      } else {
+        this.txPending = false;
+      }
+
+      return isTxPending;
     },
 
-    async clearActiveTransaction() {
-      await this.$store.commit("zk-transaction/clearActiveTransaction");
+    clearActiveTransaction() {
+      this.$store.commit("zk-transaction/clearActiveTransaction");
+    },
+
+    async updateLatest() {
+      clearInterval(updateListInterval);
+      await this.checkPendingTx();
+      updateListInterval = setInterval(async () => {
+        await this.checkPendingTx();
+      }, 30000);
     },
   },
 });
@@ -214,31 +153,97 @@ export default Vue.extend({
 .withdrawalTokenItem {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-content: center;
+  justify-content: space-around;
+  align-items: center;
   background-color: white;
   border-radius: 5px;
   padding: 10px;
   margin-top: 5%;
 }
 
-.tokenItem {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
+.token-info {
+  display: flex !important;
   align-content: center;
-  border-right: 1px solid aquamarine;
-  padding-right: 20px;
-  text-align: center;
+  justify-content: flex-start;
 }
 
-.tokenName {
-  margin-top: -1px;
+.availableText {
+  color: rgb(114, 122, 121);
+}
+.availableAmount {
+  margin-top: -10px;
+  font-size: 12px;
+  color: darkslategray;
 }
 
-.withdrawBtn {
+.withdrawBtnSection {
   display: flex;
   justify-content: center;
   align-content: center;
+}
+.withdrawBtn {
+  width: 120px;
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+.withdrawBtnCompleted {
+  background-color: #4caf4f65;
+}
+.withdrawBtnPending {
+  background-color: #4b5cf0;
+}
+.withdrawBtnDisabled {
+  background-color: #4b5cf04b;
+}
+
+.tooltip {
+  position: relative;
+  /* display: inline-block; */
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 320px;
+  background-color: #555;
+  color: #fff;
+  text-align: start;
+  padding: 5px;
+  border-radius: 6px;
+  font-size: 10px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -85px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  /* left: 50%; */
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 </style>
