@@ -86,6 +86,7 @@ export default Vue.extend({
     setInterval(async () => {
       this.requestPendingBalance(this.tokenSymbol);
       await this.checkPendingTx();
+      return this.pendingBalance;
     }, 10000);
   },
   methods: {
