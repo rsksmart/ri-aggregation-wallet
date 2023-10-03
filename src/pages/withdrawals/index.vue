@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="activeTransaction && activeTransaction.step !== 'initial' && activeTransaction.type === 'WithdrawPending'"
-    >
-      <div class="transactionPage dappPageWrapper">
-        <div class="transactionBlock">
-          <!--          <div class="withdrawBlock">-->
-          <loading-block v-if="activeTransaction.step !== 'finished'" />
-          <success-block v-else />
-          <!--          </div>-->
-        </div>
-      </div>
-    </div>
-    <div v-else class="withdrawsPage">
+    <div class="withdrawsPage">
       <div class="centerBlock">
         <div class="withdrawBlock">
           <span class="title">Withdrawals</span>
@@ -36,32 +24,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Token, ZkActiveTransaction, ZkTransactionHistoryLoadingState } from "@rsksmart/rif-rollup-nuxt-core/types";
+import { Token } from "@rsksmart/rif-rollup-nuxt-core/types";
 import { ApiTransaction, TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { WithdrawData } from "@rsksmart/rif-rollup-js-sdk/src/types";
 import WithdrawItem from "@/pages/withdrawals/withdrawItem.vue";
-import LoadingBlock from "@/blocks/LoadingBlock.vue";
-import SuccessBlock from "@/blocks/SuccessBlock.vue";
 
-let updateListInterval: ReturnType<typeof setInterval>;
 export default Vue.extend({
-  components: { SuccessBlock, LoadingBlock, WithdrawItem },
+  components: { WithdrawItem },
   computed: {
-    transactions(): ApiTransaction[] {
-      return this.$store.getters["zk-history/transactionHistory"];
-    },
-    transactionHistoryRequested(): boolean {
-      return this.$store.getters["zk-history/transactionHistoryRequested"];
-    },
-    loadingStatus(): ZkTransactionHistoryLoadingState {
-      return this.$store.getters["zk-history/transactionHistoryLoading"];
-    },
-    transactionHistoryAllLoaded(): boolean {
-      return this.$store.getters["zk-history/transactionHistoryAllLoaded"];
-    },
-    withdrawTxs(): ApiTransaction[] {
-      return this.transactions.filter((t) => t.op.type === "Withdraw") || [];
-    },
     tokens(): string[] {
       const tokens = this.$store.getters["zk-tokens/zkTokens"];
       if (tokens) {
@@ -69,28 +39,14 @@ export default Vue.extend({
       }
       return [];
     },
-    activeTransaction(): ZkActiveTransaction {
-      const tx = this.$store.getters["zk-transaction/activeTransaction"];
-      return tx;
-    },
   },
   async mounted() {
     await this.getTokens();
-    if (!this.transactionHistoryRequested) {
-      await this.$store.dispatch("zk-history/getTransactionHistory");
-    }
     await this.updateLatest();
   },
   methods: {
     async updateLatest() {
       await this.$store.dispatch("zk-tokens/loadZkTokens");
-      await this.$store.dispatch("zk-history/getNewTransactionHistory");
-      clearInterval(updateListInterval);
-      updateListInterval = setInterval(async () => {
-        if (!this.transactionHistoryAllLoaded) {
-          await this.$store.dispatch("zk-history/getNewTransactionHistory");
-        }
-      }, 30000);
     },
     getTokenSymbol(tx: ApiTransaction): TokenSymbol | number {
       const txData: WithdrawData = tx.op as WithdrawData;
