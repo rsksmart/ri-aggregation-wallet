@@ -87,7 +87,7 @@ export default Vue.extend({
       this.requestPendingBalance(this.tokenSymbol);
       await this.checkPendingTx();
       return this.pendingBalance;
-    }, 10000);
+    }, 5000);
   },
   methods: {
     copyAddress(hash: string) {
