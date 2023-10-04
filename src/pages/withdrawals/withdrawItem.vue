@@ -18,7 +18,7 @@
         </div>
 
         <div class="withdrawBtnSection">
-          <div v-if="txPending">
+          <div v-if="txPending || loading">
             <button class="withdrawBtn withdrawBtnCompleted" disabled data-cy="account_withdraw_l1_button">
               pending
             </button>
@@ -67,6 +67,7 @@ export default Vue.extend({
   data() {
     return {
       txPending: false,
+      loading: false,
     };
   },
   computed: {
@@ -96,8 +97,11 @@ export default Vue.extend({
       return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
     },
     async withdrawPendingBalance() {
+      this.loading = true;
+      this.$store.commit("zk-transaction/clearActiveTransaction");
       const doesPendingTxExist = await this.checkPendingTx();
 
+      this.loading = false;
       if (doesPendingTxExist) {
         alert("You have a pending transaction, please wait for it to be confirmed");
         return;

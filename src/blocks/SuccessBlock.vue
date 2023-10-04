@@ -42,7 +42,7 @@
           :href="getL1ExplorerTransactionLink()"
           class="_display-block _text-center"
           target="_blank"
-          >Rootstock transacion
+          >Rootstock transaction
           <v-icon name="ri-external-link-line"></v-icon>
         </a>
         <a
@@ -51,7 +51,7 @@
           :href="getL2ExplorerTransactionLink()"
           class="_display-block _text-center"
           target="_blank"
-          >Rollup transacion
+          >Rollup transaction
           <v-icon name="ri-external-link-line"></v-icon>
         </a>
       </div>
@@ -181,8 +181,8 @@ export default Vue.extend({
         case "WithdrawNFT":
           return "/account/nft";
         case "WithdrawPending":
-          return "account/history";
-
+          this.clearActiveTransaction();
+          return "/account";
         default:
           return "/account";
       }
@@ -266,12 +266,10 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   text-align: center;
-  font-family: 14px;
 }
 .infoFeeBlockItem {
   display: flex;
   flex-direction: column;
   text-align: center;
-  font-family: 14px;
 }
 </style>
