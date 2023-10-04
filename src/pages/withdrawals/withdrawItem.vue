@@ -105,6 +105,7 @@ export default Vue.extend({
 
       this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
         tokenSymbol: this.tokenSymbol,
+        amount: this.pendingBalance,
       });
 
       this.txPending = true;
