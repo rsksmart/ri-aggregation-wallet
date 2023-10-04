@@ -55,8 +55,6 @@ import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/conf
 import TokenLogo from "@/components/TokenLogo.vue";
 import TokenPrice from "@/components/TokenPrice.vue";
 
-let updateListInterval: ReturnType<typeof setInterval>;
-
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },
   props: {
@@ -79,15 +77,13 @@ export default Vue.extend({
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
   },
+  watch: {
+    async txPending() {
+      await this.updatePendingBalance();
+    },
+  },
   async mounted() {
-    this.requestPendingBalance(this.tokenSymbol);
-    await this.checkPendingTx();
-
-    setInterval(async () => {
-      this.requestPendingBalance(this.tokenSymbol);
-      await this.checkPendingTx();
-      return this.pendingBalance;
-    }, 5000);
+    await this.updatePendingBalance();
   },
   methods: {
     copyAddress(hash: string) {
@@ -134,17 +130,9 @@ export default Vue.extend({
 
       return isTxPending;
     },
-
-    clearActiveTransaction() {
-      this.$store.commit("zk-transaction/clearActiveTransaction");
-    },
-
-    async updateLatest() {
-      clearInterval(updateListInterval);
+    async updatePendingBalance() {
+      await this.requestPendingBalance(this.tokenSymbol);
       await this.checkPendingTx();
-      updateListInterval = setInterval(async () => {
-        await this.checkPendingTx();
-      }, 30000);
     },
   },
 });
