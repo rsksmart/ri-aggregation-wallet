@@ -37,7 +37,7 @@ class ConsoleAnalytics implements Analytics {
   }
 
   track(eventName: string, props?: any): void {
-    console.log("Track:", eventName, { ...this.props, ...props });
+    console.log("Track:", sanitize(eventName), { ...this.props, ...props });
   }
 }
 
