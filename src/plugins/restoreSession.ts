@@ -9,7 +9,8 @@ const restoreSessionPlugin: Plugin = async ({ app, store, route }: Context) => {
     await store.dispatch("zk-provider/changeNetwork", route.query.network);
   }
   const tracklogin = localStorage.getItem("lastSelectedWallet");
-  if (tracklogin) {
+
+  if (tracklogin && isValidWallet(tracklogin)) {
     store.dispatch("zk-onboard/restoreLogin").then(() => {
       if (route.path === "/") {
         app.router?.push("/account");
@@ -18,6 +19,11 @@ const restoreSessionPlugin: Plugin = async ({ app, store, route }: Context) => {
   } else {
     await store.dispatch("zk-onboard/restoreLastNetwork");
   }
+};
+
+const isValidWallet = (wallet: string) => {
+  const acceptedWallets = ["metamask", "walletconnect", "liquality"];
+  return acceptedWallets.includes(wallet.toLowerCase());
 };
 
 export default restoreSessionPlugin;
