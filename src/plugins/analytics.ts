@@ -32,7 +32,7 @@ class ConsoleAnalytics implements Analytics {
       return;
     }
     for (const key of Object.keys(props)) {
-      this.props[key] = props[key];
+      this.props[key] = sanitize(props[key]);
     }
   }
 
@@ -40,6 +40,16 @@ class ConsoleAnalytics implements Analytics {
     console.log("Track:", eventName, { ...this.props, ...props });
   }
 }
+
+const sanitize = (value: any) => {
+  if (typeof value === "string") {
+    // Use a regular expression to replace characters that can be used in XSS attacks
+    return value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  } else {
+    // If the value is not a string, simply return it as is
+    return value;
+  }
+};
 
 const pluginAnalytics: Plugin = ({ $config }: Context, inject: Inject) => {
   console.log("analytics injected", $config);
