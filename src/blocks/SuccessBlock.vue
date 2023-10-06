@@ -2,7 +2,7 @@
   <div class="successBlock tileBlock">
     <checkmark />
     <div class="tileHeadline h3">
-      <span>{{ activeTransaction.type }}</span>
+      <span>{{ activeTransaction.type === "WithdrawPending" ? "Successful withdraw" : activeTransaction.type }}</span>
     </div>
     <div class="additionalInfo _margin-top-2">
       <p class="_text-center">
