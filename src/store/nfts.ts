@@ -52,6 +52,10 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     async requestNFT({ commit, getters, rootGetters }, { cid, force }: { cid: string; force: boolean }): Promise<void> {
+      // Validate the CID input
+      if (!/^[a-zA-Z0-9]+$/.test(cid)) {
+        throw new Error("Invalid CID format");
+      }
       /* ..aaaa is empty cid */
       if (cid === "QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51") {
         return;
