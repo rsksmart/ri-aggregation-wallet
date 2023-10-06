@@ -121,7 +121,9 @@
         </div>
       </div>
       <i-button
-        v-else-if="activeTransaction.type === 'Allowance' && type === 'Deposit'"
+        v-else-if="
+          (activeTransaction.type === 'Allowance' && type === 'Deposit') || activeTransaction.type === 'WithdrawPending'
+        "
         data-cy="success_unlock_ok_button"
         block
         size="sm"
@@ -180,9 +182,6 @@ export default Vue.extend({
         case "TransferNFT":
         case "WithdrawNFT":
           return "/account/nft";
-        case "WithdrawPending":
-          this.clearActiveTransaction();
-          return "/account";
         default:
           return "/account";
       }
@@ -210,8 +209,8 @@ export default Vue.extend({
       }
       await this.$store.dispatch("zk-transaction/commitTransaction", { requestFees: false });
     },
-    async clearActiveTransaction() {
-      await this.$store.commit("zk-transaction/clearActiveTransaction");
+    clearActiveTransaction() {
+      this.$store.commit("zk-transaction/clearActiveTransaction");
     },
     getL1ExplorerTransactionLink(): string {
       return this.config.ethereumNetwork.rskExplorer + "tx/" + this.activeTransaction.txHash;

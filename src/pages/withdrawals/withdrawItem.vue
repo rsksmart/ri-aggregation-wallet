@@ -66,7 +66,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      txPending: false,
+      txPending: true,
       loading: false,
     };
   },
@@ -76,11 +76,6 @@ export default Vue.extend({
     },
     pendingBalance() {
       return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
-    },
-  },
-  watch: {
-    async txPending() {
-      await this.updatePendingBalance();
     },
   },
   async mounted() {
@@ -99,6 +94,7 @@ export default Vue.extend({
     async withdrawPendingBalance() {
       this.loading = true;
       this.$store.commit("zk-transaction/clearActiveTransaction");
+      await this.$store.commit("zk-transaction/setType", "WithdrawPending");
       const doesPendingTxExist = await this.checkPendingTx();
 
       this.loading = false;
