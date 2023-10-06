@@ -26,7 +26,6 @@
         font-weight: normal;
         text-align: center;
         line-height: 140%;
-        // margin: 10px 0 0 -40px;
       }
       .withdrawTxt {
         font-size: 14px;
@@ -65,9 +64,6 @@
         }
         .withdraw-btn {
           border-radius: 15px;
-          font-size: 10px;
-          height: 25px;
-          width: auto;
           cursor: pointer;
         }
         .status {
@@ -93,8 +89,6 @@
             display: block;
             top: 1.5px;
             left: -225px;
-            // display: flex;
-            // justify-content: start;
           }
 
           .loaderContainer {
@@ -107,6 +101,11 @@
       }
     }
   }
+  @media (max-width: 440px) {
+    .withdraw-btn {
+      font-size: 10px !important;
+    }
+  }
 }
 
 body.inkline {
@@ -117,13 +116,20 @@ body.inkline {
     .withdrawTxItem {
       background-color: $white;
     }
+    .centerBlock .withdrawBlock {
+      .defaultLayout .tileBlock {
+        padding: 3px 25px !important;
+        border-radius: 15px !important;
+        width: 600px !important;
+      }
+    }
   }
   &.-dark {
     .withdrawBlock {
       background-color: $midHyperlinkBlue;
     }
     .withdrawTxItem {
-      background-color: $hyperlinkBlue;
+      background-color: #ffffff30;
     }
   }
 }

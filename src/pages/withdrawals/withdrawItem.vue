@@ -1,140 +1,239 @@
 <template>
-  <div class="withdrawTxItem">
-    <div class="tokenSymbol">
-      <token-logo :symbol="tokenSymbol" />
-    </div>
-    <i-container>
-      <i-row>
-        <i-column class="withdrawTxt" xs="8">
-          <i-row>
-            <span>Tx hash: {{ trimHash(transaction.txHash) }}</span>
-            <i class="copy" @click="copyAddress(transaction.txHash)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
-          </i-row>
-          <i-row>
-            <span>From: {{ trimHash(transaction.op.from) }}</span>
-            <i class="copy" @click="copyAddress(transaction.op.from)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
-          </i-row>
-          <i-row>
-            <span>To: {{ trimHash(transaction.op.to) }}</span>
-            <i class="copy" @click="copyAddress(transaction.op.to)">
-              <v-icon name="ri-clipboard-line" />
-            </i>
-          </i-row>
-        </i-column>
-        <i-column xs="4" class="details">
-          <i-row class="_justify-content-end"> - {{ transaction.op.amount | parseBigNumberish(tokenSymbol) }} </i-row>
-          <i-row class="_justify-content-end">
+  <div>
+    <template v-if="pendingBalance">
+      <div class="withdrawalTokenItem">
+        <div class="token-info">
+          <token-logo class="token-logo" :symbol="tokenSymbol" />
+          <div class="tokenSymbol">
             {{ tokenSymbol }}
-          </i-row>
-          <i-row class="_justify-content-end">
-            <token-price :symbol="tokenSymbol" :amount="transaction.op.amount" />
-          </i-row>
-        </i-column>
-      </i-row>
-      <i-row>
-        <i-column class="_padding-0">
-          <div class="createdAt">{{ timeAgo }}</div>
-          <i-tooltip placement="bottom-start" class="status">
-            <v-icon :name="transactionStatus.icon" :class="transactionStatus.class" />
-            <template #body>{{ transactionStatus.text }}</template>
-          </i-tooltip>
-        </i-column>
-      </i-row>
-      <i-row class="_justify-content-end">
-        <i-button
-          v-if="isTwoStepWithdrawEnabled()"
-          class="withdraw-btn"
-          data-cy="account_withdraw_l1_button"
-          variant="secondary"
-        >
-          complete withdrawal
-        </i-button>
-        <i-button v-else disabled class="withdraw-btn" data-cy="account_withdraw_l1_button" variant="success">
-          withdrawal complete
-        </i-button>
-      </i-row>
-    </i-container>
+          </div>
+        </div>
+
+        <div class="tokenDetails">
+          <p class="availableText">Available</p>
+          <p class="availableAmount">
+            {{ pendingBalance | parseBigNumberish(tokenSymbol) }}
+            ( <token-price :symbol="tokenSymbol" :amount="pendingBalance.toString()" /> )
+          </p>
+        </div>
+
+        <div class="withdrawBtnSection">
+          <div v-if="txPending || loading">
+            <button class="withdrawBtn withdrawBtnCompleted" disabled data-cy="account_withdraw_l1_button">
+              pending
+            </button>
+            <span class="tooltip">
+              &#9432;
+              <span class="tooltiptext">
+                you currently have a pending L1 transaction, please wait for it to be confirmed
+              </span>
+            </span>
+          </div>
+          <button
+            v-else-if="isTwoStepWithdrawEnabled() && pendingBalance > 0 && !txPending"
+            class="withdrawBtn withdrawBtnPending"
+            data-cy="account_withdraw_l1_button"
+            @click="withdrawPendingBalance()"
+          >
+            withdraw
+          </button>
+          <button v-else class="withdrawBtn withdrawBtnDisabled" disabled data-cy="account_withdraw_l1_button">
+            withdraw
+          </button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { ApiTransaction, TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
-import { Token } from "@rsksmart/rif-rollup-nuxt-core/types";
+import { TokenSymbol } from "@rsksmart/rif-rollup-js-sdk/build/types";
 import { copyToClipboard } from "@rsksmart/rif-rollup-nuxt-core/utils";
-import moment from "moment-timezone";
-import { WithdrawData } from "@rsksmart/rif-rollup-js-sdk/src/types";
-import TokenLogo from "../../components/TokenLogo.vue";
-import TokenPrice from "../../components/TokenPrice.vue";
+import { providers } from "ethers";
+import { ethereumNetworkConfig } from "@rsksmart/rif-rollup-nuxt-core/utils/config";
+import TokenLogo from "@/components/TokenLogo.vue";
+import TokenPrice from "@/components/TokenPrice.vue";
 
 export default Vue.extend({
   components: { TokenPrice, TokenLogo },
   props: {
-    transaction: {
-      type: Object,
-      default: () => {},
+    tokenSymbol: {
+      type: String,
+      default: "RBTC",
       required: true,
-    } as PropOptions<ApiTransaction>,
+    } as PropOptions<TokenSymbol>,
+  },
+  data() {
+    return {
+      txPending: true,
+      loading: false,
+    };
   },
   computed: {
-    tokenSymbol(): TokenSymbol | number {
-      const txData: WithdrawData = this.transaction.op as WithdrawData;
-      const tokenId = txData.token;
-      const token: Token = this.$store.getters["zk-tokens/zkTokenByID"](tokenId);
-      if (token) {
-        return token.symbol;
-      }
-      return tokenId;
+    network(): string {
+      return this.$store.getters["zk-provider/network"];
     },
-    transactionStatus(): { text: string; icon: string; class: string } {
-      if (this.transaction.failReason) {
-        return {
-          text: this.transaction.failReason ? this.transaction.failReason : "Rejected",
-          icon: "ri-close-circle-fill",
-          class: "rejected",
-        };
-      }
-      if (this.transaction.status === "finalized") {
-        return {
-          text: "Verified",
-          icon: "ri-check-double-line",
-          class: "verified",
-        };
-      } else if (this.transaction.status === "committed") {
-        return {
-          text: "Committed",
-          icon: "ri-check-line",
-          class: "committed",
-        };
-      } else {
-        return {
-          text: "Initiated",
-          icon: "ri-loader-5-line",
-          class: "inProgress",
-        };
-      }
+    pendingBalance() {
+      return this.$store.getters["zk-balances/pendingBalance"](this.tokenSymbol);
     },
-    timeAgo(): string {
-      if (!this.transaction.createdAt) {
-        return "";
-      }
-      return moment(this.transaction.createdAt).tz("UTC").fromNow();
-    },
+  },
+  async mounted() {
+    await this.updatePendingBalance();
   },
   methods: {
     copyAddress(hash: string) {
       copyToClipboard(hash.toLowerCase());
     },
-    trimHash(hash: string) {
-      return `${hash.substr(0, 4)}...${hash.substr(hash.length - 4, hash.length)}`;
-    },
     isTwoStepWithdrawEnabled(): boolean {
       return process.env.IS_TWO_STEP_WITHDRAW_ENABLED?.toUpperCase() === "TRUE";
+    },
+    async requestPendingBalance(tokenSymbol: TokenSymbol) {
+      return await this.$store.dispatch("zk-balances/requestPendingBalance", { symbol: tokenSymbol });
+    },
+    async withdrawPendingBalance() {
+      this.loading = true;
+      this.$store.commit("zk-transaction/clearActiveTransaction");
+      await this.$store.commit("zk-transaction/setType", "WithdrawPending");
+      const doesPendingTxExist = await this.checkPendingTx();
+
+      this.loading = false;
+      if (doesPendingTxExist) {
+        alert("You have a pending transaction, please wait for it to be confirmed");
+        return;
+      }
+
+      this.$store.dispatch("zk-transaction/withdrawPendingTransaction", {
+        tokenSymbol: this.tokenSymbol,
+        amount: this.pendingBalance,
+      });
+
+      this.txPending = true;
+    },
+    async checkPendingTx() {
+      const networkConfig = ethereumNetworkConfig("")[this.network];
+
+      const customProvider = new providers.JsonRpcProvider(networkConfig.rpc_url);
+
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      const pendingNonce = await customProvider.getTransactionCount(accounts[0], "pending");
+
+      const latestNonce = await customProvider.getTransactionCount(accounts[0], "latest");
+
+      const isTxPending = pendingNonce > latestNonce;
+
+      if (this.pendingBalance > 0 && isTxPending) {
+        this.txPending = true;
+      } else {
+        this.txPending = false;
+      }
+
+      return isTxPending;
+    },
+    async updatePendingBalance() {
+      await this.requestPendingBalance(this.tokenSymbol);
+      await this.checkPendingTx();
     },
   },
 });
 </script>
+
+<style scoped>
+.withdrawalTokenItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5%;
+}
+
+.token-info {
+  display: flex !important;
+  align-content: center;
+  justify-content: flex-start;
+}
+
+.availableText {
+  color: rgb(114, 122, 121);
+}
+.availableAmount {
+  margin-top: -10px;
+  font-size: 12px;
+  color: darkslategray;
+}
+
+.withdrawBtnSection {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.withdrawBtn {
+  width: 120px;
+  height: 30px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+.withdrawBtnCompleted {
+  background-color: #4caf4f65;
+}
+.withdrawBtnPending {
+  background-color: #4b5cf0;
+}
+.withdrawBtnDisabled {
+  background-color: #4b5cf04b;
+}
+
+.tooltip {
+  position: relative;
+  /* display: inline-block; */
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 320px;
+  background-color: #555;
+  color: #fff;
+  text-align: start;
+  padding: 5px;
+  border-radius: 6px;
+  font-size: 10px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -85px;
+
+  /* Fade in tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  /* left: 50%; */
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+</style>

@@ -462,12 +462,6 @@ export default Vue.extend({
     isL1Transaction() {
       return ["Deposit", "Withdraw"].includes(this.transaction.op.type);
     },
-    cropLongAmount(amount: BigNumberish): BigNumberish {
-      console.log("amount", amount);
-      console.log("Number(amount)", Number(amount));
-      console.log("toFixed", Number(amount).toFixed(5));
-      return amount;
-    },
     getL1TooltipText(): string {
       if (this.isTransactionVerified()) {
         return "Rootstock explorer transaction";

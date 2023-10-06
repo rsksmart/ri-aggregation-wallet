@@ -2,7 +2,7 @@
   <div class="successBlock tileBlock">
     <checkmark />
     <div class="tileHeadline h3">
-      <span>{{ activeTransaction.type }}</span>
+      <span>{{ activeTransaction.type === "WithdrawPending" ? "Successful withdraw" : activeTransaction.type }}</span>
     </div>
     <div class="additionalInfo _margin-top-2">
       <p class="_text-center">
@@ -14,6 +14,9 @@
         <template v-if="activeTransaction.type === 'Withdraw' && !isTwoStepWithdrawEnabled()">
           Your withdrawal process has been initiated. Once the Rollup Tx is committed, your funds should become
           available your L1 wallet
+        </template>
+        <template v-if="activeTransaction.type === 'WithdrawPending' && isTwoStepWithdrawEnabled()">
+          Your withdrawal process has been completed. Your funds should be available your L1 wallet.
         </template>
         <template v-else-if="activeTransaction.type === 'Deposit'">
           Your deposit transaction has been mined and will be processed after required number of confirmations. Use the
@@ -39,7 +42,7 @@
           :href="getL1ExplorerTransactionLink()"
           class="_display-block _text-center"
           target="_blank"
-          >Rootstock transacion
+          >Rootstock transaction
           <v-icon name="ri-external-link-line"></v-icon>
         </a>
         <a
@@ -48,7 +51,7 @@
           :href="getL2ExplorerTransactionLink()"
           class="_display-block _text-center"
           target="_blank"
-          >Rollup transacion
+          >Rollup transaction
           <v-icon name="ri-external-link-line"></v-icon>
         </a>
       </div>
@@ -118,7 +121,9 @@
         </div>
       </div>
       <i-button
-        v-else-if="activeTransaction.type === 'Allowance' && type === 'Deposit'"
+        v-else-if="
+          (activeTransaction.type === 'Allowance' && type === 'Deposit') || activeTransaction.type === 'WithdrawPending'
+        "
         data-cy="success_unlock_ok_button"
         block
         size="sm"
@@ -151,6 +156,7 @@ import { ERC20_APPROVE_TRESHOLD } from "@rsksmart/rif-rollup-js-sdk/build/utils"
 import { getAddress } from "@ethersproject/address";
 
 export default Vue.extend({
+  name: "SuccessBlock",
   data() {
     return {
       displayAllowanceDeposit: false,
@@ -176,7 +182,6 @@ export default Vue.extend({
         case "TransferNFT":
         case "WithdrawNFT":
           return "/account/nft";
-
         default:
           return "/account";
       }
@@ -204,8 +209,8 @@ export default Vue.extend({
       }
       await this.$store.dispatch("zk-transaction/commitTransaction", { requestFees: false });
     },
-    async clearActiveTransaction() {
-      await this.$store.commit("zk-transaction/clearActiveTransaction");
+    clearActiveTransaction() {
+      this.$store.commit("zk-transaction/clearActiveTransaction");
     },
     getL1ExplorerTransactionLink(): string {
       return this.config.ethereumNetwork.rskExplorer + "tx/" + this.activeTransaction.txHash;
@@ -214,7 +219,7 @@ export default Vue.extend({
       return this.config.zkSyncNetwork.rollupExplorer + "transactions/" + this.activeTransaction.txHash;
     },
     isL1Transaction(): boolean {
-      return ["Deposit", "Allowance", "Mint"].includes(this.activeTransaction.type);
+      return ["Deposit", "Allowance", "Mint", "WithdrawPending"].includes(this.activeTransaction.type);
     },
     isL2Transaction(): boolean {
       return ["Deposit", "Transfer", "Withdraw"].includes(this.activeTransaction.type);
@@ -260,12 +265,10 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   text-align: center;
-  font-family: 14px;
 }
 .infoFeeBlockItem {
   display: flex;
   flex-direction: column;
   text-align: center;
-  font-family: 14px;
 }
 </style>
