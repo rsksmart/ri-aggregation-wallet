@@ -21,7 +21,7 @@ jobs:
           persist-credentials: false # <--- checking this in commit context
 
       - name: "Enable yarn cache"
-        uses: c-hive/gha-yarn-cache@v2  # using cache
+        uses: c-hive/gha-yarn-cache@d528cd63c28aed0a9f44b1cada95050d7aa95c2e # using cache
 
       - name: "Setup node@16"
         uses: actions/setup-node@v2
