@@ -5298,6 +5298,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rsksmart/rif-rollup-js-sdk@npm:^0.13.10-alpha":
+  version: 0.13.10-alpha
+  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.10-alpha"
+  dependencies:
+    axios: ^0.21.2
+    websocket: ^1.0.30
+    websocket-as-promised: ^1.1.0
+    zksync-crypto: ^0.6.1
+  peerDependencies:
+    "@ethersproject/logger": ^5.4.0
+    ethers: ^5.4.4
+  checksum: e26dbd953284b52050a5fdb869ae3c813f6657f265dab3f3a1e57d59154bba44e27fd509772815ab8a2209b5876071aa36eac68ef3bbce36d0a9d958fd11ed31
+  languageName: node
+  linkType: hard
+
 "@rsksmart/rif-rollup-js-sdk@npm:^0.13.7-alpha":
   version: 0.13.7-alpha
   resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.7-alpha"
@@ -5310,21 +5325,6 @@ __metadata:
     "@ethersproject/logger": ^5.4.0
     ethers: ^5.4.4
   checksum: 5abf8ce489c203de9263431ab58689eaf178d90db582fcb002a344afd0418e012a32e4478167decd235566e946a99fe04e4c0755953ab9eed84e38387936ba99
-  languageName: node
-  linkType: hard
-
-"@rsksmart/rif-rollup-js-sdk@npm:^0.13.9-alpha":
-  version: 0.13.9-alpha
-  resolution: "@rsksmart/rif-rollup-js-sdk@npm:0.13.9-alpha"
-  dependencies:
-    axios: ^0.21.2
-    websocket: ^1.0.30
-    websocket-as-promised: ^1.1.0
-    zksync-crypto: ^0.6.1
-  peerDependencies:
-    "@ethersproject/logger": ^5.4.0
-    ethers: ^5.4.4
-  checksum: 70ee0aefb98b55b3a56163968c6ebce53cd466d206de860b6d804510a9a6a951eefd271ab86bf4192f0e08b6d56ba299581f5c9b87e659a5fe30b41a0f5bc915
   languageName: node
   linkType: hard
 
@@ -5374,7 +5374,7 @@ __metadata:
     "@nuxtjs/sentry": ^5.1.7
     "@nuxtjs/style-resources": ^1.2.1
     "@ramp-network/ramp-instant-sdk": ^2.5.0
-    "@rsksmart/rif-rollup-js-sdk": ^0.13.9-alpha
+    "@rsksmart/rif-rollup-js-sdk": ^0.13.10-alpha
     "@rsksmart/rif-rollup-nuxt-core": ^1.3.2
     "@rsksmart/rns-sdk": ^1.0.0-beta.8
     "@semantic-release/changelog": ^6.0.1
