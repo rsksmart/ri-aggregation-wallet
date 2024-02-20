@@ -1,6 +1,5 @@
 import { NuxtConfig } from "@nuxt/types";
 import { NuxtOptionsBuild } from "@nuxt/types/config/build";
-import { NuxtOptionsEnv } from "@nuxt/types/config/env";
 import { version as zkSyncVersion } from "@rsksmart/rif-rollup-js-sdk/package.json";
 
 import { ModuleOptions } from "@rsksmart/rif-rollup-nuxt-core/types";
@@ -44,10 +43,6 @@ const config = <NuxtConfig>{
       devtools: !isProduction,
     },
   },
-  env: {
-    ...process.env,
-    TEST_WORD: "cheta rocks",
-  } as NuxtOptionsEnv,
 
   publicRuntimeConfig: {
     mixpanel: {
@@ -234,10 +229,11 @@ const config = <NuxtConfig>{
         logoutRedirect: "/",
       },
     ],
+    ["@nuxtjs/dotenv", { path: __dirname }],
   ],
 
   // Nuxt.js modules
-  modules: ["@inkline/nuxt", "@nuxtjs/sentry", "@nuxtjs/proxy", "@nuxtjs/google-gtag"],
+  modules: ["@inkline/nuxt", "@nuxtjs/sentry", "@nuxtjs/proxy", "@nuxtjs/google-gtag", "@nuxtjs/dotenv"],
   inkline: {
     config: {
       autodetectVariant: false,
