@@ -10,17 +10,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: QA
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355
-      with:
-        aws-access-key-id: ${{ secrets.QA_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.QA_AWS_SECRET_ACCESS_KEY }}
-        aws-region: 'us-east-1'
 
     - name: Set up Environment
       run: |
@@ -42,6 +38,12 @@ jobs:
     - name: Build site
       run: |
         yarn ci:build:qa
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.QA_ROLE_ARN }}
+        aws-region: 'us-east-1'
 
     - name: Deploy site to S3
       run: |
