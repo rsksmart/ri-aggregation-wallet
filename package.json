@@ -87,6 +87,7 @@
     "@ethersproject/bignumber": "^5.5.0",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/dotenv": "^1.4.2",
     "@nuxtjs/google-fonts": "^1.3.0",
     "@nuxtjs/proxy": "^2.1.0",
     "@nuxtjs/style-resources": "^1.2.1",
@@ -133,7 +134,7 @@
     }
   },
   "scripts": {
-    "build": "yarn local && nuxt build",
+    "build": "yarn local && nuxt build --no-processenv",
     "ci:build:dev-mainnet": "sh cli-process-env.sh 'mainnet' dev 1 && yarn generate",
     "ci:build:prod": "yarn ci:prepare:mainnet && yarn generate",
     "ci:build:testnet": "yarn ci:prepare:testnet && yarn generate",
