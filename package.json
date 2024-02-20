@@ -134,7 +134,7 @@
     }
   },
   "scripts": {
-    "build": "yarn local && nuxt build --no-processenv",
+    "build": "yarn local && nuxt build",
     "ci:build:dev-mainnet": "sh cli-process-env.sh 'mainnet' dev 1 && yarn generate",
     "ci:build:prod": "yarn ci:prepare:mainnet && yarn generate",
     "ci:build:testnet": "yarn ci:prepare:testnet && yarn generate",
